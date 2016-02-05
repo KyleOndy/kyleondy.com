@@ -8,10 +8,7 @@ import           Control.Monad   (forM_)
 import           Data.Monoid     ((<>))
 import           Data.List       (isSuffixOf)
 import           Prelude         hiding (id)
-import           System.Process  (system)
 import           System.FilePath
-import qualified Text.Pandoc     as Pandoc
-
 
 --------------------------------------------------------------------------------
 import           Hakyll
