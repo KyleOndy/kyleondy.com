@@ -1,0 +1,16 @@
+---
+title: Home
+---
+
+<h1 style="clear: left">News</h1>
+$partial("templates/news-list.html")$
+
+<h1 style="clear: left">Recent blogposts</h1>
+$partial("templates/post-list.html")$
+
+<a href="/feed.xml" title="feed"><img style="display: inline" alt="rss feed" src="/images/rss.png" />Feed</a>
+&nbsp;
+<a href="/posts">All posts...</a>
+<p>
+    Browse: $tags$
+</p>
