@@ -1,0 +1,6 @@
+.stack-work
+provider.secret/
+_site/
+_cache/
+_build/
+_build
