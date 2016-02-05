@@ -9,6 +9,7 @@ import           Data.Monoid     ((<>))
 import           Data.List       (isSuffixOf)
 import           Prelude         hiding (id)
 import           System.FilePath
+import           Text.Pandoc.Options
 
 --------------------------------------------------------------------------------
 import           Hakyll
@@ -59,7 +60,7 @@ main = hakyllWith config $ do
     match postsPattern $ do
         route   $ postCleanRoute
         compile $ do
-            pandocCompiler
+            customPandocCompiler
                 >>= saveSnapshot "content"
                 >>= return . fmap demoteHeaders
                 >>= loadAndApplyTemplate "templates/post.html" (postCtx tags)
@@ -104,7 +105,7 @@ main = hakyllWith config $ do
     -- News items
     match newsPattern $ do
       route   $ cleanRoute
-      compile $ pandocCompiler
+      compile $ customPandocCompiler
              >>= loadAndApplyTemplate "templates/post.html" (postCtx tags)
              >>= loadAndApplyTemplate "templates/content.html" defaultContext
              >>= loadAndApplyTemplate "templates/default.html" defaultContext
@@ -137,7 +138,7 @@ main = hakyllWith config $ do
     -- Render some static pages
     match pagesPattern $ do
         route   $ cleanRoute `composeRoutes` (gsubRoute "pages/" (const ""))
-        compile $ pandocCompiler
+        compile $ customPandocCompiler
             >>= loadAndApplyTemplate "templates/content.html" defaultContext
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
@@ -145,7 +146,7 @@ main = hakyllWith config $ do
     -- Render the 404 page, we don't relativize URL's here.
     match "404.html" $ do
         route cleanRoute
-        compile $ pandocCompiler
+        compile $ customPandocCompiler
             >>= loadAndApplyTemplate "templates/content.html" defaultContext
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= cleanIndexUrls
@@ -163,12 +164,19 @@ main = hakyllWith config $ do
     -- CV as HTML
     match "cv.markdown" $ do
         route   $ cleanRoute
-        compile $ pandocCompiler
+        compile $ customPandocCompiler
             >>= loadAndApplyTemplate "templates/cv.html"      defaultContext
             >>= loadAndApplyTemplate "templates/content.html" defaultContext
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
             >>= cleanIndexUrls
+
+
+--need to turn off email obfuscation in pandoc
+customPandocCompiler :: Compiler (Item String)
+customPandocCompiler = pandocCompilerWith defaultHakyllReaderOptions writeOptions
+        where
+          writeOptions = defaultHakyllWriterOptions {writerEmailObfuscation = NoObfuscation}
 
 
 --------------------------------------------------------------------------------
