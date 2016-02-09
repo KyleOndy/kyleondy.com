@@ -6,7 +6,8 @@ module Main (main) where
 --------------------------------------------------------------------------------
 import           Control.Monad   (forM_)
 import           Data.Monoid     ((<>))
-import           Data.List       (isSuffixOf)
+import           Data.List       (isSuffixOf, sortBy)
+import           Data.Ord        (comparing)
 import           Prelude         hiding (id)
 import           System.FilePath
 import           Text.Pandoc.Options
@@ -25,6 +26,9 @@ newsPattern = "news/*"
 
 pagesPattern :: Pattern
 pagesPattern = "pages/*"
+
+notesPattern :: Pattern
+notesPattern = "notes/*"
 
 staticFiles :: [Pattern]
 staticFiles = [ "images/**"
@@ -54,7 +58,7 @@ main = hakyllWith config $ do
         compile compressCssCompiler
 
     -- Build tags
-    tags <- buildTags (postsPattern .||. newsPattern) (fromCapture "tags/*.html")
+    tags <- buildTags (postsPattern .||. newsPattern .||. notesPattern) (fromCapture "tags/*.html")
 
     -- Render each and every post
     match postsPattern $ do
@@ -79,6 +83,21 @@ main = hakyllWith config $ do
                         defaultContext
             makeItem ""
                 >>= loadAndApplyTemplate "templates/posts.html" ctx
+                >>= loadAndApplyTemplate "templates/content.html" ctx
+                >>= loadAndApplyTemplate "templates/default.html" ctx
+                >>= relativizeUrls
+                >>= cleanIndexUrls
+
+    -- notes page
+    create ["notes.html"] $ do
+      route cleanRoute
+      compile $ do
+        notes <- lexicographyOrdered =<< loadAll notesPattern
+        let ctx = constField "title" "Notes" <>
+                  listField "notes" (postCtx tags) (return notes) <>
+                  defaultContext
+        makeItem ""
+                >>= loadAndApplyTemplate "templates/notes.html" ctx
                 >>= loadAndApplyTemplate "templates/content.html" ctx
                 >>= loadAndApplyTemplate "templates/default.html" ctx
                 >>= relativizeUrls
@@ -112,6 +131,15 @@ main = hakyllWith config $ do
              >>= relativizeUrls
              >>= cleanIndexUrls
 
+    -- Notes
+    match notesPattern $ do
+      route   $ cleanRoute
+      compile $ customPandocCompiler
+             >>= loadAndApplyTemplate "templates/post.html" (postCtx tags)
+             >>= loadAndApplyTemplate "templates/content.html" defaultContext
+             >>= loadAndApplyTemplate "templates/default.html" defaultContext
+             >>= relativizeUrls
+             >>= cleanIndexUrls
 
     -- Index
     match "index.html" $ do
@@ -177,6 +205,10 @@ customPandocCompiler :: Compiler (Item String)
 customPandocCompiler = pandocCompilerWith defaultHakyllReaderOptions writeOptions
         where
           writeOptions = defaultHakyllWriterOptions {writerEmailObfuscation = NoObfuscation}
+
+lexicographyOrdered :: [Item a] -> Compiler [Item a]
+lexicographyOrdered items = return $
+              sortBy (comparing (takeBaseName . toFilePath . itemIdentifier)) items
 
 
 --------------------------------------------------------------------------------
