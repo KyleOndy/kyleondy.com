@@ -2,7 +2,7 @@
 title: NeoVim
 published: 2016-02-09
 excerpt: Text editing like a neo-ninja
-comments: off
+tags: notes, neovim
 ---
 
 # Commonly Used Commands

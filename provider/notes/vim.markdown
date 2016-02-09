@@ -2,7 +2,7 @@
 title: Vim
 published: November 20, 2015
 excerpt: Text editing like a ninja
-comments: off
+tags: notes, vim
 ---
 
 Some notes below on vim.
