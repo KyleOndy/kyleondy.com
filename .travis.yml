@@ -32,4 +32,4 @@ script: stack $ARGS --no-terminal --install-ghc test --haddock
 # Caching so the next build will be fast too.
 cache:
   directories:
-  - $HOME/.stack<Paste>
+  - $HOME/.stack
