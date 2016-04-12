@@ -36,7 +36,7 @@ staticFiles = [ "images/**"
                , "files/**"
                , "robots.txt"
                , "keybase.txt"
-               , "favion*"
+               , "favicon*"
                , "pgp.txt"
                ]
 
