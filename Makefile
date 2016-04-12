@@ -14,6 +14,10 @@ build: prep
 
 .PHONY: check
 check: prep build
+	$(SITE_EXE) -- check -i
+
+.PHONY: check-full
+check-full: prep build
 	$(SITE_EXE) -- check
 
 .PHONY: clean
