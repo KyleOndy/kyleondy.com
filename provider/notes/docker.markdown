@@ -1,0 +1,35 @@
+---
+title: Docker
+published: 2016-04-13
+excerpt: Quick notes on common docker commands
+tags: notes, docker
+---
+
+Some notes below on docker.
+
+# Volume Containers
+
+Copying files from current directory into a volumes container.
+
+    $ if volume container is not yet created
+    docker create -v $DATA_DIR --name $DATA_CONTAINER_NAME $IMAGE /bin/true
+
+    # example for my znc contianer
+    docker create -v /znc-data --name znc-data kyleondy/znc /bin/true
+
+
+    docker run --rm -i --volumes-from $VOLUME_CONTAINER -v $(pwd):/move {$IMAGE} cp -a /movw/* $DESTINATION
+
+## Example of moving files into my znc container
+
+    > tree .
+    .
+    ├── configs
+    │   └── znc.conf
+    └── modules
+        └── push.cpp
+
+    # $VOLUME_CONTAINER=znc-data
+    # $IMAGE=kyleondy/znc
+    # $DESTINATON=/znc-data
+    docker run --rm -i --volumes-from znc-data -v $(pwd):/move kyleondy/znc cp -a /move/* /znc-data
