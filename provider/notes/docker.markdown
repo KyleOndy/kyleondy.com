@@ -18,7 +18,7 @@ Copying files from current directory into a volumes container.
     docker create -v /znc-data --name znc-data kyleondy/znc /bin/true
 
 
-    docker run --rm -i --volumes-from $VOLUME_CONTAINER -v $(pwd):/move {$IMAGE} cp -a /movw/* $DESTINATION
+    docker run --rm --volumes-from $VOLUME_CONTAINER -v $(pwd):/move --entrypoint /bin/sh {$IMAGE} -c "cp -a /movw/* $DESTINATION"
 
 ## Example of moving files into my znc container
 
@@ -32,4 +32,4 @@ Copying files from current directory into a volumes container.
     # $VOLUME_CONTAINER=znc-data
     # $IMAGE=kyleondy/znc
     # $DESTINATON=/znc-data
-    docker run --rm -i --volumes-from znc-data -v $(pwd):/move kyleondy/znc cp -a /move/* /znc-data
+    docker run --rm --volumes-from znc-data -v $(pwd):/move --entrypoint /bin/sh kyleondy/znc -c "cp -a /move/* /znc-data"
