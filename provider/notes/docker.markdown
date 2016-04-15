@@ -11,25 +11,29 @@ Some notes below on docker.
 
 Copying files from current directory into a volumes container.
 
-    $ if volume container is not yet created
-    docker create -v $DATA_DIR --name $DATA_CONTAINER_NAME $IMAGE /bin/true
+```{.bash}
+# if volume container is not yet created
+docker create -v $DATA_DIR --name $DATA_CONTAINER_NAME $IMAGE /bin/true
 
-    # example for my znc contianer
-    docker create -v /znc-data --name znc-data kyleondy/znc /bin/true
+# example for my znc contianer
+docker create -v /znc-data --name znc-data kyleondy/znc /bin/true
 
-
-    docker run --rm --volumes-from $VOLUME_CONTAINER -v $(pwd):/move --entrypoint /bin/sh {$IMAGE} -c "cp -a /movw/* $DESTINATION"
+# copy the files in
+docker run --rm --volumes-from $VOLUME_CONTAINER -v $(pwd):/move --entrypoint /bin/sh {$IMAGE} -c "cp -a /movw/* $DESTINATION"
+```
 
 ## Example of moving files into my znc container
 
-    > tree .
-    .
-    ├── configs
-    │   └── znc.conf
-    └── modules
-        └── push.cpp
+```{.bash}
+> tree .
+.
+├── configs
+│   └── znc.conf
+└── modules
+    └── push.cpp
 
-    # $VOLUME_CONTAINER=znc-data
-    # $IMAGE=kyleondy/znc
-    # $DESTINATON=/znc-data
-    docker run --rm --volumes-from znc-data -v $(pwd):/move --entrypoint /bin/sh kyleondy/znc -c "cp -a /move/* /znc-data"
+# $VOLUME_CONTAINER=znc-data
+# $IMAGE=kyleondy/znc
+# $DESTINATON=/znc-data
+docker run --rm --volumes-from znc-data -v $(pwd):/move --entrypoint /bin/sh kyleondy/znc -c "cp -a /move/* /znc-data"
+```
