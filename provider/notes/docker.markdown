@@ -19,7 +19,7 @@ docker create -v $DATA_DIR --name $DATA_CONTAINER_NAME $IMAGE /bin/true
 docker create -v /znc-data --name znc-data kyleondy/znc /bin/true
 
 # copy the files in
-docker run --rm --volumes-from $VOLUME_CONTAINER -v $(pwd):/move --entrypoint /bin/sh {$IMAGE} -c "cp -a /movw/* $DESTINATION"
+docker run --rm --volumes-from $VOLUME_CONTAINER -v $(pwd):/move --entrypoint /bin/sh {$IMAGE} -c "cp -a /move/* $DESTINATION"
 ```
 
 ## Example of moving files into my znc container
