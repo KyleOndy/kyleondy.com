@@ -35,5 +35,5 @@ docker run --rm --volumes-from $VOLUME_CONTAINER -v $(pwd):/move --entrypoint /b
 # $VOLUME_CONTAINER=znc-data
 # $IMAGE=kyleondy/znc
 # $DESTINATON=/znc-data
-docker run --rm --volumes-from znc-data -v $(pwd):/move --entrypoint /bin/sh kyleondy/znc -c "cp -a /move/* /znc-data"
+docker run --rm --volumes-from znc-data -v $(pwd):/move --entrypoint /bin/sh kyleondy/znc -c "cp -av /move/* /znc-data"
 ```
