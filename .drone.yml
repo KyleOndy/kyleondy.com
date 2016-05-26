@@ -1,0 +1,5 @@
+build:
+  image: fpco/stack-build
+  commands:
+    - make build
+    - make check
