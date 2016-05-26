@@ -6,3 +6,7 @@ build:
     - make build
     - make check
     - cp -av /root/.stack /drone
+
+cache:
+  mount:
+    - /drone/stack
