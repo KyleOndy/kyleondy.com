@@ -9,4 +9,4 @@ build:
 
 cache:
   mount:
-    - /drone/stack
+    - /drone/.stack
