@@ -3,3 +3,7 @@ build:
   commands:
     - make build
     - make check
+
+cache:
+  mount:
+    - .stack-work
