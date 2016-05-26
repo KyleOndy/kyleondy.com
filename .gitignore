@@ -4,3 +4,6 @@ _site/
 _cache/
 _build/
 _build
+
+# for the time being. Working a better solution
+deploy.sh
