@@ -1,6 +1,7 @@
 build:
   image: fpco/stack-build
   commands:
+    - mkdir -p /drone/.stack
     - cp -a /drone/.stack /root
     - make build
     - make check
