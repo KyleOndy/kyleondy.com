@@ -1,12 +1,6 @@
-build:
-  image: fpco/stack-build
-  commands:
-    - mkdir -p /drone/.stack
-    - cp -a /drone/.stack /root
-    - make build
-    - make check
-    - cp -a /root/.stack /drone
-
-cache:
-  mount:
-    - /drone/.stack
+pipeline:
+  build:
+    image: fpco/stack-build
+    commands:
+      - make build
+      - make check
