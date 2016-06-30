@@ -7,11 +7,13 @@ pipeline:
   build:
     image: fpco/stack-build
     commands:
-      - mkdir -p /root/.stack
-      - cp -av /root/.stack .
+      - mkdir -p /root/.stack .stack
+      # stack stores it's cache in /root. We can only cache our $HOME with drone.
+      # Move $HOME/.stack to /root/.stack
+      - cp -av .stack /root/
       - make build
       - make check
-      - cp -av .stack /root/
+      - cp -av /root/.stack .
 
   sftp_cache:
     mount: .stack-work
