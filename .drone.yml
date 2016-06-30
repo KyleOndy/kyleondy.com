@@ -7,8 +7,11 @@ pipeline:
   build:
     image: fpco/stack-build
     commands:
+      - mkdir -p /root/.stack
+      - cp -av /root/.stack .
       - make build
       - make check
+      - cp -av .stack /root/
 
   sftp_cache:
     mount: .stack-work
