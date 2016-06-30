@@ -16,5 +16,5 @@ pipeline:
       - cp -av /root/.stack .
 
   sftp_cache:
-    mount: .stack-work
+    mount: .stack
     rebuild: true
