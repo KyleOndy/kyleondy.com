@@ -1,13 +1,15 @@
 pipeline:
 
   sftp_cache:
-    mount: .stack
+    mount: .stack/
     restore: true
 
   build:
     image: fpco/stack-build
     commands:
       - mkdir -p /root/.stack .stack
+      - touch .stack/HomeDirTouch
+      - touch /root/.stack/rootDirTouch
       # stack stores it's cache in /root. We can only cache our $HOME with drone.
       # Move $HOME/.stack to /root/.stack
       - cp -av .stack /root/
@@ -16,5 +18,5 @@ pipeline:
       - cp -av /root/.stack .
 
   sftp_cache:
-    mount: .stack
+    mount: .stack/
     rebuild: true
