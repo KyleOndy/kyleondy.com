@@ -1,6 +1,15 @@
 pipeline:
+
+  sftp_cache:
+    mount: .stack
+    restore: true
+
   build:
     image: fpco/stack-build
     commands:
       - make build
       - make check
+
+  sftp_cache:
+    mount: .stack-work
+    rebuild: true
