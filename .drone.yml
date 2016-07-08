@@ -7,7 +7,7 @@ pipeline:
     image: fpco/stack-build:lts
     pull: true
     commands:
-      - cp -a /drone/.stack /root
+      - [[ -e /drone/.stack ]] && cp -a /drone/.stack /root
       - rm -rf /drone/.stack
       - make build
       - make check
