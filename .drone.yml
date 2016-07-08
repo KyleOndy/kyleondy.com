@@ -1,7 +1,7 @@
 pipeline:
   sftp_cache:
     restore: true
-    mount: /drone/.stack
+    mount: /cache/drone/.stack
 
   build:
     image: fpco/stack-build:lts
@@ -16,4 +16,4 @@ pipeline:
 
   sftp_cache:
     rebuild: true
-    mount: /drone/.stack
+    mount: /cache/drone/.stack
