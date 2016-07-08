@@ -1,7 +1,18 @@
 pipeline:
+  sftp_cache:
+    restore: true
+    mount: /drone/.stack
+
   build:
-    image: kyleondy/hakyll-build:stable
+    image: fpco/stack-built:lts
     pull: true
     commands:
+      - cp -a /drone/.stack /root
+      - rm -rf /drone/.stack
       - make build
       - make check
+      - cp -a /root/.stack /drone
+
+  sftp_cache:
+    rebuild: true
+    mount: /drone/.stack
