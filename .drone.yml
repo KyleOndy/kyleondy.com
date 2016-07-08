@@ -4,7 +4,7 @@ pipeline:
     mount: /drone/.stack
 
   build:
-    image: fpco/stack-built:lts
+    image: fpco/stack-build:lts
     pull: true
     commands:
       - cp -a /drone/.stack /root
