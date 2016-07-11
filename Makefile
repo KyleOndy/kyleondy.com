@@ -1,5 +1,6 @@
 SITE_EXE=stack exec site-kyleondy
 PROVIDER_FOLDER=provider
+ARTIFACT_DIR=_output
 
 .PHONY: build
 build:
@@ -16,6 +17,7 @@ check-full: build
 
 .PHONY: clean
 clean:
+	rm -rf $(ARTIFACT_DIR)
 	$(SITE_EXE) -- clean
 
 .PHONY: server
@@ -23,8 +25,9 @@ server: build
 	$(SITE_EXE) -- server
 
 .PHONY: package
-pachage: check
-	tar -zcvf kyleondy.com.tar.gz _site/
+package: check
+	mkdir -p $(ARTIFACT_DIR)
+	tar -zcvf $(ARTIFACT_DIR)/kyleondy.com.tar.gz _site/
 
 .PHONY: watch
 watch: build
