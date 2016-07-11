@@ -8,11 +8,11 @@ pipeline:
     pull: true
     commands:
       - mkdir -p /drone/.stack
-      - cp -a /drone/.stack /root
+      - cp -av /drone/.stack /root
       - rm -rf /drone/.stack
       - make build
       - make check
-      - cp -a /root/.stack /drone
+      - cp -av /root/.stack /drone
 
   sftp_cache:
     rebuild: true
