@@ -1,14 +1,9 @@
 SITE_EXE=stack exec site-kyleondy
 PROVIDER_FOLDER=provider
-BUILD_FOLDER=_build
 
 .PHONY: build
 build:
 	stack install
-	# need to automate building pdfs and such
-	touch $(BUILD_FOLDER)/files/Kyle.Ondy-Resume.pdf
-	touch $(BUILD_FOLDER)/files/Kyle.Ondy-Resume.pdf.sig
-	# automate above
 	$(SITE_EXE) -- build
 
 .PHONY: check
@@ -22,7 +17,6 @@ check-full: build
 .PHONY: clean
 clean:
 	$(SITE_EXE) -- clean
-	rm -rf $(BUILD_FOLDER)
 
 .PHONY: server
 server: build

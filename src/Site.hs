@@ -250,7 +250,7 @@ niceItemUrl =
 config :: Configuration
 config = defaultConfiguration
     {
-      providerDirectory = "_build"
+      providerDirectory = "provider"
     , destinationDirectory = "_site"
     , storeDirectory = "_cache"
     , tmpDirectory = "_cache/tmp"
