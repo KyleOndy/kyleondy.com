@@ -1,12 +1,19 @@
-build:
-  image: fpco/stack-build
-  commands:
-    - mkdir -p /drone/.stack
-    - cp -a /drone/.stack /root
-    - make build
-    - make check
-    - cp -a /root/.stack /drone
+pipeline:
+  sftp_cache:
+    restore: true
+    mount: /drone/.stack
 
-cache:
-  mount:
-    - /drone/.stack
+  build:
+    image: fpco/stack-build:lts
+    pull: true
+    commands:
+      - mkdir -p /drone/.stack
+      - cp -a /drone/.stack /root
+      - rm -rf /drone/.stack
+      - make build
+      - make check
+      - cp -a /root/.stack /drone
+
+  sftp_cache:
+    rebuild: true
+    mount: /drone/.stack
