@@ -4,7 +4,7 @@ pipeline:
     mount: /drone/.stack
 
   build:
-    image: fpco/stack-build:lts
+    image: kyleondy/hakyll-build:latest
     pull: true
     commands:
       - mkdir -p /drone/.stack
