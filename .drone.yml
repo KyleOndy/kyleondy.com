@@ -17,3 +17,13 @@ pipeline:
   sftp_cache:
     rebuild: true
     mount: /drone/.stack
+
+  deploy:
+    rsync:
+      user: root
+      host: static.ondy.me
+      port: 3220
+      source: _build/kyleondy.com.tar.gz
+      target: kyleondy.com/latest.tar.gz
+      delete: false
+      recursive: false
