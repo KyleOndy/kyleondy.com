@@ -27,3 +27,5 @@ pipeline:
       target: kyleondy.com/latest.tar.gz
       delete: false
       recursive: false
+      commands:
+        - curl -X POST https://registry.hub.docker.com/u/kyleondy/website/trigger/5eda02be-94f1-4c7c-bf7c-5287d890d0bd/
