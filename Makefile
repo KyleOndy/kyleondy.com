@@ -27,7 +27,8 @@ server: build
 .PHONY: package
 package: check
 	mkdir -p $(ARTIFACT_DIR)
-	tar -zcvf $(ARTIFACT_DIR)/kyleondy.com.tar.gz _site/
+	# I think I can use `tar -C` here, need to look into it.
+	cd _site && tar -zcvf ../$(ARTIFACT_DIR)/latest.tar.gz ./*
 
 .PHONY: watch
 watch: build
