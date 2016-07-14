@@ -1,0 +1,7 @@
+pipeline:
+  build:
+    image: kyleondy/hakyll-build:stable
+    pull: true
+    commands:
+      - make build
+      - make check
