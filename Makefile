@@ -30,6 +30,11 @@ package: check
 	# I think I can use `tar -C` here, need to look into it.
 	cd _site && tar -zcvf ../$(ARTIFACT_DIR)/latest.tar.gz ./*
 
+.PHONY: deploy
+deploy: package
+	./deploy.sh
+
+
 .PHONY: watch
 watch: build
 	$(SITE_EXE) -- watch
