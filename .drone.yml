@@ -11,12 +11,13 @@ pipeline:
       - mkdir -p /drone/.stack
       - cp -a /drone/.stack /root
       - rm -rf /drone/.stack
-      - make build
       - make check
-      - make package
-      - make deploy
       - cp -a /root/.stack /drone
 
   sftp_cache:
     rebuild: true
     mount: /drone/.stack
+
+  rsync:
+    when:
+      branch: master
