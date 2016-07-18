@@ -11,7 +11,7 @@ pipeline:
       - mkdir -p /drone/.stack
       - cp -a /drone/.stack /root
       - rm -rf /drone/.stack
-      - make check
+      - make package
       - cp -a /root/.stack /drone
 
   sftp_cache:
