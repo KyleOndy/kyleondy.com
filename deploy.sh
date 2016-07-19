@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 set -eu
 DRONE_KEY=/tmp/drone_key
 
