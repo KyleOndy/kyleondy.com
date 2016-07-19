@@ -18,10 +18,18 @@ pipeline:
     rebuild: true
     mount: /drone/.stack
 
-  deploy:
+  deploy-staging:
     when:
-      branch: deployment
+      branch: staging
     image: kyleondy/alpine-rsync:stable
     pull: true
     commands:
-      - ./deploy.sh
+      - ./deploy.sh staging
+
+  deploy-production:
+    when:
+      branch: master
+    image: kyleondy/alpine-rsync:stable
+    pull: true
+    commands:
+      - ./deploy.sh production
