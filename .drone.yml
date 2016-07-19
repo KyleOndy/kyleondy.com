@@ -23,4 +23,4 @@ pipeline:
       branch: deployment
     image: fpco/stack-build:lts
     commands:
-      - make deploy
+      - ./deploy.sh
