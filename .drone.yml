@@ -23,4 +23,5 @@ pipeline:
       branch: deployment
     image: kyleondy/alpine-rsync:stable
     commands:
+      - env
       - ./deploy.sh
