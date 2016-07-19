@@ -21,6 +21,6 @@ pipeline:
   deploy:
     when:
       branch: deployment
-    image: kyleondy/alpine-rsync
+    image: kyleondy/alpine-rsync:stable
     commands:
       - ./deploy.sh
