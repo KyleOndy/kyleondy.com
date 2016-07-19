@@ -18,6 +18,9 @@ pipeline:
     rebuild: true
     mount: /drone/.stack
 
-  rsync:
+  deploy:
     when:
-      branch: master
+      branch: deployment
+    image: fpco/stack-build:lts
+    commands:
+      - make deploy
