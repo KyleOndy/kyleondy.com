@@ -1,6 +1,7 @@
 pipeline:
   sftp_cache:
     restore: true
+    pull: true
     mount: /drone/.stack
 
   build:
@@ -10,10 +11,25 @@ pipeline:
       - mkdir -p /drone/.stack
       - cp -a /drone/.stack /root
       - rm -rf /drone/.stack
-      - make build
-      - make check
+      - make package
       - cp -a /root/.stack /drone
 
   sftp_cache:
     rebuild: true
     mount: /drone/.stack
+
+  deploy-staging:
+    when:
+      branch: staging
+    image: kyleondy/alpine-rsync:stable
+    pull: true
+    commands:
+      - ./deploy.sh staging
+
+  deploy-production:
+    when:
+      branch: master
+    image: kyleondy/alpine-rsync:stable
+    pull: true
+    commands:
+      - ./deploy.sh production
