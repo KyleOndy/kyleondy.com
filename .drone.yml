@@ -21,6 +21,6 @@ pipeline:
   deploy:
     when:
       branch: deployment
-    image: fpco/stack-build:lts
+    image: kyleondy/alpine-rsync
     commands:
       - ./deploy.sh
