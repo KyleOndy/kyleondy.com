@@ -10,6 +10,7 @@ It's based pretty heavily upon the following sites:
 - Customise styling to make it more 'me'.
 - add support for 'updated dates'. <https://david.sferruzza.fr/posts/2014-06-18-new-blog-with-hakyll.html>
 - automate Resume / CV building
+- the PGP page should build from pgp.txt. There is no need to manually change it twice.
 
 ### Deployment workflow (Rough thoughts)
 
