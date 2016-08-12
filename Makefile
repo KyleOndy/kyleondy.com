@@ -2,6 +2,8 @@ SITE_EXE=stack exec site-kyleondy
 PROVIDER_FOLDER=provider
 ARTIFACT_DIR=_output
 
+all: clean watch
+
 .PHONY: build
 build:
 	stack install
