@@ -1,27 +1,29 @@
 ---
 title: Kyle is Available for Hire
 published: 2015-12-12
-modified: 2016-01-25
+modified: 2016-08-12
 comments: off
 ---
 
+# Working with Kyle
+
+I am always open to the opportunity to work with the right people and organization.
+
 ## When
 
-As soon as you need to fill a position.
-I am actively seeking a new job opportunity to tackle new challenges.
+I am actively seeking a new opportunity that will challenge me and allow both personal and professional growth.
 
 ## Where
 
 I currently reside in the Central NJ / NYC Area.
+I would prefer a job not tied to an office, but I am am open to work within my geographic area.
 At this time I **am not** willing to relocate.
-I am open to work anywhere in this area, or to work remotely for a company based anywhere.
 
 ## About Me
 
-Check my [**resume**](/static/resume/Kyle.Ondy-Resume.pdf) ([pgp signature](/static/resume/Kyle.Ondy-Resume.pdf.sig)) for a formal overview of my experience.
+Check my [**resume** (PDF Warning)](/static/resume/Kyle.Ondy-Resume.pdf) ([pgp signature](/static/resume/Kyle.Ondy-Resume.pdf.sig)) for a formal overview of my professional experience.
 
 I enjoy enjoying what I do for a living.
-What I get paid to do should be more than a job, I should believe in what I am doing.
 I prefer to work in interesting and uncommon areas; hardware, crypto, security, FP, etc.
 
 I loath inefficiencies, particularly easily eliminated inefficiencies.
@@ -31,24 +33,21 @@ I find great satisfaction increasing productivity via automation.
 
 * Competitive compensation
 * Interesting and technical problem domain
-* Friendly Team environment.
+* Friendly team environment.
 * Enforced work life balance
-
-### Size
-
-Small to mid-size company is preferred due to their ability to quickly to implement positive changes.
+* Ongoing education and mentorship
 
 ### Culture
 
 I value the following in the culture where I work.
 
-* **Collaboration** — People work together to solve problems. People share knowledge and collaborate with people from other roles (e.g. engineering, QA, design, UX, support).
-* **Respect** — People respect the people they work with regardless of their role. People respect users of the software they develop.
-* **Work/life balance** — People work about 40 hours a week or less. Working on weekends only happens in extreme situations. When people leave work at the end of the day, they disconnect from work. The work environment is sustainable, so burnout is rare.
+* **Collaboration** — People work together to solve problems. People share knowledge openly and collaborate with people from other roles (e.g. engineering, QA, design, UX, support).
+* **Respect** — People respect the people they work with regardless of their role.  People respect users of the software they develop.
+* **Work/life balance** — People work about 40 hours a week or less. Working on weekends only happens in extreme situations. Work hours are flexible to accommodate personal schedule. When people leave work at the end of the day, they disconnect from work. The work environment is sustainable, so burnout is rare.
 
 ### Pros
 
-The following things will excite me about your organization. Think of them as bonus points!
+The following things will excite me about your organization.
 
 * Flexible work schedule.
 * 20+ days of vacation leave.
@@ -64,13 +63,13 @@ The following things will excite me about your organization. Think of them as bo
 The following things will make me less excited about your organization. They're not dealbreakers, but I will probably ask to be paid more if some of these practices are present at your company.
 
 * Pager duty or other on-call requirements. This cuts into work/life balance for me.
-* Travel. I don't mind the occasional trip somewhere if needed, but regular travel doesn't fit my lifestyle.
+* Travel. I don't mind the rare trip somewhere if needed, but regular or even occasional travel doesn't fit my lifestyle.
 * An unlimited vacation policy.
 * Policies that limit what employees can do with their free time (e.g. banning employees from contributing to open source).
 
 ### Dealbreaker
 
-Having to support either a printer, a phone, or a 'legacy' system
+Having a primary role supporting either a printer, a phone, or a 'legacy' system. Life is too short.
 
 ## Contact me
 
