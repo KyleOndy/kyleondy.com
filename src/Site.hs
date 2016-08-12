@@ -167,6 +167,7 @@ main = hakyllWith config $ do
     match pagesPattern $ do
         route   $ cleanRoute `composeRoutes` (gsubRoute "pages/" (const ""))
         compile $ customPandocCompiler
+            >>= loadAndApplyTemplate "templates/page.html" defaultContext
             >>= loadAndApplyTemplate "templates/content.html" defaultContext
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
