@@ -1,14 +1,14 @@
 --------------------------------------------------------------------------------
-{-# LANGUAGE OverloadedStrings  #-}
+{-# LANGUAGE OverloadedStrings #-}
 module Main (main) where
 
 
 --------------------------------------------------------------------------------
-import           Control.Monad   (forM_)
-import           Data.Monoid     ((<>))
-import           Data.List       (isSuffixOf, sortBy)
-import           Data.Ord        (comparing)
-import           Prelude         hiding (id)
+import           Control.Monad       (forM_)
+import           Data.List           (isSuffixOf, sortBy)
+import           Data.Monoid         ((<>))
+import           Data.Ord            (comparing)
+import           Prelude             hiding (id)
 import           System.FilePath
 import           Text.Pandoc.Options
 
@@ -46,8 +46,8 @@ main :: IO ()
 main = hakyllWith config $ do
 
     -- Static files
-    forM_ staticFiles $ \pattern ->
-      match pattern $ do
+    forM_ staticFiles $ \patn->
+      match patn$ do
         route idRoute
         compile copyFileCompiler
 
@@ -287,9 +287,9 @@ cleanIndexUrls :: Item String -> Compiler (Item String)
 cleanIndexUrls = return . fmap (withUrls cleanIndex)
 
 cleanIndexHtmls :: Item String -> Compiler (Item String)
-cleanIndexHtmls = return . fmap (replaceAll pattern replacement)
+cleanIndexHtmls = return . fmap (replaceAll patn replacement)
     where
-      pattern = "/index.html"
+      patn = "/index.html"
       replacement = const "/"
 
 cleanIndex :: String -> String
