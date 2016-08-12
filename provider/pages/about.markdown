@@ -1,10 +1,17 @@
 ---
 title: About Kyle
 comments: off
+modified: 2016-08-12
 ---
 
-I [support the following causes](/support) and think you should look into them.
+# A little about Kyle
 
+### Causes
+Kyle [supports the following causes](/support) and think you should look into them.
+
+### Open Source
+I've contributed to the [following open source projects](/opensource).
+
+### Contacting
 You can verify who I am using my [keybase.io account](https://keybase.io/kyleondy).
-
-This site is deployed via a CI chain at [my drone server](https://ci.ondy.me).
+Details to contact me can be [found here](/contact)
