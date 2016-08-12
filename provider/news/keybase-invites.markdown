@@ -1,7 +1,7 @@
 ---
-title: 5 keybase.io invites available
+title: 10 keybase.io invites available
 published: 2015-12-16
-modified: 2016-02-05
+modified: 2016-08-12
 excerpt: keybase.io invites available
 tags: keybase, invites, news
 ---
