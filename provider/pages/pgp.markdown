@@ -3,7 +3,7 @@ title: PGP
 comments: off
 ---
 
-## My Public PGP Key
+# My Public PGP Key
 
 A text file conatinering my pgp key can be found [here](/pgp.txt).
 
