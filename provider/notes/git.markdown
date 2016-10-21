@@ -21,7 +21,7 @@ Decide last n commits should be on a different branch. [Stackoverflow](https://s
 
 ```{.bash}
 git branch newbranch
-# can also git reset --hard HASH
+# can also git reset --hard <hash>
 git reset --hard HEAD~3 # Go back 3 commits. You *will* lose uncommitted work.
-git checkout newbranch
+git checkout <newbranch>
 ```
