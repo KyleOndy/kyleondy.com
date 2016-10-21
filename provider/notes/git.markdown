@@ -25,3 +25,7 @@ git branch newbranch
 git reset --hard HEAD~3 # Go back 3 commits. You *will* lose uncommitted work.
 git checkout <newbranch>
 ```
+
+---
+
+Rewrap text to `textwidth`: `gq`
