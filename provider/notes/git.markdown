@@ -1,6 +1,7 @@
 ---
 title: Git
 published: November 20, 2015
+modified: October 21, 2016
 excerpt: Less commonly used commands
 tags: notes, git
 ---
