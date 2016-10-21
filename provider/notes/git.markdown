@@ -7,6 +7,12 @@ tags: notes, git
 
 ### Some notes below on git.
 
+----
+
+Push to multiple remotes with a single push. `git remote set-url --add --push <remote name> <newurl>`{.bash}
+
+----
+
 Add forgotten files to last commit: `git commit --amend -C HEAD`{.bash}
 
 ----
