@@ -17,24 +17,50 @@ addons:
     packages:
     - libgmp-dev
 
-env:
-- ARGS="--resolver lts-6.27"
-- ARGS="--resolver lts-6"
-- ARGS="--resolver lts-7"
-- ARGS="--resolver lts"
-- ARGS="--resolver nightly"
+
+matrix:
+  include:
+  - env BUILD=stack ARGS=""
+  compiler: ": #stack default"
+  addons: {apt: {packages: [libgmp-dev]}}
+
+  - env BUILD=stack ARGS="--resolver lts-6.27"
+  compiler: ": #stack 7.10.3"
+  addons: {apt: {packages: [libgmp-dev]}}
+
+  - env BUILD=stack ARGS="--resolver lts-6"
+  compiler: ": #stack 7.10.3"
+  addons: {apt: {packages: [libgmp-dev]}}
+
+  - env BUILD=stack ARGS="--resolver lts-7"
+  compiler: ": #stack 8.0.1"
+  addons: {apt: {packages: [libgmp-dev]}}
+
+  - env BUILD=stack ARGS="--resolver lts"
+  compiler: ": #stack 8.0.1"
+  addons: {apt: {packages: [libgmp-dev]}}
+
+  - env BUILD=stack ARGS="--resolver nightly"
+  compiler: ": #stack 8.0.1"
+  addons: {apt: {packages: [libgmp-dev]}}
+
+  allow_failures:
+  # lts-7 since hakyll can't buld in lts7
+  - env BUILD=stack ARGS="--resolver lts-7"
+  - env BUILD=stack ARGS="--resolver lts"
+  - env BUILD=stack ARGS="--resolver nightly"
 
 before_install:
+- unset cc
 # Download and unpack the stack executable
 - mkdir -p ~/.local/bin
 - export PATH=$HOME/.local/bin:$PATH
 - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
 install:
-- stack --no-terminal --install-ghc test --only-dependencies
+- stack --no-terminal --install-ghc $ARGS test --bench --only-dependencies
 
 # This line does all of the work: installs GHC if necessary, build the library,
 # executables, and test suites, and runs the test suites. --no-terminal works
 # around some quirks in Travis's terminal implementation.
-script: stack $ARGS --no-terminal test --no-haddock-deps
-
+script: stack --no-terminal $ARGS test --bench --no-run-benchmarks --haddock --no-haddock-deps
