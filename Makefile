@@ -1,12 +1,14 @@
-SITE_EXE=stack exec site-kyleondy
+STACK=stack --no-terminal --install-ghc ${STACK_ARGS} --no-terminal
+SITE_NAME=site-kyleondy
+SITE_EXE=$(STACK) exec $(SITE_NAME)
 PROVIDER_FOLDER=provider
 ARTIFACT_DIR=_output
 
-all: clean watch
+all: clean check
 
 .PHONY: build
 build:
-	stack install
+	$(STACK) install
 	$(SITE_EXE) -- build
 
 .PHONY: check
@@ -16,6 +18,13 @@ check: build
 .PHONY: check-full
 check-full: build
 	$(SITE_EXE) -- check
+
+.PHONY: clean-full
+clean-full:
+	$(STACK) clean
+	rm -rf $(ARTIFACT_DIR)
+	$(SITE_EXE) -- clean
+	rm -f $(shell stack path --local-bin)/$(SITE_NAME)
 
 .PHONY: clean
 clean:
