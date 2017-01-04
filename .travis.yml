@@ -60,4 +60,4 @@ install:
 # This line does all of the work: installs GHC if necessary, build the library,
 # executables, and test suites, and runs the test suites. --no-terminal works
 # around some quirks in Travis's terminal implementation.
-script: stack --no-terminal $ARGS test --bench --no-run-benchmarks --haddock --no-haddock-deps
+script: stack --no-terminal $ARGS exec site-kyleondy -- check -i
