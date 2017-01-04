@@ -1,8 +1,9 @@
-SITE_EXE=stack exec site-kyleondy
+STACK=stack --no-terminal --install-ghc ${STACK_ARGS} --no-terminal
+SITE_EXE=$(STACK) exec site-kyleondy
 PROVIDER_FOLDER=provider
 ARTIFACT_DIR=_output
 
-all: clean watch
+all: clean check
 
 .PHONY: build
 build:
