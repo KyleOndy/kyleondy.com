@@ -7,7 +7,7 @@ executable site-kyleondy
   hs-source-dirs:   src/
   main-is:          Site.hs
   build-depends:    base == 4.*
-                  , hakyll == 4.8.*
+                  , hakyll == 4.9.*
                   , filepath
                   , process
                   , pandoc
