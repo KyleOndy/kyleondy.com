@@ -20,19 +20,6 @@ addons:
 
 matrix:
   include:
-    # build what is in the .stack.yml file
-  - env: BUILD=stack ARGS=""
-    compiler: ": #stack default"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-6"
-    compiler: ": #stack 7.10.3"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-7"
-    compiler: ": #stack default"
-    addons: {apt: {packages: [libgmp-dev]}}
-
   - env: BUILD=stack ARGS="--resolver lts-8"
     compiler: ": #stack default"
     addons: {apt: {packages: [libgmp-dev]}}
@@ -47,7 +34,6 @@ matrix:
 
   allow_failures:
   # lts-7 since hakyll can't buld in lts7
-  - env: BUILD=stack ARGS="--resolver lts-7"
   - env: BUILD=stack ARGS="--resolver lts"
   - env: BUILD=stack ARGS="--resolver nightly"
 
