@@ -1,0 +1,3 @@
+Verify / Fix deployment pipeline
+Update hakyll version
+start writing ~2 posts a month
