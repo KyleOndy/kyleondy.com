@@ -50,7 +50,7 @@ install:
 #script: make STACK_ARGS="$ARGS" check
 deploy:
     provider: script
-    script: gem install s3_website && s3_website push
+    script: gem install s3_website && s3_website push --verbose
     skip_cleanup: true
     on:
       branch: master
