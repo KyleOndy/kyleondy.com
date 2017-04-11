@@ -13,7 +13,7 @@ build:
 
 .PHONY: check
 check: build
-	$(SITE_EXE) -- check -i
+	$(SITE_EXE) -- check
 
 .PHONY: check-full
 check-full: build
