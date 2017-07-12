@@ -7,7 +7,7 @@ modified: 2016-08-12
 # A little about Kyle
 
 ### Causes
-Kyle [supports the following causes](/support) and think you should look into them.
+Kyle [supports the following causes](/support) and thinks you should look into them.
 
 ### Open Source
 I've contributed to the [following open source projects](/opensource).

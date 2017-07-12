@@ -16,12 +16,12 @@ I am actively seeking a new opportunity that will challenge me and allow both pe
 ## Where
 
 I currently reside in the Central NJ / NYC Area.
-I would prefer a job not tied to an office, but I am am open to work within my geographic area.
+I would prefer a job not tied to an office, but I am open to work within my geographic area.
 At this time I **am not** willing to relocate.
 
 ## About Me
 
-Check my [**resume** (PDF Warning)](/static/resume/Kyle.Ondy-Resume.pdf) ([pgp signature](/static/resume/Kyle.Ondy-Resume.pdf.sig)) for a formal overview of my professional experience.
+Check my [**resume** (PDF Warning)](/static/resume/Kyle.Ondy-Resume.pdf) ([PGP signature](/static/resume/Kyle.Ondy-Resume.pdf.sig)) for a formal overview of my professional experience.
 
 I enjoy enjoying what I do for a living.
 I prefer to work in interesting and uncommon areas; hardware, crypto, security, FP, etc.
@@ -43,7 +43,7 @@ I value the following in the culture where I work.
 
 * **Collaboration** — People work together to solve problems. People share knowledge openly and collaborate with people from other roles (e.g. engineering, QA, design, UX, support).
 * **Respect** — People respect the people they work with regardless of their role.  People respect users of the software they develop.
-* **Work/life balance** — People work about 40 hours a week or less. Working on weekends only happens in extreme situations. Work hours are flexible to accommodate personal schedule. When people leave work at the end of the day, they disconnect from work. The work environment is sustainable, so burnout is rare.
+* **Work/life balance** — People work about 40 hours a week or less. Working on weekends only happens in extreme situations. Work hours are flexible to accommodate personal life. When people leave work at the end of the day, they disconnect from work. The work environment is sustainable, so burnout is rare.
 
 ### Pros
 
@@ -75,7 +75,7 @@ Having a primary role supporting either a printer, a phone, or a 'legacy' system
 
 Does all of this sound interesting to you? Awesome! You should [contact](/contact) me if you meet all of the following criteria.
 
-* You work for the organization you are contacting me about. Ideally you are part of or work closely with technical team.
+* You work for the organization you are contacting me about. Ideally, you are part of or work closely with the technical team.
 * You read the post and think your organization would be a good fit for me and vice versa.
 * Your organization is hiring now or in the near future.
 
