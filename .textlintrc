@@ -1,0 +1,12 @@
+{
+    "rules": {
+        "alex": {
+            "allow": []
+        },
+        "common-misspellings": {
+            "ignore": []
+        },
+        "ginger": true,
+        "write-good": true
+    }
+}

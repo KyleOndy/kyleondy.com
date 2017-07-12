@@ -1,3 +1,25 @@
+
+
+## General
+start writing ~2 posts a month
 Verify / Fix deployment pipeline
 Update hakyll version
-start writing ~2 posts a month
+ccs overhaul
+
+
+## Hire me
+if you can gpg sign, I want to work for you
+
+## PGP
+Hosted here, and hosted on the sks keyserver
+
+## wut?
+Compisistion, not complexity
+
+
+### bash shortcuts
+^u (delete everything before the cursor)
+^k (delete everything after the cursor)
+^h (delete one character before the cursor)
+^d (delete character after the cursor)
+^w (delete from cursor to the start of previous word)
