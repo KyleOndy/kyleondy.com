@@ -38,12 +38,4 @@ install:
 script:
 # Build the package, its tests, and its docs and run the tests
 #- stack --no-terminal test --haddock --no-haddock-deps
-- make check && make package
-
-deploy:
-  provider: s3
-  bucket: "S3 Bucket"
-  skip_cleanup: true
-  local_dir: _output
-  on:
-    all_branches: true
+- make check

@@ -42,3 +42,7 @@ package:
 .PHONY: watch
 watch: build
 	$(SITE_EXE) -- watch
+
+.PHONY: deploy
+deploy:
+	./deploy.sh
