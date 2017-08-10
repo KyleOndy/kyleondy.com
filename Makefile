@@ -45,4 +45,4 @@ watch: build
 
 .PHONY: deploy
 deploy:
-	./deploy.sh
+	./deploy.sh $(GIT_BRANCH)
