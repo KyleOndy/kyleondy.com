@@ -151,3 +151,9 @@ kbd {
   line-height:1.4;
   white-space:nowrap;
 }
+
+div.sourceCode {
+  background: #eee;
+  margin: 16px;
+  padding: 6px;
+}
