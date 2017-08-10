@@ -8,6 +8,7 @@ import           Control.Monad       (forM_)
 import           Data.List           (isSuffixOf, sortBy)
 import           Data.Monoid         ((<>))
 import           Data.Ord            (comparing)
+import qualified Data.Set            as S (insert)
 import           Prelude             hiding (id)
 import           System.FilePath
 import           Text.Pandoc.Options
@@ -203,9 +204,15 @@ main = hakyllWith config $ do
 
 --need to turn off email obfuscation in pandoc
 customPandocCompiler :: Compiler (Item String)
-customPandocCompiler = pandocCompilerWith defaultHakyllReaderOptions writeOptions
-        where
-          writeOptions = defaultHakyllWriterOptions {writerEmailObfuscation = NoObfuscation}
+customPandocCompiler =
+    let customExtensions = [Ext_tex_math_dollars, Ext_tex_math_double_backslash, Ext_latex_macros]
+        defaultExtensions = writerExtensions defaultHakyllWriterOptions
+        newExtensions = foldr S.insert defaultExtensions customExtensions
+        writerOptions = defaultHakyllWriterOptions {
+                          writerEmailObfuscation = NoObfuscation
+                        , writerExtensions = newExtensions
+                        }
+    in pandocCompilerWith defaultHakyllReaderOptions writerOptions
 
 lexicographyOrdered :: [Item a] -> Compiler [Item a]
 lexicographyOrdered items = return $

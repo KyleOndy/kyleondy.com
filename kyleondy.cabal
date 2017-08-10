@@ -8,6 +8,7 @@ executable site-kyleondy
   main-is:          Site.hs
   build-depends:    base == 4.*
                   , hakyll == 4.9.*
+                  , containers
                   , filepath
                   , process
                   , pandoc
