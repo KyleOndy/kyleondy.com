@@ -14,9 +14,9 @@ Here are commands I tend to forget
 ## Spelling ##
 
 * turn spell check on: `:set spell`
-* Move to next/last word: `]s` / `[s`
-* Add word to dictionary: `zg`
-* Show suggestions: `z=`
+* Move to next/last word: <kbd>]</kbd><kbd>s</kbd> / <kbd>[</kbd><kbd>s</kbd>
+* Add word to dictionary: <kbd>z</kbd><kbd>g</kbd>
+* Show suggestions: <kbd>z</kbd><kbd>=</kbd>
 
 ## Text Insertion ##
 

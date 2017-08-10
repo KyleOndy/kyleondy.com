@@ -29,4 +29,4 @@ git checkout <newbranch>
 
 ---
 
-Rewrap text to `textwidth`: `gq`
+Rewrap text to `textwidth`: <kbd>g</kbd><kbd>q</kbd>
