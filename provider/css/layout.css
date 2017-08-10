@@ -48,9 +48,12 @@ div#content {
         text-align: right;
     }
 
+    div#navigation h1 {
+      margin: 0;
+    }
+
     div#navigation a {
         color: #333;
-        margin: 6px 0px 6px 0px;
     }
 
     div#content {
