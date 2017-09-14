@@ -79,7 +79,7 @@ Does all of this sound interesting to you? Awesome! You should [contact](/contac
 * You read the post and think your organization would be a good fit for me and vice versa.
 * Your organization is hiring now or in the near future.
 
-Please contact me via email at <a href="mailto:jobs@ondy.me">hire@ondy.me</a> and include the following:
+Please contact me via email at <a href="mailto:jobs@ondy.me">jobs@ondy.me</a> and include the following:
 
 * The name of the organization you are contacting me about.
 * Where the organization is based.
