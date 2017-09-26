@@ -1,7 +1,8 @@
 ---
 title: Curl
 published: April 6, 2016
-excerpt: Quick notes on common ussages
+updated: April 6, 2016
+subtitle: Quick notes on common ussages
 tags: notes, curl
 ---
 

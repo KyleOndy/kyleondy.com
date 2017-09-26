@@ -1,0 +1,1 @@
+clear && chcp 65001 && stack install && site-kyleondy clean && site-kyleondy watch

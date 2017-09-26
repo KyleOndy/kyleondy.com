@@ -1,7 +1,8 @@
 ---
 title: Docker
 published: 2016-04-13
-excerpt: Quick notes on common docker commands
+updated: 2016-04-13
+subtitle: Quick notes on common docker commands
 tags: notes, docker
 ---
 

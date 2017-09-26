@@ -1,7 +1,8 @@
 ---
 title: Haskell
 published: 2017-01-17
-excerpt: Quick notes on dos and don'ts of Haskell
+updated: 2017-01-17
+subtitle: Quick notes on dos and don'ts of Haskell
 tags: notes, Haskell
 ---
 

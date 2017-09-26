@@ -1,7 +1,8 @@
 ---
 title: Mutt
 published: July 25, 2016
-excerpt: Quick notes on setup
+updated: July 25, 2016
+subtitle: Quick notes on setup
 tags: notes, mutt
 ---
 

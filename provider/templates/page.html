@@ -1,5 +1,16 @@
-<!--
-  <h1>$title$</h1>
-  -->
-
-$body$
+<article class="post">
+    <header class="post-header">
+        $if(title)$
+        <h1 class="title">$title$</h1>
+        $endif$ $if(subtitle)$
+        <h2 class="subtitle">$subtitle$</h2>
+        $endif$ $if(updated)$
+        <section class="post-meta">
+            <!-- todo: date stuff -->
+            <br />
+            <time class="post-date" datetime="$updated$">Updated: $updated$</time>
+        </section>
+        $endif$
+    </header>
+    $body$
+</article>

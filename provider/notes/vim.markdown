@@ -1,7 +1,8 @@
 ---
 title: Vim
 published: November 20, 2015
-excerpt: Text editing like a ninja
+updated: November 20, 2015
+subtitle: Text editing like a ninja
 tags: notes, vim
 ---
 

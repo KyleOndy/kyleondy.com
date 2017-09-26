@@ -1,4 +1,8 @@
-
+## New
+Fix tags
+Post 0 - Index page and why I'm doing it
+Clean up + split main pages
+better post title -> url
 
 ## General
 start writing ~2 posts a month

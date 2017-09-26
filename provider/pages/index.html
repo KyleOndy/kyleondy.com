@@ -1,0 +1,20 @@
+---
+title: Home
+---
+
+<h1>Recently updated posts</h1>
+$partial("templates/post-list.html")$
+<a href="/posts">All posts...</a>
+
+<h1>Recently updated notes</h1>
+$partial("templates/note-list.html")$
+<a href="/notes">All notes...</a>
+
+<hr />
+
+<!--
+<a href="/feed.xml" title="feed"><img style="display: inline" alt="rss feed" src="/images/rss.png" />Feed</a>
+-->
+<p>
+    Browse: $tags$
+</p>

@@ -1,9 +1,8 @@
 ---
-title: PGP
-comments: off
+title: My Public PGP Key
+updated: 2017-09-26
 ---
 
-# My Public PGP Key
 
 A text file containing my pgp key can be found [here](/pgp.txt).
 

@@ -1,7 +1,8 @@
 ---
 title: NeoVim
 published: 2016-02-09
-excerpt: Text editing like a neo-ninja
+updated: 2016-02-09
+subtitle: Text editing like a neo-ninja
 tags: notes, neovim
 ---
 

@@ -1,11 +1,9 @@
 <ul>
-  $for(notes)$
-  <li>
-    <p>
-    “<a style="font-size: 110%" href="$url$">$title$</a>”
-    <br />
-    $excerpt$
-    </p>
-  </li>
-  $endfor$
+    $for(notes)$
+    <li>
+        <p>
+            “<a href="$url$">$title$</a>” ‒ $updated$<br /> $subtitle$
+        </p>
+    </li>
+    $endfor$
 </ul>

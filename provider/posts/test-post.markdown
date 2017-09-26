@@ -1,8 +1,8 @@
 ---
 title: Test Post, Markdown Source
 published: 2015-09-19
-modified: 2016-02-05
-excerpt: This page contains much of the markdown I would use in a post. When changing styling this page is used to preview.
+updated: 2017-09-26
+subtitle: A collection of various markdown feature I use.
 tags: pandoc
 ---
 

@@ -1,11 +1,10 @@
 ---
 title: Kyle is Available for Hire
+subtitle: Kyle wants to work for <b>you</b>!
 published: 2015-12-12
-modified: 2016-08-12
-comments: off
+updated: 2017-09-26
 ---
 
-# Working with Kyle
 
 I am always open to the opportunity to work with the right people and organization.
 

@@ -1,12 +1,8 @@
 ---
 title: Open Source
-tags: uncategorized
-date: 2016-08-12
-author: Kyle
-excerpt: Open source projects I have contributed to with time, code, or documentation
+updated: 2016-08-12
+subtitle: Open source projects I have contributed to with time, code, or documentation
 ---
-# Open Source Projects Contributed to #
-
 These are some of the projects I have directly committed code or patches, improved documentation, filed and fixed bugs,  or were involved in design discussions.
 
 * [docker-mailserver](https://github.com/tomav/docker-mailserver) - A full stack but simple mailserver (SMTP, IMAP, anti-spam, anti-virus, SSL...) using Docker.

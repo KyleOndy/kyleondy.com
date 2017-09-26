@@ -1,6 +1,18 @@
-<h1>$title$</h1>
-<div class="soft">
-    Posted in: $tags$.
-</div>
-
-$body$
+<article class="post">
+    <header class="post-header">
+        $if(title)$
+        <h1 class="title">$title$</h1>
+        $endif$ $if(subtitle)$
+        <h2 class="subtitle">$subtitle$</h2>
+        $endif$
+        <br />
+        <section class="post-meta">
+            <!-- todo: date stuff -->
+            <time class="post-date" datetime="$updated$">Updated: $updated$</time> $if(tags)$
+            <!-- todo: tags formatting -->
+            <div class="tags">Posted in: $tags$.</div>
+            $endif$
+        </section>
+    </header>
+    $body$
+</article>

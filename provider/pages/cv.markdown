@@ -1,11 +1,10 @@
 ---
-heading: CV
-comments: off
+title: Kyle Ondy
+subtitle: CV
+updated: 2017-09-26
 ---
 
 
-
-# Kyle Ondy #
 
 Professional Experience {#experience}
 -----------------------

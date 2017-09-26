@@ -1,10 +1,13 @@
 ---
-title: About Kyle
-comments: off
-modified: 2016-08-12
+title: A little about Kyle
+subtitle: What Do They Know? Do They Know Things?? Let's Find Out!
+updated: 2016-08-12
 ---
 
-# A little about Kyle
+   <a href="https://github.com/kyleondy">GitHub</a>
+            <a href="https://twitter.com/kyleondy">Twitter</a>
+            <a href="https://keybase.io/kyleondy">Keybase.io</a>
+            <a href="https://www.linkedin.com/in/kyleondy">LinkedIn</a>
 
 ### Causes
 Kyle [supports the following causes](/support) and thinks you should look into them.

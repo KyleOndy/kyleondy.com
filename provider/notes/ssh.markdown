@@ -1,7 +1,8 @@
 ---
 title: SSH
 published: 2016-12-14
-excerpt: Quick notes on common ssh usage
+updated: 2016-12-14
+subtitle: Quick notes on common ssh usage
 tags: notes, ssh
 ---
 

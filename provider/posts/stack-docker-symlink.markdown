@@ -1,8 +1,8 @@
 ---
 title: Docker + Stack + Symlinks = Errors
 published: 2016-04-16
-modified: 2016-04-16
-excerpt: Finding the problem that causes an 'openBinaryFile' error when running stack build with docker enabled.
+updated: 2016-04-16
+subtitle: Finding the problem that causes an 'openBinaryFile' error when running stack build with docker enabled.
 tags: stack, docker
 ---
 

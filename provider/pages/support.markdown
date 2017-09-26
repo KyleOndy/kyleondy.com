@@ -1,11 +1,8 @@
 ---
-title: Who I support
-tags: uncategorized
+title: Supported Causes
 date: 2015-12-14
-author: Kyle
-excerpt: These causes, projects, and foundations I believe are worth supporting both with time and money.
+subtitle: These causes, projects, and foundations I believe are worth supporting both with time and money.
 ---
-# Supported Causes #
 
 The following projects, causes, and funds are all important enough for me to contribute financially to.
 I encourage you to research these causes if you want to know more.

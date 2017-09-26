@@ -1,7 +1,8 @@
 ---
 title: English Grammer
 published: 2016-02-16
-excerpt: Notes and quick refrence on formal syntax I can never seem to remember
+updated: 2016-02-16
+subtitle: Notes and quick refrence on formal syntax I can never seem to remember
 tags: notes
 ---
 

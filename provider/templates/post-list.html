@@ -1,11 +1,9 @@
 <ul>
-  $for(posts)$
-  <li>
-    <p>
-    “<a style="font-size: 110%" href="$url$">$title$</a>”
-    ‒ <span class="soft">$date$</span><br />
-    $excerpt$
-    </p>
-  </li>
-  $endfor$
+    $for(posts)$
+    <li>
+        <p>
+            “<a href="$url$">$title$</a>” ‒ $updated$<br /> $subtitle$
+        </p>
+    </li>
+    $endfor$
 </ul>
