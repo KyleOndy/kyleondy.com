@@ -95,7 +95,7 @@ header a:hover {
 #logo {
     font-family: "Computer Modern Serif", serif;
     text-align: left;
-    font-size: 60px;
+    font-size: 6em;
     margin-bottom: 0;
 }
 
@@ -175,4 +175,11 @@ footer {
     font-size: 12px;
     text-align: center;
     margin-top: 30px;
+}
+
+@media screen and (max-width:640px){
+
+  #logo {
+    font-size: 3em;
+  }
 }
