@@ -10,7 +10,7 @@ Some notes below on powershell.
 
 Copy groups from one user to another
 
-```.{powerhsell}
+``` powershell
 Get-Aduser -Identity UserToCopyGroupsFrom -Properties MemberOf |
     Select -ExpandProperty MemberOf
     Add-ADGroupMember -Members UseBeingAddedToGroups -PassThru |
