@@ -3,11 +3,11 @@ title: Git
 published: November 20, 2015
 updated: November 20, 2015
 modified: October 21, 2016
-subtitle: Less commonly used commands
+subtitle: Less commonly used commands. Not really.
 tags: notes, git
 ---
 
-### Some notes below on git.
+# Some notes below on git.
 
 ----
 

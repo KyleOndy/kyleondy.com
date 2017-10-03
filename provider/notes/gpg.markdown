@@ -1,7 +1,7 @@
 ---
 title: GPG
 published: November 28, 2016
-updated: updatedField 
+updated: 2017-02-03 
 subtitle: Staying secure
 tags: notes, gpg
 ---
