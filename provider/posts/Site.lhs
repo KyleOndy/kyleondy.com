@@ -1,6 +1,6 @@
 ---
 date: 2017-09-25
-updated: 2017-09-26
+updated: 2017-10-03
 tags: hakyll, haskell, generating this site
 title: Generating this website // Part 1
 subtitle: Getting acquainted
@@ -41,228 +41,169 @@ While you can define pragma in the projects `cabal` file, I prefer to explicty d
 
 Nest we import Hakyll, which gives us access to the DSL Haskell provides.
 
+I'm also going to import `liftA2` from `Control.Applicative` here.  I use this
+as a convenience later.
+
 \begin{code}
-import           Data.List           (isSuffixOf, sortBy)
-import           Data.Monoid         ((<>))
-import           Data.Ord            (comparing)
-import qualified Data.Set            as S (insert)
-import           Prelude             hiding (id)
-import           System.FilePath
-import           Text.Pandoc.Options
-import           GHC.IO.Encoding
-import Control.Monad (forM)
-
-
-postsPattern :: Pattern
-postsPattern = "posts/*"
-
-pagesPattern :: Pattern
-pagesPattern = "pages/*"
-
-notesPattern :: Pattern
-notesPattern = "notes/*"
-
-staticPattern :: Pattern
-staticPattern = "static/**"
-
-main :: IO ()
-main = do
-  setLocaleEncoding utf8
-  setFileSystemEncoding utf8
-  setForeignEncoding utf8
-  hakyllWith config $ do
+import Control.Applicative (liftA2)
 \end{code}
 
-The contents in the `static` folder get copied to the root of the deployed site
+todo: why encoding?
 
 \begin{code}
-    match staticPattern $ do
-      route $ gsubRoute "static/" (const "")
-      compile copyFileCompiler
-
-    match "css/*" $ do
-        route idRoute
-        compile compressCssCompiler
-
-    tags <- buildTags (postsPattern .||. notesPattern) (fromCapture "tags/*.html")
-
-    match postsPattern $ do
-        route   $ postCleanRoute
-        compile $ do
-            customPandocCompiler
-                >>= saveSnapshot "content"
-                >>= return . fmap demoteHeaders
-                >>= loadAndApplyTemplate "templates/post.html" (postCtx tags)
-                >>= loadAndApplyTemplate "templates/default.html" defaultContext
-                >>= relativizeUrls
-                >>= cleanIndexUrls
-
-    create ["posts.html"] $ do
-        route cleanRoute
-        compile $ do
-            posts <- recentFirst =<< loadAll postsPattern
-            let ctx = constField "title" "Posts" <>
-                        listField "posts" (postCtx tags) (return posts) <>
-                        defaultContext
-            makeItem ""
-                >>= loadAndApplyTemplate "templates/posts.html" ctx
-                >>= loadAndApplyTemplate "templates/default.html" ctx
-                >>= relativizeUrls
-                >>= cleanIndexUrls
+import GHC.IO.Encoding
 \end{code}
 
-To avoid having more templates than we need, we return a field called `posts` from notes so we can reuse that tempalte
+Finally, I'll import the other posts in this series.
+These supply much of the actual functionality.
+
+Indexing and Feed are coming soon as new posts.
 
 \begin{code}
-    create ["notes.html"] $ do
-      route cleanRoute
-      compile $ do
-        notes <- lexicographyOrdered =<< loadAll notesPattern
-        let ctx = constField "title" "Notes" <>
-                  listField "posts" (postCtx tags) (return notes) <>
-                  defaultContext
-        makeItem ""
-                >>= loadAndApplyTemplate "templates/posts.html" ctx
-                >>= loadAndApplyTemplate "templates/default.html" ctx
-                >>= relativizeUrls
-                >>= cleanIndexUrls
-
-    tagsRules tags $ \tag p-> do
-        let title = "Tagged: " ++ tag
-        route cleanRoute
-        compile $ do
-            posts <- recentFirst =<< loadAll p
-            let ctx = constField "title" title <>
-                        listField "posts" (postCtx tags) (return posts) <>
-                        defaultContext
-            makeItem ""
-                >>= loadAndApplyTemplate "templates/posts.html" ctx
-                >>= loadAndApplyTemplate "templates/default.html" ctx
-                >>= relativizeUrls
-                >>= cleanIndexUrls
-
-    match notesPattern $ do
-      route   $ cleanRoute
-      compile $ customPandocCompiler
-             >>= loadAndApplyTemplate "templates/post.html" (postCtx tags)
-             >>= loadAndApplyTemplate "templates/default.html" defaultContext
-             >>= relativizeUrls
-             >>= cleanIndexUrls
-
-    match "pages/index.html" $ do
-        route $ gsubRoute "pages/" (const "")
-        compile $ do
-            posts <- fmap (take 3) . recentUpdatedFirst =<< loadAll postsPattern
-            notes <- fmap (take 3) . recentUpdatedFirst =<< loadAll notesPattern
-            let indexContext =
-                    listField "posts" (postCtx tags) (return posts) <>
-                    listField "notes" (postCtx tags) (return notes) <>
-                    field "tags" (\_ -> renderTagList tags) <>
-                    defaultContext
-
-            getResourceBody
-                >>= applyAsTemplate indexContext
-                >>= loadAndApplyTemplate "templates/default.html" indexContext
-                >>= relativizeUrls
-                >>= cleanIndexUrls
-
-    match "templates/*" $ compile templateCompiler
-
-    match pagesPattern $ do
-        route   $ cleanRoute `composeRoutes` (gsubRoute "pages/" (const ""))
-        compile $ customPandocCompiler
-            >>= loadAndApplyTemplate "templates/page.html" defaultContext
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
-            >>= relativizeUrls
-
-    match "404.html" $ do
-        route cleanRoute
-        compile $ customPandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
-            >>= cleanIndexUrls
-
-    create ["feed.xml"] $ do
-      route   idRoute
-      compile $ do
-        let feedCtx = (postCtx tags) `mappend` bodyField "description"
-        posts <- fmap (take 10) . recentFirst =<<
-                loadAllSnapshots postsPattern "content"
-        renderAtom feedConfiguration feedCtx posts
-          >>= cleanIndexHtmls
-
-    match "cv.markdown" $ do
-        route   $ cleanRoute
-        compile $ customPandocCompiler
-            >>= loadAndApplyTemplate "templates/cv.html"      defaultContext
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
-            >>= relativizeUrls
-            >>= cleanIndexUrls
-
-
-customPandocCompiler :: Compiler (Item String)
-customPandocCompiler =
-    let customExtensions = [Ext_tex_math_dollars, Ext_tex_math_double_backslash, Ext_latex_macros]
-        defaultExtensions = writerExtensions defaultHakyllWriterOptions
-        newExtensions = foldr S.insert defaultExtensions customExtensions
-        writerOptions = defaultHakyllWriterOptions {
-                          writerEmailObfuscation = NoObfuscation
-                        , writerExtensions = newExtensions
-                        , writerHtml5            = True
-                        , writerHighlight        = True
-                        , writerHighlightStyle   = pygments
-                        }
-    in pandocCompilerWith defaultHakyllReaderOptions writerOptions
-
-lexicographyOrdered :: [Item a] -> Compiler [Item a]
-lexicographyOrdered items = return $
-              sortBy (comparing (takeBaseName . toFilePath . itemIdentifier)) items
+import Content
+--Import Indexing
+--Import Feed
 \end{code}
 
-Sort items by their `updated` tag.
-There is propably a better way to do this.
-Taken from [here](https://groups.google.com/forum/#!topic/hakyll/pa2YqSmnbEA).
+Some simple rules
+-----------------
+The main entry point to Hakyll takes a set of [`Rules`][hakyllrules] and
+returns an `IO` action which generates the site.  `Rules` themselves form a
+monad, so assuming we have some simple rules:
+
 
 \begin{code}
-recentUpdatedFirst :: [Item a] -> Compiler [Item a]
-recentUpdatedFirst items = do
-    itemsWithTime <- forM items $ \item -> do
-        updateTime <- getMetadataField (itemIdentifier item) "updated"
-        return (updateTime,item)
-    return $ reverse (map snd (sortBy (comparing fst) itemsWithTime))
-
-
-defaultCtx :: Context String
-defaultCtx = mconcat
-  [ niceUrlField  "url" ]
+templates, images, css, static :: Rules ()
 \end{code}
 
-todo: add formatting to make `updated` field be pretty date
+We can put them together by simply listing them using `do` notation.
 
 \begin{code}
-postCtx :: Tags -> Context String
-postCtx tags = mconcat
-    [ modificationTimeField "mtime" "%U"
-    , dateField "date" "%B %e, %Y"
-    , tagsField "tags" tags
-    , defaultContext
-    ]
+simpleRules :: Rules ()
+simpleRules = do
+  templates
+  images
+  static
+  pages
+  css
+\end{code}
 
-feedCtx :: Context String
-feedCtx = mconcat
-    [ bodyField "description"
-    , defaultContext
-    ]
+The rules themselves govern the compilation and generation of files.  Perhaps
+the simplest of these is `templates`, which compiles all files found in the
+`templates` directory and any subdirectories, but doesn't actually need to
+output those files anywhere -- instead it keeps the compiled versions around for
+other pages using that template.
 
-niceUrlField :: String -> Context a
-niceUrlField key = field key niceItemUrl
+\begin{code}
+templates = match "templates/**" $ compile templateCompiler
+\end{code}
 
-niceItemUrl :: Item a -> Compiler String
-niceItemUrl =
-  fmap (maybe "" (removeIndexStr . toUrl)) . getRoute . setVersion Nothing . itemIdentifier
-  where removeIndexStr url = case splitFileName url of
-            (dir, "index.html") -> dir
-            _ -> url
+Hakyll provides a [`Pattern`][hakyllpattern] type which, conveniently,
+implements `IsString` so our `OverloadedStrings` pragma takes care of the
+conversion for us.  The `**` pattern searches in that directory and all
+subdirectories.
 
+Next up come the images.  These are also very simple -- simply take the full
+path of the images, and copy them to the same place in the output directory.
+
+\begin{code}
+images = match "images/*" $ do
+  route   idRoute
+  compile copyFileCompiler
+\end{code}
+
+The `route` rule defines the output filename.  `idRoute`, as the name implies,
+sets the output filename to match the input filename.  Any rule which generates
+output requires a `route` -- any rule without a `route` will be run, but won't
+generate any output (like the `templates` rule above).
+For CSS files, Hakyll provides a compressor to speed download times.
+
+\begin{code}
+css = match "css/*" $ do
+  route   idRoute
+  compile compressCssCompiler
+\end{code}
+
+Of course, the `copyFileCompiler` would work just as well, but we might as well
+compress the CSS while we're at it.
+Occasionally, I just want to put some static files up that don't fit the
+structure of the rest of the blog.  This is particularly useful when I want to
+upload slides from a talk I've given, for example the [git talk][gits-guts] I
+gave a couple of months ago.  The talk itself is maintained in a different
+repository, so it's convenient if I can just include that as a submodule and
+have its files copied automatically.  I do this by storing all such content in
+the `static` directory, and then copying it when generating the site, stripping
+the initial `static/` from the output path.
+
+\begin{code}
+static = match "static/**" $ do
+  route $ gsubRoute "static/" (const "")
+  compile copyFileCompiler
+\end{code}
+
+`gsubRoute` is actually quite powerful, allowing us to change our substitution
+based on the matched input, but in this case we just want to substitute for the
+empty string every time, so we use `const` to drop the argument.
+
+Tags, and the `Rules` which require them
+----------------------------------------
+
+The remaining rules are complicated by the fact that they need access to the
+tags for various reasons -- the tag index pages obviously need to list all posts
+matching a certain tag, while the posts themselves and the Atom feed list the
+tags for a particular post at the bottom of the post.
+In order to do this, we first need to generate the tags for the site, and then
+we need to pass these into those `Rules` that make use of them.  Generating the
+tags is quite easy:
+
+\begin{code}
+generateTags :: Rules Tags
+generateTags = buildTags "posts/*" $ fromCapture "tags/*.html"
+\end{code}
+
+Here I use `buildTags` to get the tags from all files in the `posts` directory.
+The default method of tagging posts is just to include a `tags` field in the
+post's metadata, but if I wanted to do it some other way I could use
+`buildTagsWith` instead.
+
+`fromCapture` acts sort of like a `Pattern` in reverse; it fills in the capture
+(The `*` in `tags/*.html` in this case) with a given string.  We use that to
+say, "for every tag read from the posts' metadata, create an index page at
+'tags/TAGNAME.html'".
+
+Having generated the tags, we need to pass them into any rules that need them.
+We could use `do`-notation as we did for `simpleRules` and simply pass the
+`tags` parameter to each entry, but here I'm going to use a little `Applicative`
+trick which allows me to keep the function point-free, and I think makes it read
+a little more declaratively.
+
+\begin{code}
+taggedRules :: Tags -> Rules ()
+--taggedRules = posts & outdatedURLs & clonedURLs & index & tagIndex & tagCloud & feed
+taggedRules = posts -- & index & tagIndex & tagCloud & feed
+  --where (&) = liftA2 (>>)
+\end{code}
+
+This trick exploits the fact that `(->)`, the type of functions, implements
+`Applicative` (in fact being applicative is rather their *raison d'être* when
+you think about it), so if we lift the Monadic `(>>)` operator to act on
+*applications of functions returning a Monad* instead of just Monads, we can
+pass the parameter to the function in once and it will be distributed to each of
+those functions.  In other words:
+
+```haskell
+posts tags >> tagIndex tags >> feed tags ≡ (posts & tagIndex & feed) tags
+  where (&) = liftA2 (>>)
+```
+
+Because of Haskell's function currying and η-reduction, we can then drop the
+`tags` parameter and the brackets entirely and we're left with the definition
+for `taggedRules` above.
+
+Configuration
+-------------
+
+\begin{code}
 config :: Configuration
 config = defaultConfiguration
     {
@@ -271,45 +212,30 @@ config = defaultConfiguration
     , storeDirectory = "_cache"
     , tmpDirectory = "_cache/tmp"
     }
-
-
-feedConfiguration ::  FeedConfiguration
-feedConfiguration = FeedConfiguration
-    { feedTitle       = "Kyle Ondy"
-    , feedDescription = "Personal blog of Kyle Ondy"
-    , feedAuthorName  = "Kyle Ondy"
-    , feedAuthorEmail = "kyle@ondy.me"
-    , feedRoot        = "https://kyleondy.com"
-    }
-
-
-
-postCleanRoute :: Routes
-postCleanRoute = cleanRoute
-  `composeRoutes` (gsubRoute "(posts|drafts)/" (const "posts/"))
-
-cleanRoute :: Routes
-cleanRoute = customRoute createIndexRoute
-  where
-    createIndexRoute ident = takeDirectory p </> takeBaseName p </> "index.html"
-                           where p = toFilePath ident
-
-cleanIndexUrls :: Item String -> Compiler (Item String)
-cleanIndexUrls = return . fmap (withUrls cleanIndex)
-
-cleanIndexHtmls :: Item String -> Compiler (Item String)
-cleanIndexHtmls = return . fmap (replaceAll patn replacement)
-    where
-      patn = "/index.html"
-      replacement = const "/"
-
-cleanIndex :: String -> String
-cleanIndex url
-    | idx `isSuffixOf` url = take (length url - length idx) url
-    | otherwise            = url
-  where idx = "index.html"
-
 \end{code}
+
+Putting it all together
+-----------------------
+
+Finally we define the entry point to the application.  This simply calls
+Hakyll's own `hakyll` function, passing in the rules defined above.
+First we call the simple, self-standing rules, then we generate the tags and
+pass them to the tagged rules.
+
+\begin{code}
+main :: IO ()
+main = do
+  setLocaleEncoding utf8
+  setFileSystemEncoding utf8
+  setForeignEncoding utf8
+  hakyllWith config $ do
+    simpleRules
+    generateTags >>= taggedRules
+\end{code}
+
+This concludes the introduction to Hakyll and the entry point for the generation
+code for this website.  Stay tuned for the next entry, where we'll add the
+configuration to actually create the posts themselves!
 
 [gensite]:        /tags/generating this site/
 [contact]:        /contact
