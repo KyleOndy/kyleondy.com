@@ -1,6 +1,6 @@
 ---
-date: 2017-10-03
-updated: 2017-10-03
+date: October 3, 2017
+updated: October 3, 2017
 tags: hakyll, haskell, generating this site
 title: Generating this website // Part 2
 subtitle: Making posts
@@ -19,11 +19,11 @@ A few kinds of contnet
 module Content where
 import Hakyll
 import Common
-import           Data.Monoid         ((<>))
-import Data.Maybe          	(fromMaybe)
-import Data.Char           	(toLower, isAlphaNum)
-import Data.List           	(intercalate, isInfixOf)
-import System.FilePath  	(replaceBaseName)
+import Data.Monoid       ((<>))
+import Data.Maybe        (fromMaybe)
+import Data.Char         (toLower, isAlphaNum)
+import Data.List         (intercalate)
+import System.FilePath   (replaceBaseName)
 
 posts :: Tags -> Rules()
 posts tags = taggedContent postsPattern tags
@@ -49,22 +49,22 @@ postIndex :: Tags -> Rules()
 postIndex tags = create ["posts.html"] $ do
   route subFolderRoute
   compile $ do
-    posts <- recentFirst =<< loadAll postsPattern
+    recentPosts <- recentFirst =<< loadAll postsPattern
     let ctx = constField "title" "Posts - Most Recent" <>
-                listField "posts" (taggedCtx tags) (return posts) <>
+                listField "posts" (taggedCtx tags) (return recentPosts) <>
                 defaultContext
     makeItem ""
       >>= loadAndApplyTemplate "templates/posts.html" ctx
       >>= loadAndApplyTemplate "templates/default.html" ctx
       >>= relativizeUrls
-			
+
 noteIndex :: Tags -> Rules()
 noteIndex tags = create ["notes.html"] $ do
   route subFolderRoute
   compile $ do
-    notes <- lexicographyOrdered =<< loadAll notesPattern
+    orderedNotes <- lexicographyOrdered =<< loadAll notesPattern
     let ctx = constField "title" "Notes - Alphabetical" <>
-              listField "posts" (taggedCtx tags) (return notes) <>
+              listField "posts" (taggedCtx tags) (return orderedNotes) <>
               defaultContext
     makeItem ""
             >>= loadAndApplyTemplate "templates/posts.html" ctx
@@ -76,20 +76,20 @@ noteIndex tags = create ["notes.html"] $ do
 \begin{code}
 index :: Tags -> Rules()
 index tags = match "index.html" $ do
-    -- todo: not sure this is the best way to handle index.html
-    route $ gsubRoute "index/" (const "")
-    compile $ do
-        recentPosts <- fmap (take 3) . recentUpdatedFirst =<< loadAll postsPattern
-        recentNotes <- fmap (take 3) . recentUpdatedFirst =<< loadAll notesPattern
-        let indexContext =
-                listField "posts" (taggedCtx tags) (return recentPosts) <>
-                listField "notes" (taggedCtx tags) (return recentNotes) <>
-                field "tags" (\_ -> renderTagList tags) <>
-                defaultContext
-        getResourceBody
-            >>= applyAsTemplate indexContext
-            >>= loadAndApplyTemplate "templates/default.html" indexContext
-            >>= relativizeUrls
+  -- todo: not sure this is the best way to handle index.html
+  route $ gsubRoute "index/" (const "")
+  compile $ do
+    recentPosts <- fmap (take 3) . recentUpdatedFirst =<< loadAll postsPattern
+    recentNotes <- fmap (take 3) . recentUpdatedFirst =<< loadAll notesPattern
+    let indexContext =
+            listField "posts" (taggedCtx tags) (return recentPosts) <>
+            listField "notes" (taggedCtx tags) (return recentNotes) <>
+            field "tags" (\_ -> renderTagList tags) <>
+            defaultContext
+    getResourceBody
+      >>= applyAsTemplate indexContext
+      >>= loadAndApplyTemplate "templates/default.html" indexContext
+      >>= relativizeUrls
 \end{code}
 
 
@@ -98,17 +98,17 @@ Need to have these or the tags will not show up.
 \begin{code}
 tagIndex :: Tags -> Rules()
 tagIndex tags = tagsRules tags $ \tag p-> do
-      let title = "Tagged: " ++ tag
-      route subFolderRoute
-      compile $ do
-          posts <- recentFirst =<< loadAll p
-          let ctx = constField "title" title <>
-                      listField "posts" (taggedCtx tags) (return posts) <>
-                      defaultContext
-          makeItem ""
-              >>= loadAndApplyTemplate "templates/posts.html" ctx
-              >>= loadAndApplyTemplate "templates/default.html" ctx
-              >>= relativizeUrls
+  let title = "Tagged: " ++ tag
+  route subFolderRoute
+  compile $ do
+    recentPosts <- recentFirst =<< loadAll p
+    let ctx = constField "title" title <>
+                listField "posts" (taggedCtx tags) (return recentPosts) <>
+                defaultContext
+    makeItem ""
+      >>= loadAndApplyTemplate "templates/posts.html" ctx
+      >>= loadAndApplyTemplate "templates/default.html" ctx
+      >>= relativizeUrls
 \end{code}
 
 
@@ -142,7 +142,7 @@ define here.
 dateAndTitle :: Metadata -> Routes
 dateAndTitle meta = fromMaybe idRoute $
   mkName <$> getField "title" <*> getField "date"
-  where   mkName t d   =   setBaseName $ title t
+  where   mkName t _   =   setBaseName $ title t
           getField     =   (`lookupString` meta)
           title        =   map toLower . intercalate "-"
                        .   map (filter isAlphaNum) . words

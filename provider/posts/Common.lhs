@@ -1,16 +1,26 @@
 ---
-date: 2017-10-03
-updated: 2017-10-03
+date: October 3, 2017
+updated: October 3, 2017
 tags: hakyll, haskell, generating this site
-title: Generating this website // Part ?
-subtitle: Resuing the good stuff
+title: Generating this website // Part 3
+subtitle: Building the base
 ---
 
 \begin{code}
 {-# LANGUAGE OverloadedStrings #-}
 module Common
- (postsPattern, pagesPattern, notesPattern, staticPattern,customPandocCompiler,
- subFolderRoute, taggedCtx,lexicographyOrdered, recentUpdatedFirst,readTime) where
+ (
+ customPandocCompiler,
+ lexicographyOrdered,
+ notesPattern,
+ pagesPattern,
+ postsPattern,
+ readTime,
+ recentUpdatedFirst,
+ staticPattern,
+ subFolderRoute,
+ taggedCtx
+ ) where
 \end{code}
 
 The `Set` module exports function names that clash with those from the standard
@@ -20,25 +30,25 @@ this function and had done with it, but it's common form to import data
 structures like this qualified, so I'm in the habit of it.
 
 \begin{code}
-import qualified Data.Set            as S
+import qualified Data.Set        as S
 import           Hakyll
-import           System.FilePath     (takeBaseName, takeDirectory, (</>))
+import           System.FilePath (takeBaseName, takeDirectory, (</>))
 \end{code}
 
 Finally some more specific imports.  I'll be overriding some of Pandoc's
 default options so I'll need to bring those into scope.
 
 \begin{code}
-import           Text.Pandoc.Options (Extension (..), ObfuscationMethod (..),
-                                      ReaderOptions (..), WriterOptions (..),
-                                      def)
-import           Data.List           (sortBy)
-import           Data.Ord            (comparing)
-import           Control.Monad       (forM)
-import Data.Time.Clock    (UTCTime (..))
-import Control.Monad         (msum)
-import Data.Maybe            (fromMaybe)
-import Data.Time.Format   (formatTime, parseTimeM, defaultTimeLocale)
+import  Text.Pandoc.Options (Extension (..), ObfuscationMethod (..),
+                            ReaderOptions (..), WriterOptions (..),
+                            def)
+import  Data.List           (sortBy)
+import  Data.Ord            (comparing)
+import  Control.Monad       (forM)
+import  Data.Time.Clock     (UTCTime (..))
+import  Control.Monad       (msum)
+import  Data.Maybe          (fromMaybe)
+import  Data.Time.Format    (parseTimeM, defaultTimeLocale, formatTime)
 
 postsPattern :: Pattern
 postsPattern = "posts/*"
@@ -133,16 +143,17 @@ Contexts
 ---------
 
 \begin{code}
+dateFormat :: String
+dateFormat = "%B %e, %Y"
+
 taggedCtx :: Tags -> Context String
 taggedCtx tags = mconcat
-    [ dateField "date" "%B %e, %Y"
+    [ dateField "date" dateFormat
     , tagsField "tags" tags
-    , field "updated2" $ \item -> do
-        -- https://david.sferruzza.fr/posts/2014-06-18-new-blog-with-hakyll.html
+    , updatedField "updated.formatted" dateFormat
     , defaultContext
     ]
 \end{code}
-
 
 Date functions
 --------------
@@ -176,3 +187,10 @@ complicated than we need, so I've extracted the parts we need into a simple
 supported formats `readTime` will simply crash with an error -- not the best
 error handling but since we're always going to be running this interactively it
 doesn't really matter.
+
+\begin{code}
+updatedField :: String -> String -> Context a
+updatedField key format = field key $ \i -> do
+  t <- getMetadataField' (itemIdentifier i) "updated"
+  return $ (formatTime defaultTimeLocale format $ readTime t)
+\end{code}

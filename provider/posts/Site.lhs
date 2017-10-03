@@ -1,6 +1,6 @@
 ---
-date: 2017-09-25
-updated: 2017-10-03
+date: September 25, 2017
+updated: October 3, 2017
 tags: hakyll, haskell, generating this site
 title: Generating this website // Part 1
 subtitle: Getting acquainted
@@ -8,16 +8,11 @@ subtitle: Getting acquainted
 
 \begin{code}
 {-# LANGUAGE OverloadedStrings #-}
-import           Common
-import           Control.Applicative (liftA2)
 import           GHC.IO.Encoding
 import           Hakyll
+import           Common
 import           Content
---import Pages
---import Posts
---import Notes
---import Index
---import Feed
+import           Control.Applicative (liftA2)
 \end{code}
 
 Thigns that do not need tags
@@ -77,10 +72,6 @@ main = do
   setFileSystemEncoding utf8
   setForeignEncoding utf8
   hakyllWith config $ do
-    --tags <- generateTags
     simpleRules
-    --posts tags
-    --notes tags
-    --tagPages tags
     generateTags >>= taggedRules
 \end{code}
