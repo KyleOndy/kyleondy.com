@@ -22,4 +22,5 @@ executable site-kyleondy
   ghc-options:      -threaded -Wall
   other-modules:    Common
                   , Content
+                  , Feed
   default-language: Haskell2010
