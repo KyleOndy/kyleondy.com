@@ -1,7 +1,7 @@
 ---
 date: 2017-10-02 11:39:10
 updated: 2017-10-02 21:39:10
-tags: hakyll, haskell, generating this site
+tags: hakyll, haskell, generating this site, literate-programs
 title: Generating this website // Part 3
 subtitle: Building the base
 ---

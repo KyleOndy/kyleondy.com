@@ -8,5 +8,5 @@ tags: notes, Haskell
 
 Some notes below on Haskell.
 
-Typeclasses ~ interfaces
-Do not use the `read` typeclass
+* Typeclasses are kind of like interfaces
+* Do not use the `read` typeclass

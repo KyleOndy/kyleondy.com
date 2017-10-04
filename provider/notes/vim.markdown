@@ -6,8 +6,6 @@ subtitle: Text editing like a ninja
 tags: notes, vim
 ---
 
-Some notes below on vim.
-
 # Commonly Used Commands
 
 Here are commands I tend to forget

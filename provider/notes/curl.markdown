@@ -6,6 +6,8 @@ subtitle: Quick notes on common usages
 tags: notes, curl
 ---
 
-Some notes below on curl.
+Follow redirects, use the `-L` flag. 
 
-Follow redirects, use the `-L` flag. `curl -L kyleondy.com/pgp.txt`{.bash}
+~~~{.bash}
+curl -L kyleondy.com/pgp.txt
+~~~

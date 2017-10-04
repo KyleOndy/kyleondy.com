@@ -1,7 +1,7 @@
 ---
 date: 2017-09-25 12:00:00
 updated: 2017-09-30 16:00:00
-tags: hakyll, haskell, generating this site
+tags: hakyll, haskell, generating this site, literate-programs
 title: Generating this website // Part 1
 subtitle: Getting acquainted
 ---
@@ -12,6 +12,7 @@ import           GHC.IO.Encoding
 import           Hakyll
 import           Common
 import           Content
+import           Feed
 import           Control.Applicative (liftA2)
 \end{code}
 
@@ -46,7 +47,7 @@ generateTags :: Rules Tags
 generateTags = buildTags (postsPattern .||. notesPattern) (fromCapture "tags/*.html")
 
 taggedRules :: Tags -> Rules ()
-taggedRules = posts & notes & tagIndex & postIndex & noteIndex & index -- & tagIndex & tagCloud & feed
+taggedRules = posts & notes & tagIndex & postIndex & noteIndex & index & feed-- & tagIndex & tagCloud
   where (&) = liftA2 (>>)
 \end{code}
 

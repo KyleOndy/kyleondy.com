@@ -6,8 +6,6 @@ subtitle: shell things
 tags: notes, bash
 ---
 
-Some notes below on bash.
-
 # Line editing
 
 ~~~{.bash}
