@@ -1,6 +1,6 @@
 ---
-date: September 25, 2017
-updated: October 3, 2017
+date: 2017-09-25 12:00:00
+updated: 2017-09-30 16:00:00
 tags: hakyll, haskell, generating this site
 title: Generating this website // Part 1
 subtitle: Getting acquainted

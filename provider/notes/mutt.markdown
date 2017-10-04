@@ -1,12 +1,12 @@
 ---
 title: Mutt
-published: July 25, 2016
-updated: July 25, 2016
+published: 2016-07-25 12:00:00
+updated: 2016-07-26 12:00:00
 subtitle: Quick notes on setup
 tags: notes, mutt
 ---
 
-Some notes below on comlping and setting up mutt.
+Some notes below on compiling and setting up mutt.
 
 Use the [sidebar patch](http://www.lunar-linux.org/mutt-sidebar/).
 

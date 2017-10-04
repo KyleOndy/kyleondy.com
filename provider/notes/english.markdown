@@ -1,7 +1,7 @@
 ---
-title: English Grammer
-published: 2016-02-16
-updated: 2016-02-16
+title: English Grammar
+published: 2016-02-16 12:00:00
+updated: 2016-02-16 12:00:00
 subtitle: Notes and quick refrence on formal syntax I can never seem to remember
 tags: notes
 ---

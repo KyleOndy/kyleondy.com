@@ -1,7 +1,7 @@
 ---
 title: Powershell
-published: 2016-04-27
-updated: 2016-04-27
+published: 2016-04-27 12:00:00
+updated: 2016-04-27 12:00:00
 subtitle: Quick notes on common powershell commands
 tags: notes, windows, powershell
 ---

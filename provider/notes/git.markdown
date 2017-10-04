@@ -1,8 +1,7 @@
 ---
 title: Git
-published: November 20, 2015
-updated: November 20, 2015
-modified: October 21, 2016
+published: 2015-11-20 12:00:00
+updated: 2016-06-12 12:00:00
 subtitle: Less commonly used commands. Not really.
 tags: notes, git
 ---

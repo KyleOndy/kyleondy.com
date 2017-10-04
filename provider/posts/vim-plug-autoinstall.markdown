@@ -1,8 +1,8 @@
 ---
 title:  Automatic installation of vim-plug
 subtitle: Bootstrapping your neovim just a little bit easier
-published: 2016-10-04
-updated: 2016-10-04
+published: 2016-10-04 12:00:00
+updated: 2016-10-04 12:00:00
 tags: vim, neovim
 ---
 

@@ -1,10 +1,11 @@
 ---
-date: October 3, 2017
-updated: October 3, 2017
+date: 2017-10-02 11:39:10
+updated: 2017-10-02 21:39:10
 tags: hakyll, haskell, generating this site
 title: Generating this website // Part 3
 subtitle: Building the base
 ---
+
 
 \begin{code}
 {-# LANGUAGE OverloadedStrings #-}
@@ -150,7 +151,7 @@ taggedCtx :: Tags -> Context String
 taggedCtx tags = mconcat
     [ dateField "date" dateFormat
     , tagsField "tags" tags
-    , updatedField "updated.formatted" dateFormat
+    , updatedField "updated" dateFormat
     , defaultContext
     ]
 \end{code}

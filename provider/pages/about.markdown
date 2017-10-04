@@ -1,13 +1,15 @@
 ---
 title: A little about Kyle
 subtitle: What Do They Know? Do They Know Things?? Let's Find Out!
-updated: 2016-08-12
+updated: 2017-10-03 22:10:32
 ---
 
-   <a href="https://github.com/kyleondy">GitHub</a>
-            <a href="https://twitter.com/kyleondy">Twitter</a>
-            <a href="https://keybase.io/kyleondy">Keybase.io</a>
-            <a href="https://www.linkedin.com/in/kyleondy">LinkedIn</a>
+### External Sites
+
+* [Github](https://github.com/kyleondy)
+* [Twitter](https://twitter.com/kyleondy)
+* [Keybase.io](https://keybase.io/kyleondy)
+* [LinkedIn](https://www.linkedin.com/in/kyleondy)
 
 ### Causes
 Kyle [supports the following causes](/support) and thinks you should look into them.

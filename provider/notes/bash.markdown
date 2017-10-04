@@ -1,7 +1,7 @@
 ---
 title: Bash
-published: 2017-09-27
-updated: 2017-09-27
+published: 2017-09-27 12:00:00
+updated: 2017-09-27 12:00:00
 subtitle: shell things
 tags: notes, bash
 ---

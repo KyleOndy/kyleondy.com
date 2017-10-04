@@ -1,6 +1,6 @@
 ---
-date: October 3, 2017
-updated: October 3, 2017
+date: 2017-10-01 21:42:26
+updated: 2017-10-01 21:41:14
 tags: hakyll, haskell, generating this site
 title: Generating this website // Part 2
 subtitle: Making posts
@@ -101,9 +101,9 @@ tagIndex tags = tagsRules tags $ \tag p-> do
   let title = "Tagged: " ++ tag
   route subFolderRoute
   compile $ do
-    recentPosts <- recentFirst =<< loadAll p
+    taggedItems <- lexicographyOrdered =<< loadAll p
     let ctx = constField "title" title <>
-                listField "posts" (taggedCtx tags) (return recentPosts) <>
+                listField "posts" (taggedCtx tags) (return taggedItems) <>
                 defaultContext
     makeItem ""
       >>= loadAndApplyTemplate "templates/posts.html" ctx
