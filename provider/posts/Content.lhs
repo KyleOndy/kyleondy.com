@@ -1,10 +1,16 @@
 ---
 date: 2017-10-01 21:42:26
 updated: 2017-10-01 21:41:14
-tags: hakyll, haskell, generating this site, literate-programs
+tags: hakyll, haskell, generating-this-site, literate-programs
 title: Generating this website // Part 2
 subtitle: Making posts
 ---
+
+<aside class= "sidenote">
+This is part two of the "generating this website" series.  To read the rest
+of the series, go to the series index [here][generating-this-website]
+</aside>
+
 
 A few kinds of contnet
 
@@ -235,6 +241,6 @@ which we'll go about adding special features one at a time.
 
 [^1]: Anybody who's read code using the `Lens` library will get the joke.
 
-[generating-this-website]: http://www.dpwright.com/tags/generating%20this%20website
+[generating-this-website]: /tags/generating-this-site/
 [hwtc]: https://hackage.haskell.org/package/hakyll-4.2.2.0/docs/src/Hakyll-Web-Template-Context.html
 [yehs]: http://yannesposito.com/Scratch/en/blog/Hakyll-setup/

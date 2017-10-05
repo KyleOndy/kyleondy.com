@@ -1,10 +1,16 @@
 ---
 date: 2017-09-25 12:00:00
 updated: 2017-09-30 16:00:00
-tags: hakyll, haskell, generating this site, literate-programs
+tags: hakyll, haskell, generating-this-site, literate-programs
 title: Generating this website // Part 1
 subtitle: Getting acquainted
 ---
+
+<aside class= "sidenote">
+This is part one of the "generating this website" series.  To read the rest
+of the series, go to the series index [here][generating-this-website]
+</aside>
+
 
 \begin{code}
 {-# LANGUAGE OverloadedStrings #-}
@@ -94,3 +100,5 @@ main = do
     simpleRules
     generateTags >>= taggedRules
 \end{code}
+
+[generating-this-website]: /tags/generating-this-site/

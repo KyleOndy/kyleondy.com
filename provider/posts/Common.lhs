@@ -1,10 +1,15 @@
 ---
 date: 2017-10-02 11:39:10
 updated: 2017-10-02 21:39:10
-tags: hakyll, haskell, generating this site, literate-programs
+tags: hakyll, haskell, generating-this-site, literate-programs
 title: Generating this website // Part 3
 subtitle: Building the base
 ---
+
+<aside class= "sidenote">
+This is part three of the "generating this website" series.  To read the rest
+of the series, go to the series index [here][generating-this-website]
+</aside>
 
 
 \begin{code}
@@ -195,3 +200,5 @@ updatedField key format = field key $ \i -> do
   t <- getMetadataField' (itemIdentifier i) "updated"
   return $ (formatTime defaultTimeLocale format $ readTime t)
 \end{code}
+
+[generating-this-website]: /tags/generating-this-site/

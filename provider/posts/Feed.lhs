@@ -3,7 +3,7 @@ date: 2017-10-04 07:32:12
 updated: 2017-10-04 07:32:12
 tags: hakyll, haskell, generating-this-site, literate-programs
 title: Generating this website // Part 4
-subtitle: Making posts
+subtitle: Creating the atom feed
 ---
 
 <aside class= "sidenote">
@@ -74,3 +74,4 @@ which contains the entire post as its description, so that it can be read from
 within the feed reader of your choice.
 
 [hakyll-feeds]: http://jaspervdj.be/hakyll/tutorials/05-snapshots-feeds.html
+[generating-this-website]: /tags/generating-this-site/
