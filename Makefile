@@ -43,6 +43,16 @@ package:
 watch: build
 	$(SITE_EXE) -- watch
 
+.PHONY: watch-full
+watch-full: secrets build
+	$(SITE_EXE) -- watch
+
+.PHONY: secrets
+secrets:
+	rm -rf provider/secrets/.git
+	rm -r provider/secrets
+	git clone --depth=1 git@gitlab.com:kyleondy/kyleondy.com.secret provider/secrets
+
 .PHONY: deploy
-deploy:
+deploy: clean secrets check package
 	./deploy.sh $(GIT_BRANCH)

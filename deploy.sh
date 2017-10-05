@@ -5,7 +5,6 @@ BRANCH=${1:-master}
 IMAGE=kyleondy/website:$BRANCH
 
 
-make clean && make check && make package
 cp "_output/$BRANCH.tar.gz" ./docker/site.tar.gz
 docker build --pull docker -t "$IMAGE"
 

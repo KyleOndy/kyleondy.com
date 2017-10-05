@@ -1,5 +1,4 @@
 .stack-work
-provider.secret/
 _site/
 _cache/
 _build/
@@ -7,3 +6,6 @@ _build
 
 # for the time being. Working a better solution
 deploy.sh
+
+# for things I don't want in the public repo
+provider/secrets

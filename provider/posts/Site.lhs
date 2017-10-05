@@ -19,12 +19,14 @@ import           Control.Applicative (liftA2)
 Thigns that do not need tags
 
 \begin{code}
-templates, static, pages :: Rules ()
+templates, static, pages, secrets, secretsStatic :: Rules ()
 simpleRules :: Rules ()
 simpleRules = do
   templates
   static
   pages
+  secrets
+  secretsStatic
 
 templates = match "templates/**" $ compile templateCompiler
 
@@ -39,6 +41,22 @@ pages = match pagesPattern $ do
     >>= loadAndApplyTemplate "templates/default.html" defaultContext
     >>= relativizeUrls
 \end{code}
+
+For secret things
+
+\begin{code}
+secrets = match "secrets/**.markdown" $ do
+  route $ subFolderRoute `composeRoutes` gsubRoute "secrets/" (const "")
+  compile $ customPandocCompiler
+    >>= loadAndApplyTemplate "templates/page.html" defaultContext
+    >>= loadAndApplyTemplate "templates/default.html" defaultContext
+    >>= relativizeUrls
+
+secretsStatic = match "secrets/**" $ do
+  route $ gsubRoute "secrets/" (const "")
+  compile copyFileCompiler
+\end{code}
+
 
 Thigns that needs tags applied
 
