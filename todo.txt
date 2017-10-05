@@ -3,6 +3,15 @@ Fix tags
 Post 0 - Index page and why I'm doing it
 Clean up + split main pages
 better post title -> url
+page css - responsive
+overflow scroll
+nginx logs to elk stack
+updated date formatting
+syntax highlighting
+Add aside to top of notes index, explaing they are random notes of mine for easy refrence
+feed.xml vs atom.xml
+/tags
+add CV / resume
 
 ## General
 start writing ~2 posts a month

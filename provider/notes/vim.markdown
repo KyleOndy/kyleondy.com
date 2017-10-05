@@ -1,12 +1,10 @@
 ---
 title: Vim
-published: November 20, 2015
-updated: November 20, 2015
+published: 2015-11-20 12:00:00
+updated: 2015-11-20 12:00:00
 subtitle: Text editing like a ninja
 tags: notes, vim
 ---
-
-Some notes below on vim.
 
 # Commonly Used Commands
 
@@ -22,3 +20,7 @@ Here are commands I tend to forget
 ## Text Insertion ##
 
 When pasting code use `:set paste` to preserve indenting of pasted code.
+
+## Text Wrapping ##
+
+Wrap code to `textwidth`: <kbd>g</kbd><kbd>q</kbd>

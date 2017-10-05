@@ -1,7 +1,7 @@
 ---
 title: Powershell
-published: 2016-04-27
-updated: 2016-04-27
+published: 2016-04-27 12:00:00
+updated: 2016-04-27 12:00:00
 subtitle: Quick notes on common powershell commands
 tags: notes, windows, powershell
 ---
@@ -10,7 +10,7 @@ Some notes below on powershell.
 
 Copy groups from one user to another
 
-```.{powerhsell}
+``` powershell
 Get-Aduser -Identity UserToCopyGroupsFrom -Properties MemberOf |
     Select -ExpandProperty MemberOf
     Add-ADGroupMember -Members UseBeingAddedToGroups -PassThru |

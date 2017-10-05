@@ -1,7 +1,7 @@
 /* fonts */
 
 @import url(/fonts/ComputerModern/Serif/cmun-serif.css);
-@import url(/fonts/ComputerModern/Concrete/cmun-concrete.css);
+@import url(/fonts/ComputerModern/Bright Semibold/cmun-bright-Semibold.css);
 
 /* source-code-pro-regular - latin */
 
@@ -11,11 +11,11 @@
     font-weight: 400;
     src: url('/fonts/source-code-pro-v6-latin-regular.eot');
     /* IE9 Compat Modes */
-    src: local('Source Code Pro'), local('SourceCodePro-Regular'), url('../fonts/source-code-pro-v6-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('../fonts/source-code-pro-v6-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-    url('../fonts/source-code-pro-v6-latin-regular.woff') format('woff'), /* Modern Browsers */
-    url('../fonts/source-code-pro-v6-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('../fonts/source-code-pro-v6-latin-regular.svg#SourceCodePro') format('svg');
+    src: local('Source Code Pro'), local('SourceCodePro-Regular'), url('/fonts/source-code-pro-v6-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('/fonts/source-code-pro-v6-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+    url('/fonts/source-code-pro-v6-latin-regular.woff') format('woff'), /* Modern Browsers */
+    url('/fonts/source-code-pro-v6-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('/fonts/source-code-pro-v6-latin-regular.svg#SourceCodePro') format('svg');
     /* Legacy iOS */
 }
 
@@ -27,7 +27,7 @@ body {
     background-color: #fafafa;
     color: #333;
     font-family: "Computer Modern Serif", serif;
-    font-size: 1.2em;
+    font-size: 62.5%;
     margin: 0 auto;
     padding: 0 2em;
     text-rendering: optimizeLegibility;
@@ -36,6 +36,7 @@ body {
 }
 
 main {
+    font-size: 2em;
     max-width: 700px;
     margin: 40px auto;
 }
@@ -51,16 +52,16 @@ h2,
 h3,
 h4 {
     font-weight: 100;
+    font-family: 'Computer Modern Bright Semibold', sans-serif;
 }
 
 h1 {
-    text-align: center;
-    font-size: 190%;
+    /* font-size: 2em; */
 }
 
 h2 {
-    margin-top: 1.5em;
-    font-size: 130%;
+    /* margin-top: 1.5em; */
+    /* font-size: 130%; */
 }
 
 a {
@@ -76,12 +77,8 @@ a:hover {
 /* Header and navigation styling */
 
 header {
-    font-family: "Computer Modern Serif", "Open Sans Condensed", sans-serif;
-    margin: 0px;
-    padding: 0px;
-    position: relative;
-    top: -10px;
-    font-size: 16px;
+    font-family: 'Computer Modern Bright Semibold', sans-serif;
+    margin: 1em 0 0 5em;
 }
 
 header a {
@@ -94,37 +91,68 @@ header a:hover {
 
 #logo {
     font-family: "Computer Modern Serif", serif;
+    font-size: 6em;
     text-align: left;
-    font-size: 60px;
-    margin-bottom: 0;
+    margin: 0;
+}
+
+#nav-menu {
+    font-size: 1.4em;
+}
+
+kbd {
+    display: inline-block;
+    border-radius: 3px;
+    padding: 0px 4px;
+    box-shadow: 1px 1px 1px #777;
+    margin: 2px;
+    font-size: 1.2em;
+    vertical-align: text-bottom;
+    background: #eee;
+    font-weight: 500;
+    color: #555;
+    font-variant: small-caps;
+    /* This two work */
+    /* letter-spacing: 0.5px; */
 }
 
 
 /* Content styling */
 
-div .sourceCode {
-    padding: 0px;
-    margin: 0px;
+div.sourceCode {
+    background: #dae6fb;
+    border-left: 1em solid #10b5da;
+    margin: 1.5em 10px;
+    padding: 0.5em 10px;
 }
 
 .post-header {
     text-align: center
 }
 
-code {
+code,
+kbd {
     font-family: "Source Code Pro", monospace;
-    font-size: .8em;
+    /* font-size: .8em; */
+}
+
+p code {
+    background: #dae6fb;
+}
+
+article h1 {
+    text-align: center;
 }
 
 blockquote {
     background: #e4eff7;
-    border-left: 10px solid #47a3ff;
-    margin: 1.5em 10px;
-    padding: 0.5em 10px;
+    border-left: 1em solid #47a3ff;
+    margin: 1.5em 1em;
+    padding: 0.5em 1em;
 }
 
 blockquote p {
-    margin: 0.5em 0px;
+    margin: 0.5em 0;
 }
 
 div.quote-attribution {
@@ -133,28 +161,34 @@ div.quote-attribution {
 
 aside {
     background: #fbdaf0;
-    border-left: 10px solid #da1071;
-    margin: 1.5em 10px;
-    padding: 0.5em 10px;
+    border-left: 1em solid #da1071;
+    margin: 1.5em 1em;
+    padding: 0.5em 1em;
 }
 
 h1.title {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
+    font-size: 1.6em;
 }
 
 h2.subtitle {
-    margin: 0px;
-    padding: 0px;
-    font-size: 120%;
-    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: 0.8em;
+    /* font-size: 120%; */
+    /* text-align: center; */
     font-style: italic;
+}
+
+.post-meta {
+    font-size: .8em;
 }
 
 .tags {
     color: #555;
-    font-size: 14px;
-    font-style: italic;
+    /* font-size: 14px; */
+    /* font-style: italic; */
 }
 
 img {
@@ -172,7 +206,13 @@ figure {
 
 footer {
     color: #555;
-    font-size: 12px;
+    font-size: 1.5em;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 3em;
+}
+
+@media screen and (max-width:640px) {
+    #logo {
+        font-size: 3em;
+    }
 }
