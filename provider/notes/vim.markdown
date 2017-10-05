@@ -20,3 +20,7 @@ Here are commands I tend to forget
 ## Text Insertion ##
 
 When pasting code use `:set paste` to preserve indenting of pasted code.
+
+## Text Wrapping ##
+
+Wrap code to `textwidth`: <kbd>g</kbd><kbd>q</kbd>
