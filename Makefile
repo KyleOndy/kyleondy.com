@@ -40,11 +40,7 @@ package:
 	echo done packaging $(ARTIFACT_DIR)/$(GIT_BRANCH).tar.gz
 
 .PHONY: watch
-watch: build
-	$(SITE_EXE) -- watch
-
-.PHONY: watch-full
-watch-full: secrets build
+watch: secrets build
 	$(SITE_EXE) -- watch
 
 .PHONY: secrets

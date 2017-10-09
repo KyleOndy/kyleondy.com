@@ -39,7 +39,7 @@ notes tags = taggedContent notesPattern tags
 
 taggedContent :: Pattern -> Tags -> Rules()
 taggedContent pattern tags = match pattern $ do
-  route $ subFolderRoute
+  route $ metadataRoute titleFromMetadata `composeRoutes` subFolderRoute
   compile $ do
     customPandocCompiler
       >>= saveSnapshot "content"
@@ -47,6 +47,7 @@ taggedContent pattern tags = match pattern $ do
       >>= relativizeUrls
       >>= loadAndApplyTemplate "templates/post.html" (taggedCtx tags)
       >>= loadAndApplyTemplate "templates/default.html" defaultContext
+      >>= withItemBody removeIndexHtml
 \end{code}
 
 \begin{code}
@@ -63,6 +64,7 @@ postIndex tags = create ["posts.html"] $ do
       >>= loadAndApplyTemplate "templates/posts.html" ctx
       >>= loadAndApplyTemplate "templates/default.html" ctx
       >>= relativizeUrls
+      >>= withItemBody removeIndexHtml
 
 noteIndex :: Tags -> Rules()
 noteIndex tags = create ["notes.html"] $ do
@@ -76,6 +78,7 @@ noteIndex tags = create ["notes.html"] $ do
             >>= loadAndApplyTemplate "templates/posts.html" ctx
             >>= loadAndApplyTemplate "templates/default.html" ctx
             >>= relativizeUrls
+            >>= withItemBody removeIndexHtml
 
 \end{code}
 
@@ -96,6 +99,7 @@ index tags = match "index.html" $ do
       >>= applyAsTemplate indexContext
       >>= loadAndApplyTemplate "templates/default.html" indexContext
       >>= relativizeUrls
+      >>= withItemBody removeIndexHtml
 \end{code}
 
 
@@ -115,6 +119,7 @@ tagIndex tags = tagsRules tags $ \tag p-> do
       >>= loadAndApplyTemplate "templates/posts.html" ctx
       >>= loadAndApplyTemplate "templates/default.html" ctx
       >>= relativizeUrls
+      >>= withItemBody removeIndexHtml
 \end{code}
 
 
@@ -145,13 +150,14 @@ The function we passed to `metadataRoute` above was `dateAndTitle`, which we'll
 define here.
 
 \begin{code}
-dateAndTitle :: Metadata -> Routes
-dateAndTitle meta = fromMaybe idRoute $
-  mkName <$> getField "title" <*> getField "date"
-  where   mkName t _   =   setBaseName $ title t
-          getField     =   (`lookupString` meta)
-          title        =   map toLower . intercalate "-"
-                       .   map (filter isAlphaNum) . words
+titleFromMetadata :: Metadata -> Routes
+titleFromMetadata meta = fromMaybe idRoute $
+  mkName <$> getField "title"
+  where mkName t    = setBaseName $ title t
+        getField    = (`lookupString` meta)
+        title       = map toLower . intercalate "-"
+                    . (filter (not . null))
+                    . map (filter isAlphaNum) . words
 \end{code}
 
 There's a lot going on in this definition so we'll go through it carefully.

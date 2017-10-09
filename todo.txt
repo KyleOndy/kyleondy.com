@@ -12,6 +12,7 @@ Add aside to top of notes index, explaing they are random notes of mine for easy
 feed.xml vs atom.xml
 /tags
 add CV / resume
+local build without secrets
 
 ## General
 start writing ~2 posts a month

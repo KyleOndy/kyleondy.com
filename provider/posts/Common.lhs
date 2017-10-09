@@ -22,6 +22,7 @@ module Common
  pagesPattern,
  postsPattern,
  readTime,
+ removeIndexHtml,
  recentUpdatedFirst,
  staticPattern,
  subFolderRoute,
@@ -38,7 +39,7 @@ structures like this qualified, so I'm in the habit of it.
 \begin{code}
 import qualified Data.Set        as S
 import           Hakyll
-import           System.FilePath (takeBaseName, takeDirectory, (</>))
+import           System.FilePath (takeBaseName, splitFileName, takeDirectory, (</>))
 \end{code}
 
 Finally some more specific imports.  I'll be overriding some of Pandoc's
@@ -48,7 +49,7 @@ default options so I'll need to bring those into scope.
 import  Text.Pandoc.Options (Extension (..), ObfuscationMethod (..),
                             ReaderOptions (..), WriterOptions (..),
                             def)
-import  Data.List           (sortBy)
+import  Data.List           (sortBy, isInfixOf)
 import  Data.Ord            (comparing)
 import  Control.Monad       (forM)
 import  Data.Time.Clock     (UTCTime (..))
@@ -143,6 +144,17 @@ recentUpdatedFirst items = do
         updateTime <- getMetadataField (itemIdentifier item) "updated"
         return (updateTime,item)
     return $ reverse (map snd (sortBy (comparing fst) itemsWithTime))
+\end{code}
+
+
+\begin{code}
+removeIndexHtml :: String -> Compiler String
+removeIndexHtml body = return $ withUrls removeIndexStr body
+  where
+    removeIndexStr url = case splitFileName url of
+      (dir, "index.html") | isLocal dir   -> init dir
+      _                                   -> url
+    isLocal uri = not $ "://" `isInfixOf` uri
 \end{code}
 
 Contexts
