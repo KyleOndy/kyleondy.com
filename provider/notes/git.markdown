@@ -1,20 +1,38 @@
 ---
 title: Git
 published: 2015-11-20 12:00:00
-updated: 2016-06-12 12:00:00
+updated: 2017-10-09 11:51:00
 subtitle: Less commonly used commands. Not really.
 tags: notes, git
 ---
 
-# Some notes below on git.
+Push to multiple remotes with a single push.
+
+~~~{.bash}
+git remote set-url --add --push <remote> <newurl>
+~~~
 
 ----
 
-Push to multiple remotes with a single push. `git remote set-url --add --push <remote name> <newurl>`{.bash}
+Delete branch from remote.
+
+~~~{.bash}
+# version >= 1.7.0
+git push <remote> --delete <branch>
+
+# version < 1.7.0
+git push <remote> :<branch>
+~~~
 
 ----
 
-Add forgotten files to last commit: `git commit --amend -C HEAD`{.bash}
+Add forgotten files to last commit.
+
+
+~~~{.bash}
+git commit --amend -C HEAD
+~~~
+
 
 ----
 
