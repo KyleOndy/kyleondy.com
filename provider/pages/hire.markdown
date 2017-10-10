@@ -9,8 +9,6 @@ updated: 2017-09-26
 I am actively seeking a transition to a new opportunity that will challenge me and allow both personal and professional growth during the fall or winter of 2017--2018.
 </aside>
 
-todo: clean up
-
 Kyle needs to enjoy and like day to day tasks.
 Kyle like to solve difficult and unconventional problems. Bespoke, uncommon domain, working closely with experts in the domain
 
@@ -23,8 +21,6 @@ I would prefer a job not tied to an office, but I am open to work within a reaso
 At this time I **am not** willing to relocate.
 
 # About Me
-
-Check my [**resume** (PDF Warning)](/static/resume/Kyle.Ondy-Resume.pdf) ([PGP signature](/static/resume/Kyle.Ondy-Resume.pdf.sig)) for a formal overview of my professional experience.
 
 I loath inefficiencies, particularly easily eliminated inefficiencies.
 I find great satisfaction increasing productivity via automation.
