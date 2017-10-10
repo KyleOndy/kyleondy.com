@@ -12,7 +12,7 @@ I am actively seeking a transition to a new opportunity that will challenge me a
 todo: clean up
 
 Kyle needs to enjoy and like day to day tasks.
-Kyle like to solve difficult and unconvectinal problems. Bespoke, uncommon domain, working closely with expoerts in the domain
+Kyle like to solve difficult and unconventional problems. Bespoke, uncommon domain, working closely with experts in the domain
 
 
 
