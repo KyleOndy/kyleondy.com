@@ -49,8 +49,7 @@ watch-local: build
 
 .PHONY: secrets
 secrets:
-	rm -rf provider/secrets/.git
-	rm -r provider/secrets
+	rm -rf provider/secrets
 	git clone --depth=1 git@gitlab.com:kyleondy/kyleondy.com.secret provider/secrets
 
 .PHONY: deploy
