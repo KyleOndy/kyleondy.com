@@ -43,6 +43,10 @@ package:
 watch: secrets build
 	$(SITE_EXE) -- watch
 
+.PHONY: watch-local
+watch-local: build
+	$(SITE_EXE) -- watch
+
 .PHONY: secrets
 secrets:
 	rm -rf provider/secrets/.git
