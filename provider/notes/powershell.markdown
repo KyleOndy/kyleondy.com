@@ -1,12 +1,18 @@
 ---
 title: Powershell
 published: 2016-04-27 12:00:00
-updated: 2016-04-27 12:00:00
+updated: 2017-10-12 09:05:45
 subtitle: Quick notes on common powershell commands
 tags: notes, windows, powershell
 ---
 
-Some notes below on powershell.
+Reading a file in realtime, just like `tail -f` with linux
+
+~~~{.powershell}
+Get-Content -Path \\Path\To\File -Wait
+~~~
+
+----
 
 Copy groups from one user to another
 
