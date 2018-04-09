@@ -54,7 +54,8 @@ before_deploy:
 
 deploy:
   on:
-    condition: $DEPLOYABLE = true && false
+    #condition: $DEPLOYABLE = true && false
+    condition: null
     branch: master
   provider: s3
   access_key_id: $S3_ID
