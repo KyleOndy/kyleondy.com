@@ -21,7 +21,6 @@ env:
   global:
     - GLOBAL_ARGS=--no-terminal --install-ghc
   matrix:
-    - MATRIX_ARGS=--resolver=lts-9.21 DEPLOYABLE=true # pinned LTS for relases
     - MATRIX_ARGS=--resolver=lts-9
     - MATRIX_ARGS=--resolver=lts-11
     - MATRIX_ARGS=--resolver=nightly
@@ -30,7 +29,6 @@ env:
 matrix:
   allow_failures:
     # lts-next
-    - env: MATRIX_ARGS=--resolver=lts-9
     - env: MATRIX_ARGS=--resolver=lts-11
     - env: MATRIX_ARGS=--resolver=nightly
 
@@ -48,22 +46,3 @@ script:
 # Build the package, its tests, and its docs and run the tests
 #- stack --no-terminal test --haddock --no-haddock-deps
 - make check
-
-before_deploy:
-    - pip install --user awscli
-
-deploy:
-  on:
-    #condition: $DEPLOYABLE = true && false
-    condition: null
-    branch: master
-  provider: s3
-  access_key_id: $S3_ID
-  secret_access_key: $S3_SECRET
-  bucket: www.kyleondy.com
-  region: us-east-1
-  skip_cleanup: true
-  local_dir: _site
-
-after_deploy:
-  - ~/.local/bin/aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION --paths '/*'<Paste>
