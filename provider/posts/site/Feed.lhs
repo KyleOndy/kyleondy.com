@@ -31,7 +31,8 @@ feeds][hakyll-feeds], but here it is.
 {-# LANGUAGE OverloadedStrings #-}
 module Feed where
 import Hakyll
-import Common (postsPattern, taggedCtx)
+import Common
+import Contexts
 \end{code}
 
 

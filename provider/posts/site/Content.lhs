@@ -24,7 +24,9 @@ A few kinds of contnet
 {-# LANGUAGE OverloadedStrings #-}
 module Content where
 import Hakyll
+import Routes (slugify)
 import Common
+import Contexts
 import Data.Monoid       ((<>))
 import Data.Maybe        (fromMaybe)
 import Data.Char         (toLower, isAlphaNum)
@@ -46,7 +48,7 @@ taggedContent pattern tags = match pattern $ do
       >>= return . fmap demoteHeaders
       >>= relativizeUrls
       >>= loadAndApplyTemplate "templates/post.html" (taggedCtx tags)
-      >>= loadAndApplyTemplate "templates/default.html" defaultContext
+      >>= loadAndApplyTemplate "templates/default.html" defaultCtx
       >>= withItemBody removeIndexHtml
 \end{code}
 
@@ -59,7 +61,7 @@ postIndex tags = create ["posts.html"] $ do
     recentPosts <- recentFirst =<< loadAll postsPattern
     let ctx = constField "title" "Posts - Most Recent" <>
                 listField "posts" (taggedCtx tags) (return recentPosts) <>
-                defaultContext
+                defaultCtx
     makeItem ""
       >>= loadAndApplyTemplate "templates/posts.html" ctx
       >>= loadAndApplyTemplate "templates/default.html" ctx
@@ -73,7 +75,7 @@ noteIndex tags = create ["notes.html"] $ do
     orderedNotes <- lexicographyOrdered =<< loadAll notesPattern
     let ctx = constField "title" "Notes - Alphabetical" <>
               listField "posts" (taggedCtx tags) (return orderedNotes) <>
-              defaultContext
+              defaultCtx
     makeItem ""
             >>= loadAndApplyTemplate "templates/posts.html" ctx
             >>= loadAndApplyTemplate "templates/default.html" ctx
@@ -94,7 +96,7 @@ index tags = match "index.html" $ do
             listField "posts" (taggedCtx tags) (return recentPosts) <>
             listField "notes" (taggedCtx tags) (return recentNotes) <>
             field "tags" (\_ -> renderTagList tags) <>
-            defaultContext
+            defaultCtx
     getResourceBody
       >>= applyAsTemplate indexContext
       >>= loadAndApplyTemplate "templates/default.html" indexContext
@@ -114,7 +116,7 @@ tagIndex tags = tagsRules tags $ \tag p-> do
     taggedItems <- lexicographyOrdered =<< loadAll p
     let ctx = constField "title" title <>
                 listField "posts" (taggedCtx tags) (return taggedItems) <>
-                defaultContext
+                defaultCtx
     makeItem ""
       >>= loadAndApplyTemplate "templates/posts.html" ctx
       >>= loadAndApplyTemplate "templates/default.html" ctx
@@ -153,7 +155,7 @@ define here.
 titleFromMetadata :: Metadata -> Routes
 titleFromMetadata meta = fromMaybe idRoute $
   mkName <$> getField "title"
-  where mkName t    = setBaseName $ title t
+  where mkName t    = setBaseName $ slugify t
         getField    = (`lookupString` meta)
         title       = map toLower . intercalate "-"
                     . (filter (not . null))

@@ -18,6 +18,8 @@ import           GHC.IO.Encoding
 import           Hakyll
 import           Common
 import           Content
+import          Contexts
+import           Compilers
 import           Feed
 import           Control.Applicative (liftA2)
 \end{code}
@@ -25,12 +27,13 @@ import           Control.Applicative (liftA2)
 Thigns that do not need tags
 
 \begin{code}
-templates, static, pages, secrets, secretsStatic :: Rules ()
+templates, static, pages, sass, secrets, secretsStatic :: Rules ()
 simpleRules :: Rules ()
 simpleRules = do
   templates
   static
   pages
+  sass
   secrets
   secretsStatic
 
@@ -43,19 +46,26 @@ static = match staticPattern $ do
 pages = match pagesPattern $ do
   route $  subFolderRoute `composeRoutes` gsubRoute "pages/" (const "")
   compile $ customPandocCompiler
-    >>= loadAndApplyTemplate "templates/page.html" defaultContext
-    >>= loadAndApplyTemplate "templates/default.html" defaultContext
+    >>= loadAndApplyTemplate "templates/page.html" defaultCtx
+    >>= loadAndApplyTemplate "templates/default.html" defaultCtx
     >>= relativizeUrls
+\end{code}
+
+\begin{code}
+sass = match "css/*.sass" $ do
+  route $ setExtension "css"
+  compile compressScssCompiler
 \end{code}
 
 For secret things
 
+These don't resolve with git
 \begin{code}
 secrets = match "secrets/**.markdown" $ do
   route $ subFolderRoute `composeRoutes` gsubRoute "secrets/" (const "")
   compile $ customPandocCompiler
-    >>= loadAndApplyTemplate "templates/page.html" defaultContext
-    >>= loadAndApplyTemplate "templates/default.html" defaultContext
+    >>= loadAndApplyTemplate "templates/page.html" defaultCtx
+    >>= loadAndApplyTemplate "templates/default.html" defaultCtx
     >>= relativizeUrls
 
 secretsStatic = match "secrets/**" $ do

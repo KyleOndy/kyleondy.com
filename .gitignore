@@ -3,6 +3,7 @@ _site/
 _cache/
 _build/
 _build
+.sass-cache
 
 # for the time being. Working a better solution
 deploy.sh
