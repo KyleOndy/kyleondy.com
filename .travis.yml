@@ -31,6 +31,7 @@ env:
 matrix:
   allow_failures:
     # lts-next
+    - env: MATRIX_ARGS=--resolver=lts-10
     - env: MATRIX_ARGS=--resolver=lts-11
     - env: MATRIX_ARGS=--resolver=nightly
 
