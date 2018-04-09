@@ -15,6 +15,7 @@ addons:
   apt:
     packages:
       - libgmp-dev
+      - ruby-sass
 
 # Test a LTS and nightly resolver
 env:
