@@ -2,12 +2,12 @@
 date: 2017-10-09 19:00:00
 updated: 2017-10-09 19:00:00
 tags: hakyll, haskell, generating-this-site, literate-programs
-title: Generating this website // Part 5
+title: Generating this website // Part 4
 subtitle: Contexts
 ---
 
 <aside class= "sidenote">
-This is part five? of the "generating this website" series.  To read the rest
+This is part four of the "generating this website" series.  To read the rest
 of the series, go to the series index [here][generating-this-website]
 </aside>
 
@@ -139,3 +139,6 @@ complicated than we need, so I've extracted the parts we need into a simple
 supported formats `readTime` will simply crash with an error -- not the best
 error handling but since we're always going to be running this interactively it
 doesn't really matter.
+
+
+[generating-this-website]: /tags/generating-this-site/

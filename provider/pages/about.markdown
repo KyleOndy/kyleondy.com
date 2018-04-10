@@ -1,11 +1,11 @@
 ---
 title: A little about Kyle
 subtitle: What Do They Know? Do They Know Things?? Let's Find Out!
-updated: 2017-10-03 22:10:32
+updated: 2017-10-03
 ---
 
-This is the personal website of Kyle Ondy,a software developer current living in New Jersery.
-My main intresets are in functional programming, automation,  and math, so I mainly write about those.
+This is the personal website of Kyle Ondy,a software developer current living in New Jersey.
+My main interests are in functional programming, automation, and math, so I mainly write about those.
 
 Profile
 -------
@@ -13,7 +13,6 @@ Profile
 Here is a summary of my presence on some of the various social media networks:
 
 * [Github](https://github.com/kyleondy)
-* [Twitter](https://twitter.com/kyleondy)
 * [Keybase.io](https://keybase.io/kyleondy)
 * [LinkedIn](https://www.linkedin.com/in/kyleondy)
 
@@ -45,7 +44,7 @@ Simplified BSD License, reproduced below.
 
 ### Simplified BSD (2-Clause) License
 
-Copyright (c) 2014-2017, Kyle A. Ondy.<br />
+Copyright (c) 2014-2018, Kyle A. Ondy.<br />
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

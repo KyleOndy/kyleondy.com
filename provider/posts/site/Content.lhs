@@ -2,12 +2,12 @@
 date: 2017-10-01 21:42:26
 updated: 2017-10-01 21:41:14
 tags: hakyll, haskell, generating-this-site, literate-programs
-title: Generating this website // Part 2
+title: Generating this website // Part 3
 subtitle: Making posts
 ---
 
 <aside class= "sidenote">
-This is part two of the "generating this website" series.  To read the rest
+This is part three of the "generating this website" series.  To read the rest
 of the series, go to the series index [here][generating-this-website]
 </aside>
 

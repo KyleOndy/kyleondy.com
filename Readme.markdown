@@ -8,27 +8,7 @@ It's based pretty heavily upon the following sites:
 
 ## ToDo ##
 - Customise styling to make it more 'me'.
+  - syntax highlighting broken?
 - add support for 'updated dates'. <https://david.sferruzza.fr/posts/2014-06-18-new-blog-with-hakyll.html>
 - automate Resume / CV building
 - the PGP page should build from pgp.txt. There is no need to manually change it twice.
-
-### Deployment workflow (Rough thoughts)
-
-- Commit to master
-- CI builds
-- CI tests
-- CI runs below
-- webhook with new source and restart docker container
-- new site is served, yay!
-
-~~~{.bash}
-git clone -b html_source  git@github.com:KyleOndy/kyleondy.com.git html_source
-rm -r html_source/*
-cp -a _site/* html_source
-cd html_source
-git add .
-git commit --no-gpg-sign -m "Commit message"
-git push
-~~~
-
-Resources are cheap. One container per site. East to remove / add on the fly

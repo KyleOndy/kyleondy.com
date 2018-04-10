@@ -55,4 +55,4 @@ Make sure the document and signature file, .asc or .sig commonly, are in the sam
 If the signature has validated, you can be assured you are reading the document as I intended.
 
 If the signature fails, the document has been modified by something at some point.
-You can always find a copy of my [most recent and fully detailed resume](/files/Kyle.Ondy-Resume.pdf) and its [signature](/files/Kyle.Ondy-Resume.pdf.sig)
+You can always find a copy of my [most recent and fully detailed resume](#/files/Kyle.Ondy-Resume.pdf) and its [signature](#/files/Kyle.Ondy-Resume.pdf.sig)

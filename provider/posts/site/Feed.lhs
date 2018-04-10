@@ -2,12 +2,12 @@
 date: 2017-10-04 07:32:12
 updated: 2017-10-04 07:32:12
 tags: hakyll, haskell, generating-this-site, literate-programs
-title: Generating this website // Part 4
+title: Generating this website // Part 7
 subtitle: Creating the atom feed
 ---
 
 <aside class= "sidenote">
-This is part four of the "generating this website" series.  To read the rest
+This is part seven of the "generating this website" series.  To read the rest
 of the series, go to the series index [here][generating-this-website]
 </aside>
 
