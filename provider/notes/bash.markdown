@@ -1,12 +1,13 @@
 ---
 title: Bash
-published: 2017-09-27 12:00:00
-updated: 2017-09-27 12:00:00
+updated: 2018-05-03T20:21:34Z
 subtitle: shell things
 tags: notes, bash
 ---
 
 # Line editing
+
+Should work in bash and zsh, and in some readline environments.
 
 ~~~{.bash}
 ^u # delete everything before the cursor
@@ -15,3 +16,25 @@ tags: notes, bash
 ^d # delete character after the cursor
 ^w # delete from cursor to the start of previous word
 ~~~
+
+# Flow Control
+
+If / else if / else
+
+```bash
+if [ "$foo" -eq 0 ]; then
+  echo "true"
+elif [ "$foo -gt 0 ]
+  echo "false"
+else
+  echo "maybe"
+fi
+```
+
+For loop.
+
+```bash
+for f in ${SET}; then
+  echo "${f}"
+fi
+```

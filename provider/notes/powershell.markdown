@@ -1,15 +1,9 @@
 ---
 title: Powershell
-published: 2016-04-27 12:00:00
-updated: 2017-10-12 09:05:45
+updated: 2018-05-03T20:32:06Z
 subtitle: Quick notes on common powershell commands
 tags: notes, windows, powershell
 ---
-
-<aside class="sidenote">
-Currently powershell highlighting is not working. Support for powershell highlighting via [skylighting](https://github.com/jgm/skylighting) was added in [this commit](https://github.com/jgm/skylighting/commit/e27223aa511f572bf1efbf7fb1a58d41d2c75f15).
-Once `skylighting>=0.4.1` make it to a [LTS snapshot](https://www.stackage.org/package/skylighting) highlighting will begin to work.
-</aside>
 
 Reading a file in realtime, just like `tail -f` with linux
 

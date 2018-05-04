@@ -1,9 +1,7 @@
 <ul>
     $for(posts)$
-    <li>
-        <p>
-            “<a href="$url$">$title$</a>” ‒ $updated$<br /> $subtitle$
-        </p>
-    </li>
+        <li>
+            <a href="$url$">$title$</a> - $createdDateTime$
+        </li>
     $endfor$
 </ul>

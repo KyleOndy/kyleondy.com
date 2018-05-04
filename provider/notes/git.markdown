@@ -1,6 +1,5 @@
 ---
 title: Git
-published: 2015-11-20 12:00:00
 updated: 2017-10-09 11:51:00
 subtitle: Less commonly used commands. Not really.
 tags: notes, git
@@ -8,9 +7,9 @@ tags: notes, git
 
 Push to multiple remotes with a single push.
 
-~~~{.bash}
+``` bash
 git remote set-url --add --push <remote> <newurl>
-~~~
+```
 
 ----
 

@@ -1,14 +1,14 @@
 ---
 title:  Automatic installation of vim-plug
 subtitle: Bootstrapping your neovim just a little bit easier
-published: 2016-10-04 12:00:00
+created: 2016-10-04 12:00:00
 updated: 2016-10-04 12:00:00
 tags: vim, neovim
 ---
 
 Add the following to the very top of your neovim config
 
-```viml
+``` bash
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
 v silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim

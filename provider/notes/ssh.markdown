@@ -1,6 +1,5 @@
 ---
 title: SSH
-published: 2016-12-14 12:00:00
 updated: 2016-12-14 12:00:00
 subtitle: Quick notes on common ssh usage
 tags: notes, ssh

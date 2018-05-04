@@ -1,6 +1,5 @@
 ---
 title: Vim
-published: 2015-11-20 12:00:00
 updated: 2015-11-20 12:00:00
 subtitle: Text editing like a ninja
 tags: notes, vim

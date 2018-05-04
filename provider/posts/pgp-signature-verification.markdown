@@ -1,9 +1,8 @@
 ---
 title: PGP signature verification
-published: 2016-01-06 12:00:00
-updated: 2016-01-25 12:00:00
 subtitle: A primer on how to verify a detached pgp signature is valid
 tags: pgp
+created: 2018-05-02T22:01:42Z
 ---
 
 ## Quick Version ##

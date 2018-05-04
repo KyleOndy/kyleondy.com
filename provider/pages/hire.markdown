@@ -1,15 +1,17 @@
 ---
-title: Kyle is looking for new opportunities
+title: Kyle is Available for Hire
 subtitle: Kyle wants to work for <b>you</b>!
-published: 2015-12-12
-updated: 2018-04-09
+updated: 2018-05-03T20:33:12Z
 ---
 
 <aside class="sidenote">
-I am actively seeking a transition to a new opportunity that will challenge me and allow both personal and professional growth during the spring of 2018.
+I am actively seeking a transition to a new opportunity that will challenge me and allow both personal and professional growth during the fall or winter of 2017--2018.
 </aside>
 
-Kyle like to solve difficult and unconventional problems.
+Kyle needs to enjoy and like day to day tasks.
+Kyle like to solve difficult and unconventional problems. Bespoke, uncommon domain, working closely with experts in the domain
+
+
 
 # Where
 

@@ -15,24 +15,21 @@ addons:
   apt:
     packages:
       - libgmp-dev
-      - ruby-sass
 
 # Test a LTS and nightly resolver
 env:
   global:
     - GLOBAL_ARGS=--no-terminal --install-ghc
   matrix:
-    - MATRIX_ARGS=--resolver=lts-9
-    - MATRIX_ARGS=--resolver=lts-10
     - MATRIX_ARGS=--resolver=lts-11
+    - MATRIX_ARGS=--resolver=lts-12
     - MATRIX_ARGS=--resolver=nightly
 
 # Allow nightly resolver and next version of LTS builds to fail
 matrix:
   allow_failures:
     # lts-next
-    - env: MATRIX_ARGS=--resolver=lts-10
-    - env: MATRIX_ARGS=--resolver=lts-11
+    - env: MATRIX_ARGS=--resolver=lts-12
     - env: MATRIX_ARGS=--resolver=nightly
 
 before_install:
@@ -42,10 +39,11 @@ before_install:
 - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
 install:
+  # build cabal first to prevent OOM errors
+- stack $GLOBAL_ARGS $MATRIX_ARGS build -j 1 Cabal
 # Build dependencies
 - stack $GLOBAL_ARGS $MATRIX_ARGS test --only-dependencies
 
 script:
-# Build the package, its tests, and its docs and run the tests
-#- stack --no-terminal test --haddock --no-haddock-deps
-- make check
+# run hakyll tests (check for dead links)
+- make build clean test

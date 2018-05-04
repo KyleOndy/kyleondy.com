@@ -1,0 +1,26 @@
+<article class="post">
+  <div class="notice">
+    Spot an error? Know how to make this page better? I appreciate <a href="$gitEditUrl$">pull requests</a>.
+    </div>
+  <header class="post-header">
+    $if(title)$
+    <h1 class="title">$title$</h1>
+    $endif$ $if(subtitle)$
+    <div class="subtitle">$subtitle$</div>
+    $endif$
+    <section class="post-meta">
+      $if(createdDateTime)$
+      <!-- todo: date stuff -->
+      <time class="post-date" datetime="$createdDateTime$">Created: $createdDateTime$</time>
+      $endif$
+      $if(updatedDateTime)$
+      <time class="updated-date" datetime="$updatedDateTime$">Updated: $updatedDateTime$</time>
+      $endif$
+    </section>
+    <br />
+  </header>
+  $body$
+  <footer class="post-footer">
+    <a href="$gitSourceUrl$">Source</a> | <a href="$gitHistoryUrl$">History</a> | <a href="$gitCommitUrl$">Commit</a>
+  </footer>
+</article>

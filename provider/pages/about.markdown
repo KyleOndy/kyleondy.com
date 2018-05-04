@@ -1,7 +1,7 @@
 ---
 title: A little about Kyle
 subtitle: What Do They Know? Do They Know Things?? Let's Find Out!
-updated: 2017-10-03
+updated: 2018-05-03T20:32:47Z
 ---
 
 This is the personal website of Kyle Ondy,a software developer current living in New Jersey.
@@ -13,6 +13,7 @@ Profile
 Here is a summary of my presence on some of the various social media networks:
 
 * [Github](https://github.com/kyleondy)
+* [Twitter](https://twitter.com/kyleondy)
 * [Keybase.io](https://keybase.io/kyleondy)
 * [LinkedIn](https://www.linkedin.com/in/kyleondy)
 
