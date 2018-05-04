@@ -1,14 +1,11 @@
 <article class="post">
-    <header class="post-header">
-        $if(title)$
-        <h1 class="title">$title$</h1>
-        $endif$ $if(subtitle)$
-        <h2 class="subtitle">$subtitle$</h2>
-        $endif$
-        $if(updatedDateTime)$
-        <!-- todo: formatting -->
-        <p>Lat updated: $updatedDateTime$.</p>
-        $endif$
-    </header>
-    $body$
+  <header class="post-header">
+    $if(title)$
+    <h1 class="title">$title$</h1>
+    $endif$ $if(subtitle)$
+    <div class="subtitle">$subtitle$</div>
+    $endif$
+    <br />
+  </header>
+  $body$
 </article>
