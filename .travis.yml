@@ -26,29 +26,35 @@ env:
     - MATRIX_ARGS=--resolver=lts-12
     - MATRIX_ARGS=--resolver=nightly
 
-# Allow nightly resolver and next version of LTS builds to fail
+# Allow nightly resolver, next version of LTS, and patch versions of current LTS builds to fail
 matrix:
   allow_failures:
-    # lts-next
+    # make sure patch versions don't cause problems
     - env: MATRIX_ARGS=--resolver=lts-11
+    # lts-next
     - env: MATRIX_ARGS=--resolver=lts-12
+    # bleeding edge
     - env: MATRIX_ARGS=--resolver=nightly
 
 before_install:
 # Download and unpack the stack executable
 - mkdir -p ~/.local/bin
 - export PATH=$HOME/.local/bin:$PATH
+# retry if there is a network issue
 - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
 install:
 # build cabal first to prevent OOM errors
 - stack $GLOBAL_ARGS $MATRIX_ARGS build -j 1 Cabal
 # pandoc can take a long time to build, causing travis to exit
+# building some prereqs helps avoid this
 - stack $GLOBAL_ARGS $MATRIX_ARGS build pandoc-types skylighting http-client
+# pandoc can still take 10+ minutes to build, wait on it
 - travis_wait stack $GLOBAL_ARGS $MATRIX_ARGS build pandoc
-# Build dependencies
+# Build the remainder of the dependencies
 - stack $GLOBAL_ARGS $MATRIX_ARGS test --only-dependencies
 
 script:
 # run hakyll tests (check for dead links)
+# If build fails, we would not be able to run these tests
 - make STACK_ARGS="$GLOBAL_ARGS $MATRIX_ARGS" test
