@@ -9,7 +9,7 @@ My PGP key can be found in the following locations.
 * [/pgp.txt](/pgp.txt).
 * [SKS Keyserver](https://sks-keyservers.net/pks/lookup?op=get&search=0xDB0E3C33491F91C9)
 
-You can always check my [Keybase account, KyleOndy](https://keybase.io/kyleondy) to check and validate my identities.
+You can always check my [Keybase account, KyleOndy](https://keybase.io/kyleondy) to validate my identities.
 
 ## Key Below ##
 
