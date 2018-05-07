@@ -21,6 +21,7 @@ env:
   global:
     - GLOBAL_ARGS=--no-terminal --install-ghc
   matrix:
+    - MATRIX_ARGS=--resolver=lts-11.7
     - MATRIX_ARGS=--resolver=lts-11
     - MATRIX_ARGS=--resolver=lts-12
     - MATRIX_ARGS=--resolver=nightly
@@ -29,6 +30,7 @@ env:
 matrix:
   allow_failures:
     # lts-next
+    - env: MATRIX_ARGS=--resolver=lts-11
     - env: MATRIX_ARGS=--resolver=lts-12
     - env: MATRIX_ARGS=--resolver=nightly
 
