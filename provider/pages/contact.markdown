@@ -5,6 +5,7 @@ updated: 2017-09-26
 ---
 
 ## Email
+
 * [kyle@ondy.me](mailto:kyle@ondy.me) (preferred)
 * [kyleondy@gmail.com](mailto:kyleondy@gmail.com)
 
