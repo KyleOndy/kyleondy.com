@@ -3,7 +3,7 @@ title: Open Source
 updated: 2016-08-12
 subtitle: Open source projects I have contributed to with time, code, or documentation
 ---
-These are some of the projects I have directly committed code or patches, improved documentation, filed and fixed bugs,  or were involved in design discussions.
+These are some of the projects I have directly committed code or patches, improved documentation, filed and fixed bugs, or were involved in design discussions.
 
 * [docker-mailserver](https://github.com/tomav/docker-mailserver) - A full stack but simple mailserver (SMTP, IMAP, anti-spam, anti-virus, SSL...) using Docker.
 * [sovereign](https://github.com/sovereign/sovereign) - A set of Ansible playbooks to build and maintain your own private cloud: email, calendar, contacts, file sync, IRC bouncer, VPN, and more.
