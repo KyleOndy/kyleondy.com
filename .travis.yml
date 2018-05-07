@@ -51,4 +51,4 @@ install:
 
 script:
 # run hakyll tests (check for dead links)
-- make STACK_ARGS="$GLOBAL_ARGS $MATRIX_ARGS" SITE_ARGS="--verbose" build clean test
+- make STACK_ARGS="$GLOBAL_ARGS $MATRIX_ARGS" SITE_ARGS="--verbose" test
