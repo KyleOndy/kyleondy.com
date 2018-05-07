@@ -1,6 +1,6 @@
 STACK=stack --no-terminal --install-ghc ${STACK_ARGS}
 SITE_NAME=hakyll-kyleondy
-SITE_EXE=$(STACK) exec $(SITE_NAME)
+SITE_EXE=$(STACK) exec $(SITE_NAME) -- ${SITE_ARGS}
 PROVIDER_FOLDER=provider
 ARTIFACT_DIR=_output
 GIT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
@@ -10,16 +10,16 @@ all: clean test
 .PHONY: rebuild
 rebuild:
 	$(STACK) install
-	$(SITE_EXE) -- rebuild
+	$(SITE_EXE) rebuild
 
 .PHONY: build
 build:
 	$(STACK) install
-	$(SITE_EXE) -- build
+	$(SITE_EXE) build
 
 .PHONY: test
 test: build
-	$(SITE_EXE) -- check
+	$(SITE_EXE) check
 
 .PHONY: clean-full
 clean-full: clean
@@ -29,11 +29,11 @@ clean-full: clean
 .PHONY: clean
 clean:
 	rm -rf $(ARTIFACT_DIR)
-	$(SITE_EXE) -- clean
+	$(SITE_EXE) clean
 
 .PHONY: server
 server: build
-	$(SITE_EXE) -- server
+	$(SITE_EXE) server
 
 .PHONY: package
 package:
@@ -44,11 +44,11 @@ package:
 
 .PHONY: watch
 watch: build
-	$(SITE_EXE) -- watch
+	$(SITE_EXE) watch
 
 .PHONY: watch-external
 watch-external: build
-	$(SITE_EXE) -- watch --host '0.0.0.0' --port '8822'
+	$(SITE_EXE) watch --host '0.0.0.0' --port '8822'
 
 .PHONY: secrets
 secrets:
