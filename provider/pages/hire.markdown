@@ -12,16 +12,21 @@ To ensure I see your message, follow the directions found at the bottom of this 
 I am looking for a positive company culture as much, if not more than he needs a challenging problem domain.
 I like to solve difficult and unconventional problems along with motivated small teams.
 
-I currently happily reside in the Central NJ / NYC Area.
+## Where
+
+I happily reside in the Central NJ / NYC Area.
 I would prefer a job not tied to an office, but I am open to work within a reasonable commute of my geographic area.
 At this time I **am not** willing to relocate.
 
-# About Me
+## About Me
 
-I loath inefficiencies, particularly easily eliminated inefficiencies.
-I find great satisfaction increasing productivity via automation.
+I find great satisfaction increasing productivity via automation, both for saving resources, and for documentation via automation.
+I have recently fallen hard for functional programming am try to apply the concepts I am learning to problems at hand.
 
-# What I am Looking For
+Working with short iteration and feedback cycles is integral to my productivity.
+Testing, scripting, and automation allow my to close the feedback loop effectively solve problems.
+
+## What I am Looking For
 
 * Competitive compensation
 * Interesting and technical problem domain
@@ -29,7 +34,7 @@ I find great satisfaction increasing productivity via automation.
 * Enforced work life balance
 * Ongoing education and mentorship
 
-## Culture
+### Culture
 
 I value the following in the culture where I work.
 
@@ -37,9 +42,9 @@ I value the following in the culture where I work.
 * **Respect** — People respect the people they work with regardless of their role.  People respect users of the software they develop. The company respects the roles of the technical team.
 * **Work/life balance** — People work about 40 hours a week or less. Working on weekends only happens in extreme situations. Work hours are flexible to accommodate personal life. When people leave work at the end of the day, they disconnect from work. The work environment is sustainable, so burnout is rare.
 
-## Pros
+### Pros
 
-The following things will excite me about your organization.
+The following will excite me about your organization.
 
 * Flexible work schedule. 4/10/40, 9/8/80, etc.
 * 20+ days of vacation leave.
@@ -50,21 +55,22 @@ The following things will excite me about your organization.
 * Support for the local tech community.
 * Remote work available.
 
-## Cons
+### Cons
 
 The following things will make me less excited about your organization. They're not dealbreakers, but I will probably ask for greater compensation if some of these practices are present at your company.
 
 * Pager duty or other on-call requirements. This cuts into work/life balance for me.
 * An unlimited vacation policy.
 * Policies that limit what employees can do with their free time (e.g. banning employees from contributing to open source).
+* An excessively corporate structure --- bureaucracy for bureaucracies sake.
 
-## Dealbreaker
+### Dealbreaker
 
 Having a *primary* role supporting either a printer, a phone, or a 'legacy' system. Life is too short.
 
-# Contact me
+## Contact me
 
-Does all of this sound interesting to you? Awesome! You should [contact](/contact) me if you meet all of the following criteria.
+Does all of this sound interesting to you? Awesome! You should [contact](/contact) me if you meet the following criteria.
 
 * You work for the organization you are contacting me about. Ideally, you are part of or work closely with the technical team.
 * You read the post and think your organization would be a good fit for me and vice versa.
