@@ -11,7 +11,7 @@ My PGP key can be found in the following locations.
 
 You can always check my [Keybase account, KyleOndy](https://keybase.io/kyleondy) to validate my identities.
 
-## Key Below ##
+## Key Below
 
     -----BEGIN PGP PUBLIC KEY BLOCK-----
 
