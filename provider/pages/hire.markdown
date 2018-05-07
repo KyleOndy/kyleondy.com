@@ -4,10 +4,13 @@ subtitle: Kyle wants to work for <b>you</b>!
 updated: 2018-05-03T20:33:12Z
 ---
 
-Kyle needs to enjoy and like day to day tasks.
-Kyle like to solve difficult and unconventional problems. Bespoke, uncommon domain, working closely with experts in the domain
+<aside>
+While I am not in an active job search, I will always take the time to consider interesting and unique opportunities.
+To ensure I see your message, follow the directions found at the bottom of this page.
+</aside>
 
-# Where
+I am looking for a positive company culture as much, if not more than he needs a challenging problem domain.
+I like to solve difficult and unconventional problems along with motivated small teams.
 
 I currently happily reside in the Central NJ / NYC Area.
 I would prefer a job not tied to an office, but I am open to work within a reasonable commute of my geographic area.
