@@ -4,13 +4,14 @@ subtitle: What Do They Know? Do They Know Things?? Let's Find Out!
 updated: 2018-05-03T20:32:47Z
 ---
 
-This is the personal website of Kyle Ondy,a software developer current living in New Jersey.
-My main interests are in functional programming, automation, and math, so I mainly write about those.
+This is the personal website of Kyle Ondy,a technology professional living in New Jersey.
+Professionally I enjoy working with automation, CI/CD pipelines, and back-end development.
+In my personal time I spend my time learning about functional programming, it's associated paradigms, and math, so I mainly write about those.
 
 Profile
 -------
 
-Here is a summary of my presence on some of the various social media networks:
+Here is a summary of my presence on some of the social media networks:
 
 * [Github](https://github.com/kyleondy)
 * [Twitter](https://twitter.com/kyleondy)
@@ -20,7 +21,7 @@ Here is a summary of my presence on some of the various social media networks:
 Causes
 ------
 
-Kyle [supports the following causes](/support) and thinks you should look into them.
+Kyle [supports the following causes](/support).
 
 Open Source
 ----------
@@ -36,12 +37,10 @@ Details to contact me can be [found here](/contact)
 Licence
 -------
 
-The text portions of this site are all released under the
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+The text portions of this site are all released under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 Images, unless otherwise noted, are released under the same licence.
 
-All code, including examples and full literate programs, is released under the
-Simplified BSD License, reproduced below.
+All code, including examples and full literate programs, is released under the Simplified BSD License, reproduced below.
 
 ### Simplified BSD (2-Clause) License
 
