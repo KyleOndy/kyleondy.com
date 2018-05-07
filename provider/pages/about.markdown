@@ -8,8 +8,7 @@ This is the personal website of Kyle Ondy,a technology professional living in Ne
 Professionally I enjoy working with automation, CI/CD pipelines, and back-end development.
 In my personal time I spend my time learning about functional programming, it's associated paradigms, and math, so I mainly write about those.
 
-Profile
--------
+## Profile
 
 Here is a summary of my presence on some of the social media networks:
 
@@ -17,25 +16,23 @@ Here is a summary of my presence on some of the social media networks:
 * [Twitter](https://twitter.com/kyleondy)
 * [Keybase.io](https://keybase.io/kyleondy)
 * [LinkedIn](https://www.linkedin.com/in/kyleondy)
+* [Strava](https://www.strava.com/athletes/4979)
+* [SmashRun](https://smashrun.com/kyle.ondy)
 
-Causes
-------
+## Causes
 
 Kyle [supports the following causes](/support).
 
-Open Source
-----------
+## Open Source
 
 I've contributed to the [following open source projects](/opensource).
 
-Contacting
-----------
+## Contacting
 
 You can verify who I am using my [keybase.io account](https://keybase.io/kyleondy).
 Details to contact me can be [found here](/contact)
 
-Licence
--------
+## Licence
 
 The text portions of this site are all released under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 Images, unless otherwise noted, are released under the same licence.
