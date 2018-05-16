@@ -2,6 +2,7 @@ STACK=stack --install-ghc ${STACK_ARGS}
 SITE_NAME=hakyll-kyleondy
 SITE_EXE=$(STACK) exec $(SITE_NAME) -- ${SITE_ARGS}
 PROVIDER_FOLDER=provider
+SITE_FOLDER=_site
 GIT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 
 all: clean test
@@ -47,5 +48,5 @@ secrets:
 	git clone --depth=1 git@gitlab.com:kyleondy/kyleondy.com.secret provider/secrets
 
 .PHONY: deploy
-deploy: clean secrets test
-	./deploy.sh $(GIT_BRANCH)
+deploy: clean build secrets test
+	s3_website push --dry-run
