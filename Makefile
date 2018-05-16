@@ -49,4 +49,5 @@ secrets:
 
 .PHONY: deploy
 deploy: clean build secrets test
+	@echo "$(shell git rev-parse --verify HEAD)" > $(SITE_FOLDER)/head.txt
 	s3_website push --dry-run
