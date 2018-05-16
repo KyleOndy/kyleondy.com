@@ -1,4 +1,4 @@
-STACK=stack --no-terminal --install-ghc ${STACK_ARGS}
+STACK=stack --install-ghc ${STACK_ARGS}
 SITE_NAME=hakyll-kyleondy
 SITE_EXE=$(STACK) exec $(SITE_NAME) -- ${SITE_ARGS}
 PROVIDER_FOLDER=provider
