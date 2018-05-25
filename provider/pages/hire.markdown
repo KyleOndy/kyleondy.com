@@ -9,7 +9,7 @@ While I am not in an active job search, I will always take the time to consider 
 To ensure I see your message, follow the directions found at the bottom of this page.
 </aside>
 
-I am looking for a positive company culture as much, if not more than he needs a challenging problem domain.
+I am looking for a positive company culture as much, if not more than the need for a challenging problem domain.
 I like to solve difficult and unconventional problems along with motivated small teams.
 
 ## Where
@@ -24,7 +24,7 @@ I find great satisfaction increasing productivity via automation, both for savin
 I have recently fallen hard for functional programming am try to apply the concepts I am learning to problems at hand.
 
 Working with short iteration and feedback cycles is integral to my productivity.
-Testing, scripting, and automation allow my to close the feedback loop effectively solve problems.
+Due to my work style, I make extensive use of testing, scripting, and automation to allow me to close the feedback loop while solving problems.
 
 ## What I am Looking For
 
@@ -50,7 +50,7 @@ The following will excite me about your organization.
 * 20+ days of vacation leave.
 * 401k match.
 * Donation Matching
-* Support for employees using company time for things like professional development, open source contributions, 20% time, community outreach.
+* Support for employees using company time for enrichment like professional development, open source contributions, 20% time, community outreach.
 * Support for employees attending conferences.
 * Support for the local tech community.
 * Remote work available.

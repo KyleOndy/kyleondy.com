@@ -6,6 +6,11 @@ updated: 2016-10-04 12:00:00
 tags: vim, neovim
 ---
 
+<aside>
+This is an outdated article and is here for prosperities sake.
+The following information is more than likely woefully out of date.
+</aside>
+
 Add the following to the very top of your neovim config
 
 ``` bash

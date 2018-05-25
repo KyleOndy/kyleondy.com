@@ -5,7 +5,7 @@ subtitle: Notes and quick refrence on formal syntax I can never seem to remember
 tags: notes
 ---
 
-# em-dash / en-dash / hyphon
+# em-dash / en-dash / hyphen
 
 These are important distinctions to make since I use [smart punctionation](http://pandoc.org/README.html#smart-punctuation) in pandoc.
 Examples taken from [this answer on english.stackexchange.com](https://english.stackexchange.com/questions/2116/when-should-i-use-an-em-dash-an-en-dash-and-a-hyphen).

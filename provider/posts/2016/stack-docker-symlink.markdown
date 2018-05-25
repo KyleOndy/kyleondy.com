@@ -6,6 +6,11 @@ subtitle: Finding the problem that causes an 'openBinaryFile' error when running
 tags: stack, docker
 ---
 
+<aside>
+This is an outdated article and is here for prosperities sake.
+The following information is more than likely woefully out of date.
+</aside>
+
 ## The Problem
 
 Using [stack's](http://docs.haskellstack.org/en/stable/README/) awesome [docker integration](http://docs.haskellstack.org/en/stable/docker_integration) I got an unexpected error.

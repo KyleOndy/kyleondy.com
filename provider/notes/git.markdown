@@ -1,7 +1,7 @@
 ---
 title: Git
 updated: 2017-10-09 11:51:00
-subtitle: Less commonly used commands. Not really.
+subtitle: Commands I always seem to forget
 tags: notes, git
 ---
 
@@ -35,7 +35,7 @@ git commit --amend -C HEAD
 
 ----
 
-Decide last n commits should be on a different branch. [Stackoverflow](https://stackoverflow.com/questions/1628563/move-the-most-recent-commits-to-a-new-branch-with-git)
+Decide last *n* commits should be on a different branch. [Stackoverflow](https://stackoverflow.com/questions/1628563/move-the-most-recent-commits-to-a-new-branch-with-git)
 
 ```{.bash}
 git branch newbranch

@@ -5,7 +5,7 @@ subtitle: Commandline subsitution
 tags: notes, sed
 ---
 
-Find and replace a string, with a backup incase I am wrong
+Find and replace a string, with a backup, because mistakes happen.
 
 ~~~{.bash}
 sed -i.sedbak -- 's/foo/bar/g'

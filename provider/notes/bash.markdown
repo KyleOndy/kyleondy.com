@@ -1,7 +1,7 @@
 ---
 title: Bash
 updated: 2018-05-03T20:21:34Z
-subtitle: shell things
+subtitle: common shell notes
 tags: notes, bash
 ---
 

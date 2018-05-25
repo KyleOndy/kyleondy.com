@@ -1,27 +1,33 @@
 ---
 created: 2018-05-03T17:44:39Z
+updated: 2018-05-17T20:00:53Z
 tags: hakyll, haskell, generating-this-site, literate-programs
 title: Generating this website
-subtitle: Literate blueprints
+subtitle: Literally, literate
 ---
 
 <aside>
-The code contained here is all correct, and is what built this site.
-However, I am still working on the documentation and refactoring some thigns.
+The code contained here is all correct, such as *this is* the source that built this site.
+However, I am still working on the documentation in this file and refactoring some of those more opaque code.
 </aside>
 
+
 This site is generated using [Hakyll][hakyll], a [Haskell][haskell] library for generating static websites.
-The [source of this file][siteSource] directly produces both the executable that generates this entire site, and additionally, this post.
+The raw version of this file (see the source link at the bottom of this post) is compiled into the executable that generates this entire site, and in turn is presented as this post.
 This is achieved by writing a [literate][literate] source file.
 
-I am going to assume some working Haskell knowledge going forward.
+Assumptions
+-----------
+
+This is not intended as a beginner tutorial, so some working working knowledge of Haskell is assumed going forward.
 As with all Haskell files, we have to import some modules.
 
 First we import the [`Hakyll`][hakyll] module, which contains the core functionality needed to generate this site.
 Next import is [`Hakyll.Web.Sass`][hakyll-sass] which provides a compiler for [scss][scss].
 
 <aside>
-Currently `hakyll-sass` is my fork.
+Currently `hakyll-sass` is a fork I maintain.
+todo: add link
 I am working on submitting my PRs upstream and will move upstream once published to hackage.
 </aside>
 
@@ -47,9 +53,15 @@ import           Data.Maybe       (fromMaybe)
 import           Data.Ord         (comparing)
 import           Data.Time.Clock  (UTCTime (..))
 import           Data.Time.Format (defaultTimeLocale, formatTime, parseTimeM)
-import           GHC.IO.Encoding  (setLocaleEncoding, setFileSystemEncoding, setForeignEncoding, utf8)
 import           System.FilePath  (replaceBaseName, splitFileName, takeBaseName, takeDirectory, (</>))
 import           System.Process   (readProcess)
+\end{code}
+
+Finally we import some UTF8 encoding to keep things consistent.
+
+\begin{code}
+import           GHC.IO.Encoding  (setLocaleEncoding, setFileSystemEncoding, setForeignEncoding, utf8)
+
 \end{code}
 
 Now that we have everything imported we can set some configuration.
@@ -65,7 +77,34 @@ config = defaultConfiguration
     }
 \end{code}
 
-Instatiatie hakyll with UTF-8 encoding the above configuration.
+Here we define the patterns we use to find content
+
+A 'post' is an article that is ready to be published and included in the sites feed and listing.
+Grab anything, no matter how deep in the post directory, regardless of the file extension.
+\begin{code}
+postsPattern :: Pattern
+postsPattern = "posts/**"
+\end{code}
+
+A 'draft' is an article I am working on, and want rendered, but to not include in any listings.
+It can be accessed by providing the direct URL to the page.
+This is useful if I want to provide someone the ability to proof the post before going live.
+Grab anything, no matter how deep in the drafts directory, regardless of the file extension.
+
+\begin{code}
+draftsPattern :: Pattern
+draftsPattern = "drafts/**"
+\end{code}
+
+notes
+whatever, so I can organize as I see fit.
+
+\begin{code}
+notesPattern :: Pattern
+notesPattern = "notes/**"
+\end{code}
+
+Instantiate hakyll with UTF-8 encoding the above configuration.
 
 \begin{code}
 main :: IO ()
@@ -98,7 +137,7 @@ More detail will follow when we look at the function definition.
     secretsStatic
 \end{code}
 
-I am using [normalize.css][normalize], along with a syntax.css file, these get copied directly to the output directoty.
+I am using [normalize.css][normalize], along with a syntax.css file, these get copied directly to the output directory.
 
 \begin{code}
 staticCss :: Rules ()
@@ -117,7 +156,7 @@ scss = match "css/*.scss" $ do
       compile (compressCssItem <$> sassCompiler)
 \end{code}
 
-The following files are just copied verbaitm due to the `idRoute` and `copyFileCompiler` combination.
+The following files are just copied verbatim due to the `idRoute` and `copyFileCompiler` combination.
 
 \begin{code}
 staticAssets :: Rules ()
@@ -127,11 +166,10 @@ staticAssets = match "static/**" $ do
 \end{code}
 
 index has some unique things.
-Lists of most recent posts, and list of most recently updaated notes
+Lists of most recent posts, and list of most recently updated notes
 
 todo: context
 todo: relativizeUrls
-todo: demoteHeaders
 todo: removeIndexHtml
 
 \begin{code}
@@ -139,8 +177,8 @@ index :: Rules ()
 index = match "index.html" $ do
         route idRoute
         compile $ do
-            posts <- fmap (take 3) . recentlyCreatedFirst =<< loadAll "posts/*"
-            notes <- fmap (take 3) . recentlyUpdatedFirst =<< loadAll "notes/*"
+            posts <- fmap (take 3) . recentlyCreatedFirst =<< loadAll postsPattern
+            notes <- fmap (take 3) . recentlyUpdatedFirst =<< loadAll notesPattern
             let indexCtx =
                     listField "posts" siteContext (return posts) <>
                     listField "notes" siteContext (return notes) <>
@@ -162,7 +200,7 @@ Drop them  into the site template
 pages :: Rules ()
 pages = match "pages/*" $ do
         route $  subFolderRoute `composeRoutes` gsubRoute "pages/" (const "")
-        compile $ ( fmap demoteHeaders <$> pandocCompiler)
+        compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/content.html" siteContext
             >>= loadAndApplyTemplate "templates/site.html" siteContext
             >>= relativizeUrls
@@ -178,7 +216,7 @@ notesIndex :: Rules ()
 notesIndex = create ["notes.html"] $ do
       route subFolderRoute
       compile $ do
-        orderedNotes <- lexicographyOrdered =<< loadAll "notes/*"
+        orderedNotes <- lexicographyOrdered =<< loadAll notesPattern
         let ctx = constField "title" "Notes - Alphabetical" <>
                   listField "notes" siteContext (return orderedNotes) <>
                   siteContext
@@ -189,15 +227,15 @@ notesIndex = create ["notes.html"] $ do
                 >>= withItemBody removeIndexHtml
 \end{code}
 
-the typical 'archive' page is just /posts, a list of all posts.
-One day, when I write a lot, I'll need to figure out pagnation
+The typical 'archive' page is just /posts, a list of all posts.
+One day, when I write a lot, I'll need to figure out pagination
 
 \begin{code}
 postsIndex :: Rules ()
 postsIndex = create ["posts.html"] $ do
         route subFolderRoute
         compile $ do
-            posts <- recentlyCreatedFirst =<< loadAll "posts/*"
+            posts <- recentlyCreatedFirst =<< loadAll postsPattern
             let ctx = constField "title" "All Posts" <>
                     listField "posts" siteContext (return posts) <>
                     siteContext
@@ -208,16 +246,21 @@ postsIndex = create ["posts.html"] $ do
                 >>= withItemBody removeIndexHtml
 \end{code}
 
+<aside>
+At this point my documentation is just a stream of conciousness to help myself and needs to be revisited.
+Proceed at your own risk.
+</aside>
+
 todo:
 posts and notes are treated the same.
-Just a logical seperation
+Just a logical separation
 `.||.` is logical OR for the match
 
 \begin{code}
 postsAndNotes :: Rules ()
-postsAndNotes = match ("posts/*" .||. "notes/*") $ do
-        route $ metadataRoute titleFromMetadata `composeRoutes`  subFolderRoute
-        compile $ ( fmap demoteHeaders <$> pandocCompiler)
+postsAndNotes = match (postsPattern .||. notesPattern .||. draftsPattern) $ do
+        route $ metadataRoute titleFromMetadata `composeRoutes` myPostsRoute `composeRoutes`  subFolderRoute
+        compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/content.html" siteContext
             >>= loadAndApplyTemplate "templates/site.html" siteContext
             >>= relativizeUrls
@@ -231,7 +274,7 @@ First we create the secret pages.
 
 \begin{code}
 secrets :: Rules ()
-secrets = match "secrets/*.markdown"  $ do
+secrets = match "secrets/*"  $ do
   route $ subFolderRoute `composeRoutes` gsubRoute "secrets/" (const "")
   compile $ pandocCompiler
     >>= loadAndApplyTemplate "templates/page.html" siteContext
@@ -241,7 +284,7 @@ secrets = match "secrets/*.markdown"  $ do
 \end{code}
 
 As with the static above, just blindly copy everything in the secret folder to the site root.
-Allows me to host any files abitrarlly.
+Allows me to host any files arbitrarily.
 todo: explain gsubRoute
 
 \begin{code}
@@ -373,6 +416,17 @@ subFolderRoute = customRoute createIndexRoute
                            where p = toFilePath ident
 \end{code}
 
+\begin{code}
+dropDateRoute :: Routes
+dropDateRoute = gsubRoute "/20[0-9]{2}" $ const ""
+
+dropSiteRoute :: Routes
+dropSiteRoute = gsubRoute "site" $ const ""
+
+myPostsRoute :: Routes
+myPostsRoute = dropDateRoute `composeRoutes` dropSiteRoute
+\end{code}
+
 todo: consolidate the below functions
 
 \begin{code}
@@ -452,7 +506,6 @@ slugify = intercalate "-" . words . map (\x -> if x `elem`  allowedChars then to
 
 [hakyll]:         http://jaspervdj.be/hakyll
 [haskell]:        https://www.haskell.org/
-[siteSource]:     https://github.com/KyleOndy/kyleondy.com/blob/master/provider/posts/site.markdown
 [literate]:       https://en.wikipedia.org/wiki/Literate_programming
 [hakyll]:         https://jaspervdj.be/hakyll/
 [hakyll-sass]:    https://github.com/KyleOndy/hakyll-sass

@@ -4,7 +4,7 @@ subtitle: What Do They Know? Do They Know Things?? Let's Find Out!
 updated: 2018-05-03T20:32:47Z
 ---
 
-This is the personal website of Kyle Ondy,a technology professional living in New Jersey.
+This is the personal website of Kyle Ondy, a technology professional living in New Jersey.
 Professionally I enjoy working with automation, CI/CD pipelines, and back-end development.
 In my personal time I spend my time learning about functional programming, it's associated paradigms, and math, so I mainly write about those.
 
@@ -17,7 +17,6 @@ Here is a summary of my presence on some of the social media networks:
 * [Keybase.io](https://keybase.io/kyleondy)
 * [LinkedIn](https://www.linkedin.com/in/kyleondy)
 * [Strava](https://www.strava.com/athletes/4979)
-* [SmashRun](https://smashrun.com/kyle.ondy)
 
 ## Causes
 

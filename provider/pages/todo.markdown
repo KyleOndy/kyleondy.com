@@ -19,18 +19,18 @@ Here are the things I'd like to get done on this site.
 
 - hakyll-sass -> comment on PR -> fork -> upload to hackage / stackage -> PR to include in lts
 - tags
-- 404 page
 - images are not responsive (CirclCI)
+- aside and source blocks don't quite lineup
+- code font - make sure everyone has it? looks different on some devices
 
 ## Infra
 
-- s3 hosting / s3_website
 - logging?
 - feed.xml vs atom.xml
 
 ## New Features / Ideas
 
-- code graph - https://github.com/meoblast001/meosite/tree/master/code-graph. (could add to opensource page)
+- [code graph](https://github.com/meoblast001/meosite/tree/master/code-graph). (could add to opensource page)
 - qutebrowser -> :config-write-py -> add to dots
 
 ## General
