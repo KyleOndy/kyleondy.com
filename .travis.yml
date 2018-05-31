@@ -22,7 +22,7 @@ env:
     - GLOBAL_ARGS=--no-terminal --install-ghc
   matrix:
     fast_finish: true
-    - MATRIX_ARGS=--resolver=lts-11.7 #mainline
+    - MATRIX_ARGS=--resolver=lts-11.9 #mainline
     - MATRIX_ARGS=--resolver=lts-11
     - MATRIX_ARGS=--resolver=lts-12
     - MATRIX_ARGS=--resolver=nightly
