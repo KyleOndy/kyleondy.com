@@ -8,5 +8,5 @@ tags: notes, sed
 Find and replace a string, with a backup, because mistakes happen.
 
 ~~~{.bash}
-sed -i.sedbak -- 's/foo/bar/g'
+sed -i.sedbak -- 's/foo/bar/g' foobar.txt
 ~~~
