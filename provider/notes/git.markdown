@@ -1,6 +1,6 @@
 ---
 title: Git
-updated: 2017-10-09 11:51:00
+updated: 2018-06-03T22:24:25Z
 subtitle: Commands I always seem to forget
 tags: notes, git
 ---
@@ -47,3 +47,11 @@ git checkout <newbranch>
 ---
 
 Rewrap text to `textwidth`: <kbd>g</kbd><kbd>q</kbd>
+
+---
+
+Checkout file from specific commit
+
+~~~{.bash}
+git checkout <COMMIT> -- <path to file>
+~~~
