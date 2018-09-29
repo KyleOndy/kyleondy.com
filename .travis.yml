@@ -25,18 +25,18 @@ env:
   global:
     - GLOBAL_ARGS=--no-terminal --install-ghc
   matrix:
-    - MATRIX_ARGS=--resolver=lts-11.9 #mainline
-    - MATRIX_ARGS=--resolver=lts-11
+    - MATRIX_ARGS=--resolver=lts-12.10 #mainline
     - MATRIX_ARGS=--resolver=lts-12
+    - MATRIX_ARGS=--resolver=lts-13
     - MATRIX_ARGS=--resolver=nightly
 
 # Allow nightly resolver, next version of LTS, and patch versions of current LTS builds to fail
 matrix:
   allow_failures:
     # make sure patch versions don't cause problems
-    - env: MATRIX_ARGS=--resolver=lts-11
-    # lts-next
     - env: MATRIX_ARGS=--resolver=lts-12
+    # lts-next
+    - env: MATRIX_ARGS=--resolver=lts-13
     # bleeding edge
     - env: MATRIX_ARGS=--resolver=nightly
 
