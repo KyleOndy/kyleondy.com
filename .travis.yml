@@ -16,12 +16,15 @@ addons:
     packages:
       - libgmp-dev
 
+# better response times
+matrix:
+  fast_finish: true
+
 # Test a LTS and nightly resolver
 env:
   global:
     - GLOBAL_ARGS=--no-terminal --install-ghc
   matrix:
-    fast_finish: true
     - MATRIX_ARGS=--resolver=lts-11.9 #mainline
     - MATRIX_ARGS=--resolver=lts-11
     - MATRIX_ARGS=--resolver=lts-12
