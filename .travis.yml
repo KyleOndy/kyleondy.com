@@ -25,7 +25,7 @@ env:
   global:
     - GLOBAL_ARGS=--no-terminal --install-ghc
   matrix:
-    - MATRIX_ARGS=--resolver=lts-12.10 #mainline
+    - MATRIX_ARGS=--resolver=lts-12.10 DEPLOY=true
     - MATRIX_ARGS=--resolver=lts-12
     - MATRIX_ARGS=--resolver=lts-13
     - MATRIX_ARGS=--resolver=nightly
@@ -68,3 +68,4 @@ deploy:
   script: gem install s3_website && s3_website push
   on:
     branch: master
+    condition: $DEPLOY
