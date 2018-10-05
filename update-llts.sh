@@ -8,4 +8,4 @@ if [ -z "$1" ]; then
 fi
 
 sed -i "s/^resolver:.*/resolver: $1/g" ./stack.yaml
-sed -i "s/.*#mainline.*/    - MATRIX_ARGS=--resolver=$1 #mainline/g" ./.travis.yml
+sed -i "s/.*DEPLOY=true$/    - MATRIX_ARGS=--resolver=$1 DEPLOY=true/g" ./.travis.yml
