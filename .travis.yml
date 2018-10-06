@@ -16,9 +16,6 @@ addons:
     packages:
       - libgmp-dev
 
-# better response times
-matrix:
-  fast_finish: true
 
 # Test a LTS and nightly resolver
 env:
@@ -32,6 +29,8 @@ env:
 
 # Allow nightly resolver, next version of LTS, and patch versions of current LTS builds to fail
 matrix:
+  # better response times
+  fast_finish: true
   allow_failures:
     # make sure patch versions don't cause problems
     - env: MATRIX_ARGS=--resolver=lts-12
