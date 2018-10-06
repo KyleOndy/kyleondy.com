@@ -5,3 +5,4 @@ rules:
         strict: true
         contexts:
           - continuous-integration/travis-ci
+      required_pull_request_reviews: null
