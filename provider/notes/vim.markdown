@@ -1,13 +1,20 @@
 ---
-title: Vim
-updated: 2015-11-20 12:00:00
-subtitle: Text editing like a ninja
-tags: notes, vim
+title: nvim
+updated: 2018-10-06T14:58:19Z
+subtitle: Notes for neovim (which should mostly work in vim)
+tags: notes, vim, neovim
 ---
 
 # Commonly Used Commands
 
-Here are commands I tend to forget
+I use `neovim` daily, but most of these commands should work in vanilla `vim` too.
+
+## Diff Operations
+
+* Get **chunck** from other buffer (diff obtain): `do`
+* Move **chunk** to other buffer (diff put): `dp`
+* Get **range** from other buffer: `diffg[et]`
+* Move **range** to other buffer: `diffou[t]`
 
 ## Spelling ##
 
@@ -23,3 +30,8 @@ When pasting code use `:set paste` to preserve indenting of pasted code.
 ## Text Wrapping ##
 
 Wrap code to `textwidth`: <kbd>g</kbd><kbd>q</kbd>
+
+## Plugins ##
+
+* Update / Install plugins: `:PlugUpdate`
+
