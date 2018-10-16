@@ -22,7 +22,7 @@ env:
   global:
     - GLOBAL_ARGS=--no-terminal --install-ghc
   matrix:
-    - MATRIX_ARGS=--resolver=lts-12.10 DEPLOY=true
+    - MATRIX_ARGS=--resolver=lts-12.13 DEPLOY=true
     - MATRIX_ARGS=--resolver=lts-12
     - MATRIX_ARGS=--resolver=lts-13
     - MATRIX_ARGS=--resolver=nightly
@@ -60,7 +60,8 @@ install:
 script:
 # run hakyll tests (check for dead links)
 # If build fails, we would not be able to run these tests
-- make STACK_ARGS="$GLOBAL_ARGS $MATRIX_ARGS" test
+# On occasion a link times out or fails to resolve, so retry a few times
+- travis_retry make STACK_ARGS="$GLOBAL_ARGS $MATRIX_ARGS" test
 
 deploy:
   provider: script
