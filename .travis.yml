@@ -22,7 +22,7 @@ env:
   global:
     - GLOBAL_ARGS=--no-terminal --install-ghc
   matrix:
-    - MATRIX_ARGS=--resolver=lts-12.13 DEPLOY=true
+    - MATRIX_ARGS=--resolver=lts-12.10 DEPLOY=true
     - MATRIX_ARGS=--resolver=lts-12
     - MATRIX_ARGS=--resolver=lts-13
     - MATRIX_ARGS=--resolver=nightly
