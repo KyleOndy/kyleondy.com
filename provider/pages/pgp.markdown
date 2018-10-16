@@ -1,7 +1,7 @@
 ---
 title: My Public PGP Key
 subtitle: 0xDB0E3C33491F91C9
-updated: 2018-05-03T20:33:42Z
+updated: 2018-10-16T06:55:59Z
 ---
 
 My PGP key can be found in the following locations.
