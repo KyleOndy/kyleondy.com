@@ -1,6 +1,6 @@
 ---
 created: 2018-05-03T17:44:39Z
-updated: 2018-05-17T20:00:53Z
+updated: 2018-12-09T10:55:30Z
 tags: hakyll, haskell, generating-this-site, literate-programs
 title: Generating this website
 subtitle: Literally, literate
@@ -343,15 +343,23 @@ gitLog filePath format =
   , "--"
   , filePath
   ] ""
+\end{code}
 
+There is a bug in the `gitBranch` function.
+When Travis CI builds this project, the runner checkouts a specific commit, making the branch `head`.
+For now I just hardcoded in to return `master` until I find a solution.
+This should be fine becuase the only use for this value to to inject into the production site, and that _should_ always map to the `master` branch.
+
+\begin{code}
 gitBranch :: IO String
 gitBranch = do
-  branch <-readProcess "git" [
-      "rev-parse"
-    , "--abbrev-ref"
-    , "HEAD"
-    ] ""
-  return $trim branch
+  return "master"
+  -- branch <-readProcess "git" [
+  --     "rev-parse"
+  --   , "--abbrev-ref"
+  --   , "HEAD"
+  --   ] ""
+  -- return $trim branch
 
 
 gitHistoryUrl :: String -> Context String
