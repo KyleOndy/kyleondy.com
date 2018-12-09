@@ -1,6 +1,6 @@
 ---
 title: Open Source
-updated: 2016-08-12
+updated: 2016-08-12T12:00:00Z
 subtitle: Open source projects I have contributed to with time, code, or documentation
 ---
 These are some of the projects I have directly committed code or patches, improved documentation, filed and fixed bugs, or were involved in design discussions.

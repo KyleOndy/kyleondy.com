@@ -1,7 +1,7 @@
 ---
 title: Contact information for Kyle
 subtitle: Drop me a line
-updated: 2017-09-26
+updated: 2017-09-26T12:00:00Z
 ---
 
 ## Email

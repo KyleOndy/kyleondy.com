@@ -1,6 +1,6 @@
 ---
 title: Haskell
-updated: 2017-01-17 12:00:00
+updated: 2017-01-17T12:00:00Z
 subtitle: Quick notes on dos and don'ts of Haskell
 tags: notes, Haskell
 ---

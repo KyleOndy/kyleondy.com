@@ -1,6 +1,6 @@
 ---
 title: English Grammar
-updated: 2016-02-16 12:00:00
+updated: 2016-02-16T12:00:00Z
 subtitle: Notes and quick refrence on formal syntax I can never seem to remember
 tags: notes
 ---

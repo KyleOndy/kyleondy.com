@@ -1,8 +1,8 @@
 ---
 title: Speeding up Haskell builds on CircleCI
 tags: haskell, CI
-created: 2015-12-14 12:00:00
-updated: 2015-12-14 12:00:00
+created: 2015-12-14T12:00:00Z
+updated: 2015-12-14T12:00:00Z
 author: Kyle
 subtitle: Substantially faster Haskell build on CircleCI with Stack
 ---

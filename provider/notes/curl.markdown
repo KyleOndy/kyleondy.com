@@ -1,6 +1,6 @@
 ---
 title: Curl
-updated: 2016-04-06 12:00:00
+updated: 2016-04-06T12:00:00Z
 subtitle: Quick notes on common usages
 tags: notes, curl
 ---
