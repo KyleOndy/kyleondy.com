@@ -45,6 +45,7 @@ function _pretty_time () {
 
 # this feels hacky
 all=$(mktemp)
+echo "SecondsDiff File UpdateFile ModifiedGit" > "$all"
 grep -rl '^updated: ' | while read -r f
 do
   # get the actual git modified date
