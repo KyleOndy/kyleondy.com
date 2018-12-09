@@ -1,32 +1,73 @@
 #!/usr/bin/env bash
 
-# only care about things in the provider dir
-CHANGED_FILES=$(git diff --name-only | grep 'provider' | grep -Ev '\.html$|\.scss$')
-SECONDS_NOW=$(date +%s)
-RETURN_CODE=0
+return_code=0
 
-for f in $CHANGED_FILES; do
-  if (git diff "${f}" | grep -q '+updated:.*$'); then
-    # git diff has a line matching (added)
-
-    # keeping it simple; using cut for now
-    UPDATED=$(grep '^updated: ' "${f}" | cut -d " " -f2)
-    SECONDS_SINCE=$(date --date="$UPDATED" +%s)
-    SECONDS_DIFF=$((SECONDS_NOW-SECONDS_SINCE))
-    HOURS_DIFF=$((SECONDS_DIFF / 60 / 60))
-    if [ "$HOURS_DIFF" -gt "24" ]; then
-      echo "${f} has an 'updated' time ~${HOURS_DIFF} ago"
-      RETURN_CODE=1
-    fi
-  else
-    echo "Could not find 'updated:' in the diff for '${f}'."
-    RETURN_CODE=1
+function _pretty_time () {
+  if [ -z "$1" ]; then
+    echo "Need a time in seconds to print"
+    exit 1
   fi
+  _seconds=$1
+  if [ "$_seconds" -lt 60 ]; then
+    echo "less than a minute"
+    exit 0
+  fi
+  _minutes=$(( _seconds / 60 ))
+  if [ $_minutes -lt 60 ]; then
+    echo "$_minutes minutes"
+    exit 0
+  fi
+  _hours=$(( _minutes / 60 ))
+  if [ $_hours -lt 24 ]; then
+    echo "$_hours hours"
+    exit 0
+  fi
+  _days=$(( _hours / 24 ))
+  if [ $_days -lt 7 ]; then
+    echo "$_days days"
+    exit 0
+  fi
+  _weeks=$(( _days / 7 ))
+  if [ $_weeks -lt 4 ]; then
+    echo "$_weeks weeks"
+    exit 0
+  fi
+  _months=$(( _days / 30 ))
+  if [ $_months -lt 12 ]; then
+    echo "$_months months"
+    exit 0
+  fi
+  _years=$(( _days / 365 ))
+  echo "$_years years"
+  exit 0
+}
+
+
+# this feels hacky
+all=$(mktemp)
+grep -rl '^updated: ' | while read -r f
+do
+  # get the actual git modified date
+  modified_pretty=$(git log -1 --date=iso-strict --format='%ad' -- "$f")
+
+  # seconds since epoch
+  modified_since_epoch=$(date --date="$modified_pretty" +%s)
+
+  # get the date the file says
+  updated=$(grep '^updated: ' "${f}" | awk '{print ""$2" "$3""}')
+  seconds_since_updated_epoch=$(date --date="$updated" +%s)
+
+
+  seconds_diff=$(( modified_since_epoch - seconds_since_updated_epoch ))
+
+  printf "%s %s %s %s\\n" "$seconds_diff" "$f" "$updated" "$modified_pretty" >> "$all"
 done
 
-if [ "$RETURN_CODE" -ne 0 ]; then
+column -t "$all" | sort -g
+echo "$all"
+
+if [ "$return_code" -ne 0 ]; then
   echo "Possible errors. Check before commiting."
   exit 1
 fi
-echo "All looks good!"
 exit 0
