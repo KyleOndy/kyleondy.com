@@ -81,6 +81,7 @@ Here we define the patterns we use to find content
 
 A 'post' is an article that is ready to be published and included in the sites feed and listing.
 Grab anything, no matter how deep in the post directory, regardless of the file extension.
+
 \begin{code}
 postsPattern :: Pattern
 postsPattern = "posts/**"
@@ -293,6 +294,7 @@ secretsStatic = match "secrets/**" $ do
   route $ gsubRoute "secrets/" (const "")
   compile copyFileCompiler
 \end{code}
+
 \begin{code}
 removeIndexHtml :: String -> Compiler String
 removeIndexHtml body = return $ withUrls removeIndexStr body
