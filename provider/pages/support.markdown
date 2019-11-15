@@ -14,7 +14,7 @@ I encourage you to research these causes if you want to know more.
 * [GNU Project](https://www.gnu.org)
 * [Tor Project](https://www.torproject.org)
 * [Creative Commons](https://creativecommons.org/)
-* [NPR](http://www.npr.org)
+* [NPR](https://www.npr.org)
 * [PRX](https://www.prx.org)
 * [Radio Lab](http://www.radiolab.org)
 
@@ -22,5 +22,5 @@ I encourage you to research these causes if you want to know more.
 
 * [American Alpine Club](https://www.americanalpineclub.org)
 * [Access Fund](https://www.accessfund.org)
-* [Mohonk Preserve](http://www.mohonkpreserve.org)
+* [Mohonk Preserve](https://www.mohonkpreserve.org)
 * [The Gunks Climbers' Coalition](http://gunksclimbers.org)
