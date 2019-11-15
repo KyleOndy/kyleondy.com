@@ -1,6 +1,6 @@
 ---
 title: sed
-updated: 2017-10-04 12:00:00
+updated: 2017-10-04T12:00:00Z
 subtitle: Commandline subsitution
 tags: notes, sed
 ---

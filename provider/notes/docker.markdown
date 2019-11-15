@@ -1,6 +1,6 @@
 ---
 title: Docker
-updated: 2016-04-13 12:00:00
+updated: 2016-04-13T12:00:00Z
 subtitle: Quick notes on common docker commands
 tags: notes, docker
 ---
