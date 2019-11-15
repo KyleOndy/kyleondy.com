@@ -1,6 +1,6 @@
 ---
 title: Bash
-updated: 2018-05-03T20:21:34Z
+updated: 2019-02-23T09:50:19Z
 subtitle: common shell notes
 tags: notes, bash
 ---
@@ -34,7 +34,7 @@ fi
 For loop.
 
 ```bash
-for f in ${SET}; then
+for f in ${SET}; do
   echo "${f}"
-fi
+done
 ```
