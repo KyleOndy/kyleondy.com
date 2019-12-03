@@ -10,3 +10,5 @@ deploy.sh
 
 # for things I don't want in the public repo
 provider/secrets
+
+stack.yaml.lock
