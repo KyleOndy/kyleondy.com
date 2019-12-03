@@ -1,6 +1,6 @@
 s3_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
 s3_secret: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
-cloudfront_distribution_id: <%= ENV['CF_DISTRIBUTION'] %>
+cloudfront_distribution_id: EWHMJK01RQIVH
 s3_bucket: www.kyleondy.com
 # set session_token if using temporary credentials with a session token (eg: when assuming a role)
 # session_token: YOUR_AWS_S3_SESSION_TOKEN
