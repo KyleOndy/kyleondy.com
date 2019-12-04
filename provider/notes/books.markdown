@@ -23,7 +23,7 @@ You can find all my current notes on [the 'books' tag](#/tags/books).
   - Art of Assembly Language, 2nd Edition (buy at [no starch press](https://nostarch.com/assembly2.htm))
   - Art of Debugging (by at [no startch press](https://nostarch.com/debugging.htm))
   - Book of F# (buy at [no starch press](https://nostarch.com/fsharp))
-  - **Clojure for the Brave and True** (buy at [no starch press](https://nostarch.com/clojure))
+  - [**Clojure for the Brave and True**](/notes/clojure-for-the-brave-and-true) (buy at [no starch press](https://nostarch.com/clojure))
   - GNU Make Book (buy at [no starch press](https://nostarch.com/gnumake))
   - Learn You a Haskell for Great Good! (buy at [no starch press](https://nostarch.com/lyah.htm))
 - Operating Systems
