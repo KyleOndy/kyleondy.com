@@ -35,7 +35,6 @@ The long term plan is to self host and expose these services via a DMZ next to m
 
 This post will contain an up to date list of posts that go into more detail
 
-- Physical setup
-- Bootstrapping
+- [Bootstrapping](/posts/home-lab-bootstrapping)
 - Configuration Management
 - Running Services
