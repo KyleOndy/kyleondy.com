@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require 'kramdown'
+
+body = Kramdown::Document.new(ARGF.read).to_html
+puts(DATA.read % {body: body})
+
+__END__
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- stuff -->
+  </head>
+  <body>
+    <article>
+      %{body}
+    </article>
+  </body>
+</html>

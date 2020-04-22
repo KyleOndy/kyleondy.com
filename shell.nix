@@ -7,7 +7,7 @@ stdenv.mkDerivation {
 
   buildInputs = [
     ruby
-    jre
+    rubyPackages_2_6.kramdown
   ];
 
   shellHook = ''
