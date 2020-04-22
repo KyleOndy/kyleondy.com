@@ -1,21 +1,39 @@
 # KyleOndy.com
 
-[![Build Status](https://travis-ci.org/KyleOndy/kyleondy.com.svg?branch=master)](https://travis-ci.org/KyleOndy/kyleondy.com)
-
 [KyleOndy.com](https://www.kyleondy.com) is my personal website.
 If you have any suggestion, I welcome any pull requests.
 
 ## Building
 
-This site is generate with [hakyll](https://jaspervdj.be/hakyll/).
+This site is generated with a makefile.
+Why?
+Because its simple and fast, and I want to embrace the simple tools.
+Avoid over complicating everything.
 
-For more information on the generation of the site itself, the source is a [literate haskell](https://wiki.haskell.org/Literate_programming) file.
 
-- [site.lhs](https://github.com/KyleOndy/kyleondy.com/blob/master/provider/posts/site/site.lhs)
-- [Rendered Post](https://kyleondy.com/posts/generating-this-web/)
+## Simple Site Revamp
 
-## Deployment
+- Take markdown / text and convert into metadata + html fragments
+  - homegrown | pandoc
+  - metadata is values stored in header of file
+  - can inject additional metadata
+    - git info
+- inject html + metadata into templates
+  - homegrown | some other templating project
+- ability to create synthetic pages
+  - pages not backed by a file on disk
+    - archives
+    - tags list
+    - rss feeds
+- external assets are copied in separately (make?)
+  - images
+  - css
+  - js (if needed)
 
-The site it deployed as a static site to Amazon S3 and cached with Amazon CloudFront.
-Deployment is handled by the [s3_website](https://github.com/laurilehmijoki/s3_website) gem, see my [s3_website.yml config](https://github.com/KyleOndy/kyleondy.com/blob/master/s3_website.yml).
+### Inspiration
 
+
+## External Resources
+
+- [this website is a makefile](https://www.johnhawthorn.com/2018/01/this-website-is-a-makefile/)
+  - [example of above](https://github.com/jhawthorn/site-example)

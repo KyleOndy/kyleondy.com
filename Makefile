@@ -1,53 +1,12 @@
-STACK=stack --install-ghc ${STACK_ARGS}
-SITE_NAME=hakyll-kyleondy
-SITE_EXE=$(STACK) exec $(SITE_NAME) -- ${SITE_ARGS}
-PROVIDER_FOLDER=provider
-SITE_FOLDER=_site
-GIT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
+target: src/kyleondy_com/*
+	clojure -A:dev:build
 
-all: clean test
-
-.PHONY: rebuild
-rebuild:
-	$(STACK) install
-	$(SITE_EXE) rebuild
-
-.PHONY: build
-build:
-	$(STACK) install
-	$(SITE_EXE) build
-
-.PHONY: test
-test: build
-	$(SITE_EXE) check
-
-.PHONY: clean-full
-clean-full: clean
-	$(STACK) clean
-	rm -f $(shell stack path --local-bin)/$(SITE_NAME)
-
-.PHONY: clean
 clean:
-	$(SITE_EXE) clean
+	rm -fr target
 
-.PHONY: server
-server: build
-	$(SITE_EXE) server
+deploy: target
+	cd target && aws s3 sync . s3://$(BUCKET) --cache-control max-age=31536000,public,immutable --exclude "*" --metadata-directive REPLACE --include "css/*" --include "fonts/*"
+	cd target && aws s3 sync . s3://$(BUCKET) --delete --exclude "css/*" --exclude "fonts/*"
+	aws cloudfront create-invalidation --distribution-id $(DIST_ID) --paths /index.html /
 
-.PHONY: watch
-watch: build
-	$(SITE_EXE) watch
-
-.PHONY: watch-external
-watch-external: build
-	$(SITE_EXE) watch --host '0.0.0.0' --port '8822'
-
-.PHONY: secrets
-secrets:
-	rm -rf provider/secrets
-	git clone --depth=1 git@gitlab.com:kyleondy/kyleondy.com.secret provider/secrets
-
-.PHONY: deploy
-deploy: clean secrets build test
-	@echo "$(shell git rev-parse --verify HEAD)" > $(SITE_FOLDER)/head.txt
-	s3_website push --dry-run
+.PHONY: clean deploy
