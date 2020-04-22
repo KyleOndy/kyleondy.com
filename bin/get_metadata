@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -e
+
+# read file name in as first argument, output json metadata on stdout
+
+# bash HAX!
+# The intnetion here is to assume we have proper input with the follow
+# conditoins met:
+#   1) all files have a yaml strucutre [1] at the top of the file
+#   2) I only use the header as a stirng:stirng  key:value store
+#
+# [1] https://yaml.org/spec/1.2/spec.html#id2760395
+
+get_value() {
+  echo "$1" | grep "^$2:" | cut -f2- -d' '
+}
+
+# used only for tags
+get_array() {
+  get_value "$1" "$2" | sed -e 's/, /,/' | sed -e 's/,/", "/'
+}
+
+header_end_boundry="$(
+  grep --line-number -- ^---$ "$1" | # lines that have the yaml directives
+    head -n2 |                       # start and end of header
+    tail -n1 |                       # get end of header
+    cut -f1 -d:                      # only line number
+    )"
+
+header="$(head -n "$header_end_boundry" "$1")"
+
+cat << EOF
+{
+  "file": "$1",
+  "title": "$(get_value "$header" "title")",
+  "updated": "$(get_value "$header" "updated")",
+  "subtitle": "$(get_value "$header" "subtitle")",
+  "tags": ["$(get_array "$header" "tags")"]
+}
+EOF

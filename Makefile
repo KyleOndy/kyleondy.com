@@ -10,10 +10,13 @@ NOTES_SOURCE:=$(shell find provider/notes -type f)
 POSTS_SOURCE:=$(shell find provider/posts -type f)
 PAGES_SOURCE:=$(shell find provider/pages -type f)
 
+debug/notes: ; $(info $(NOTES_SOURCE))
+debug/posts: ; $(info $(POSTS_SOURCE))
+debug/pages: ; $(info $(PAGES_SOURCE))
+
 all: build
 
 # todo: refine this / put into static dir that just gets coppied over with no
-# translatoin
 build/robots.txt:
 	echo -e "User-agent: *\nAllow: /" > $@
 
