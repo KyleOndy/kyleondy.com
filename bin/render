@@ -1,19 +1,5 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env bash
+set -e
 
-require 'kramdown'
-
-body = Kramdown::Document.new(ARGF.read).to_html
-puts(DATA.read % {body: body})
-
-__END__
-<!DOCTYPE html>
-<html>
-  <head>
-    <!-- stuff -->
-  </head>
-  <body>
-    <article>
-      %{body}
-    </article>
-  </body>
-</html>
+# read in a file as required first argument, output html on stdout
+pandoc --to=html "$1"

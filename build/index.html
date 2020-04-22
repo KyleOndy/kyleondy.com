@@ -36,6 +36,7 @@
   <body>
     <header class="site-header">
       <nav>
+        <!-- todo: can this just be noraml link and text? -->
         <h3 id="logo"><a href="/">Kyle Ondy.</a></h3>
         <a href="/about">About</a> //
         <a href="/posts">Posts</a> //
@@ -47,7 +48,11 @@
     </header>
     <hr />
     <main role="main">
-    $body$
+<p>--- title: Home ---</p>
+<h2 id="recent-posts">Recent posts</h2>
+<p>$partial("templates/post-list.html")$ <a href="/posts">All posts...</a></p>
+<h2 id="recently-updated-notes">Recently updated notes</h2>
+<p>$partial("templates/note-list.html")$ <a href="/notes">All notes...</a></p>
     </main>
     <hr />
     <footer class="site-footer">
