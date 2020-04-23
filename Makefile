@@ -21,7 +21,6 @@ OUTPUT_HTML = $(NOTES_SOURCE:provider/%.markdown=_site/%/index.html) \
 STATIC_FILES:=$(shell find provider/static -type f)
 OUTPUT_STATIC = $(STATIC_FILES:provider/static/%=_site/%)
 
-
 all: build
 
 debug/notes: ; $(info $(NOTES_SOURCE))
@@ -62,5 +61,6 @@ serve:
 	docker run --rm -it -p 80:80 -v $(CURDIR)/_site:/usr/share/nginx/html:ro nginx:stable
 
 clean:
+	@mkdir -p $(OUTPUT_DIR)
 	find $(OUTPUT_DIR) -mindepth 1 -delete
 	#rm -rf $(OUTPUT_DIR)
