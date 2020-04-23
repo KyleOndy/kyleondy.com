@@ -37,6 +37,9 @@ build/%/metadata.json: provider/notes/%.markdown #$(NOTES_SOURCE)
 
 build/index.html:
 
+# todo: replace this with a pure bash implementation
+serve: build
+	docker run --rm -it -p 8080:80 -v $(CURDIR)/_site:/usr/share/nginx/html:ro nginx:stable
 
 clean:
 	rm -rf $(OUTPUT_DIR)
