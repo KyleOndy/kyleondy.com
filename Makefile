@@ -28,7 +28,7 @@ debug/pages: ; $(info $(PAGES_SOURCE))
 # this is the entry point
 build: $(OUTPUT_HTML)
 
-$(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/%.markdown $(INPUT_DIR)/%.html
+$(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/%.markdown
 	@mkdir -p $(dir $@)
 	bin/wrap_html <(bin/convert_to_html $<) > $@
 	#tidy -quiet -modify -indent --output-html --indent=auto $@
