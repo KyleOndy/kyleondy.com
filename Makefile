@@ -1,23 +1,36 @@
-# get all files within each subdirecotry
+# I like process substitution way to much to deal with `sh` as the default make
+# shell. I am in no way worried about portability as any environment this runs
+# within I control.
+SHELL=/usr/bin/env bash
+
+# get all files within each subdirectory
+INPUT_DIR:=provider
 OUTPUT_DIR:=_site
+# can not pass in $(INPUT_DIR) to shell commands due to make taking the
+# environment that make itself was started with. Due to this, there is some
+# duplication of the string `provider/`. :/
 NOTES_SOURCE:=$(shell find provider/notes -type f)
 POSTS_SOURCE:=$(shell find provider/posts -type f)
 PAGES_SOURCE:=$(shell find provider/pages -type f)
 
-OUTPUT_HTML = $(NOTES_SOURCE:provider/%.markdown=_site/%/index.html)
+OUTPUT_HTML = $(NOTES_SOURCE:provider/%.markdown=_site/%/index.html) \
+              $(POSTS_SOURCE:provider/%.markdown=_site/%/index.html) \
+              $(PAGES_SOURCE:provider/%.markdown=_site/%/index.html)
 
 
-all: $(OUTPUT_DIR)
+all: build
 
 debug/notes: ; $(info $(NOTES_SOURCE))
 debug/posts: ; $(info $(POSTS_SOURCE))
 debug/pages: ; $(info $(PAGES_SOURCE))
 
-# this is the entrypoint
+# this is the entry point
 build: $(OUTPUT_HTML)
 
-$(OUTPUT_DIR)/%/index.html:
+$(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/%.markdown #$(OUTPUT_DIR)/%.markdown
 	@mkdir -p $(dir $@)
+	bin/wrap_html <(bin/convert_to_html $<) > $@
+	#tidy -quiet -modify -indent --output-html --indent=auto $@
 
 build/%/metadata.json: provider/notes/%.markdown #$(NOTES_SOURCE)
 	bin/get_metadata $< > $@

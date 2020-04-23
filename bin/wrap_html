@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+# wrap html fragment in the site template
+
+# the sed command just helps with matching the indenting of the fragment and
+# the base template
+cat << EOF
+$(cat ./provider/templates/site_pre.html)
+$(sed 's/^/      /' "$1")
+$(cat ./provider/templates/site_post.html)
+EOF

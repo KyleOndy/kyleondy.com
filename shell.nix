@@ -6,6 +6,7 @@ stdenv.mkDerivation {
   name = "kyleondy.com";
 
   buildInputs = [
+    html-tidy
     pandoc
   ];
 
