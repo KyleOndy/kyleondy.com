@@ -18,6 +18,9 @@ OUTPUT_HTML = $(NOTES_SOURCE:provider/%.markdown=_site/%/index.html) \
               $(PAGES_SOURCE:provider/pages/%.markdown=_site/%/index.html) \
               _site/index.html
 
+STATIC_FILES:=$(shell find provider/static -type f)
+OUTPUT_STATIC = $(STATIC_FILES:provider/static/%=_site/%)
+
 
 all: build
 
@@ -26,16 +29,24 @@ debug/posts: ; $(info $(POSTS_SOURCE))
 debug/pages: ; $(info $(PAGES_SOURCE))
 
 # this is the entry point
-build: $(OUTPUT_HTML)
+build: $(OUTPUT_HTML) $(OUTPUT_STATIC)
 
 $(OUTPUT_DIR)/%/index.html: provider/%.markdown
 	@mkdir -p $(dir $@)
 	bin/wrap_html <(bin/convert_to_html $<) > $@
 
-# this generates the top level pages
+# this generates the top level pages. Why couldn't I combine this with the
+# above rule?
 $(OUTPUT_DIR)/%/index.html: provider/pages/%.markdown
 	@mkdir -p $(dir $@)
 	bin/wrap_html <(bin/convert_to_html $<) > $@
+
+
+$(OUTPUT_DIR)/%: provider/static/%
+	@mkdir -p $(dir $@)
+	cp $< $@
+
+# static files
 
 #build/%/metadata.json: provider/notes/%.markdown #$(NOTES_SOURCE)
 #	bin/get_metadata $< > $@
@@ -51,4 +62,5 @@ serve:
 	docker run --rm -it -p 80:80 -v $(CURDIR)/_site:/usr/share/nginx/html:ro nginx:stable
 
 clean:
-	rm -rf $(OUTPUT_DIR)
+	find $(OUTPUT_DIR) -mindepth 1 -delete
+	#rm -rf $(OUTPUT_DIR)
