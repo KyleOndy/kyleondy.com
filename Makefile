@@ -28,7 +28,11 @@ debug/posts: ; $(info $(POSTS_SOURCE))
 debug/pages: ; $(info $(PAGES_SOURCE))
 
 # this is the entry point
-build: $(OUTPUT_HTML) $(OUTPUT_STATIC)
+build: $(OUTPUT_HTML) \
+       $(OUTPUT_STATIC) \
+       $(OUTPUT_DIR)/notes/index.html \
+       $(OUTPUT_DIR)/posts/index.html \
+       $(OUTPUT_DIR)/tags/index.html
 
 $(OUTPUT_DIR)/%/index.html: provider/%.markdown
 	@mkdir -p $(dir $@)
@@ -45,7 +49,17 @@ $(OUTPUT_DIR)/%: provider/static/%
 	@mkdir -p $(dir $@)
 	cp $< $@
 
-# static files
+$(OUTPUT_DIR)/notes/index.html:
+	@mkdir -p $(dir $@)
+	bin/wrap_html <(echo "todo: index of notes") > $@
+
+$(OUTPUT_DIR)/posts/index.html:
+	@mkdir -p $(dir $@)
+	bin/wrap_html <(echo "todo: archive of posts") > $@
+
+$(OUTPUT_DIR)/tags/index.html:
+	@mkdir -p $(dir $@)
+	bin/wrap_html <(echo "todo: index of all tags") > $@
 
 #build/%/metadata.json: provider/notes/%.markdown #$(NOTES_SOURCE)
 #	bin/get_metadata $< > $@
