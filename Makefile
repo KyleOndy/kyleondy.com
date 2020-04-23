@@ -28,10 +28,14 @@ debug/pages: ; $(info $(PAGES_SOURCE))
 # this is the entry point
 build: $(OUTPUT_HTML)
 
-$(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/%.markdown
+$(OUTPUT_DIR)/%/index.html: provider/%.markdown
 	@mkdir -p $(dir $@)
 	bin/wrap_html <(bin/convert_to_html $<) > $@
-	#tidy -quiet -modify -indent --output-html --indent=auto $@
+
+# this generates the top level pages
+$(OUTPUT_DIR)/%/index.html: provider/pages/%.markdown
+	@mkdir -p $(dir $@)
+	bin/wrap_html <(bin/convert_to_html $<) > $@
 
 #build/%/metadata.json: provider/notes/%.markdown #$(NOTES_SOURCE)
 #	bin/get_metadata $< > $@
@@ -40,9 +44,11 @@ $(OUTPUT_DIR)/index.html: $(INPUT_DIR)/index.html
 	@mkdir -p $(dir $@)
 	bin/wrap_html $< >$@
 
+
+
 # todo: replace this with a pure bash implementation
 serve:
-	docker run --rm -it -p 8080:80 -v $(CURDIR)/_site:/usr/share/nginx/html:ro nginx:stable
+	docker run --rm -it -p 80:80 -v $(CURDIR)/_site:/usr/share/nginx/html:ro nginx:stable
 
 clean:
 	rm -rf $(OUTPUT_DIR)
