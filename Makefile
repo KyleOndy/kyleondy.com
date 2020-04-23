@@ -13,9 +13,9 @@ NOTES_SOURCE:=$(shell find provider/notes -type f)
 POSTS_SOURCE:=$(shell find provider/posts -type f)
 PAGES_SOURCE:=$(shell find provider/pages -type f)
 
-OUTPUT_HTML = $(NOTES_SOURCE:provider/%.markdown=_site/%/index.html) \
-              $(POSTS_SOURCE:provider/%.markdown=_site/%/index.html) \
-              $(PAGES_SOURCE:provider/pages/%.markdown=_site/%/index.html) \
+OUTPUT_HTML = $(NOTES_SOURCE:$(INPUT_DIR)/%.markdown=_site/%/index.html) \
+              $(POSTS_SOURCE:$(INPUT_DIR)/%.markdown=_site/%/index.html) \
+              $(PAGES_SOURCE:$(INPUT_DIR)/pages/%.markdown=_site/%/index.html) \
               _site/index.html
 
 STATIC_FILES:=$(shell find provider/static -type f)
