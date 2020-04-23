@@ -19,7 +19,7 @@ OUTPUT_HTML = $(NOTES_SOURCE:$(INPUT_DIR)/%.markdown=_site/%/index.html) \
               _site/index.html
 
 STATIC_FILES:=$(shell find provider/static -type f)
-OUTPUT_STATIC = $(STATIC_FILES:provider/static/%=_site/%)
+OUTPUT_STATIC = $(STATIC_FILES:$(INPUT_DIR)/static/%=_site/%)
 
 all: build
 
