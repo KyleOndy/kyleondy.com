@@ -34,18 +34,18 @@ build: $(OUTPUT_HTML) \
        $(OUTPUT_DIR)/posts/index.html \
        $(OUTPUT_DIR)/tags/index.html
 
-$(OUTPUT_DIR)/%/index.html: provider/%.markdown
+$(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/%.markdown
 	@mkdir -p $(dir $@)
 	bin/wrap_html <(bin/convert_to_html $<) > $@
 
 # this generates the top level pages. Why couldn't I combine this with the
 # above rule?
-$(OUTPUT_DIR)/%/index.html: provider/pages/%.markdown
+$(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/pages/%.markdown
 	@mkdir -p $(dir $@)
 	bin/wrap_html <(bin/convert_to_html $<) > $@
 
 
-$(OUTPUT_DIR)/%: provider/static/%
+$(OUTPUT_DIR)/%: $(INPUT_DIR)/static/%
 	@mkdir -p $(dir $@)
 	cp $< $@
 
@@ -61,7 +61,7 @@ $(OUTPUT_DIR)/tags/index.html:
 	@mkdir -p $(dir $@)
 	bin/wrap_html <(echo "todo: index of all tags") > $@
 
-#build/%/metadata.json: provider/notes/%.markdown #$(NOTES_SOURCE)
+#build/%/metadata.json: $(INPUT_DIR)/notes/%.markdown #$(NOTES_SOURCE)
 #	bin/get_metadata $< > $@
 
 $(OUTPUT_DIR)/index.html: $(INPUT_DIR)/index.html
