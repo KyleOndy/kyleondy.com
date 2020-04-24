@@ -49,7 +49,6 @@ $(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/pages/%.markdown
 	@mkdir -p $(dir $@)
 	bin/wrap_html <(bin/convert_to_html $<) > $@
 
-
 $(OUTPUT_DIR)/%: $(INPUT_DIR)/static/%
 	@mkdir -p $(dir $@)
 	cp $< $@
@@ -73,12 +72,6 @@ $(OUTPUT_DIR)/tags/index.html:
 $(OUTPUT_DIR)/index.html: $(INPUT_DIR)/index.html
 	@mkdir -p $(dir $@)
 	bin/wrap_html $< >$@
-
-$(TMP_DIR)/posts/%.metadata.json: $(INPUT_DIR)/%.markdown
-	bin/get_metadata $< > $@
-
-$(TMP_DIR)/recent_posts.html: $(TMP_DIR)/posts/%.metadata.json
-	echo $<
 
 # todo: replace this with a pure bash implementation
 serve:
