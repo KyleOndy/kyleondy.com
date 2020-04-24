@@ -1,0 +1,7 @@
+{
+  "file": "provider/posts/2016/vim-plug-autoinstall.markdown",
+  "title": " Automatic installation of vim-plug",
+  "updated": "2016-10-04T12:00:00Z",
+  "subtitle": "Bootstrapping your neovim just a little bit easier",
+  "tags": ["vim", "neovim"]
+}

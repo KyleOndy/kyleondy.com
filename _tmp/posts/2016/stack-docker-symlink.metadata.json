@@ -1,0 +1,7 @@
+{
+  "file": "provider/posts/2016/stack-docker-symlink.markdown",
+  "title": "Docker + Stack + Symlinks = Errors",
+  "updated": "2016-04-16T12:00:00Z",
+  "subtitle": "Finding the problem that causes an 'openBinaryFile' error when running stack build with docker enabled.",
+  "tags": ["stack", "docker"]
+}

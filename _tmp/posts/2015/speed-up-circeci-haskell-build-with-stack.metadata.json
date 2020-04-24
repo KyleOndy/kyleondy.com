@@ -1,0 +1,7 @@
+{
+  "file": "provider/posts/2015/speed-up-circeci-haskell-build-with-stack.markdown",
+  "title": "Speeding up Haskell builds on CircleCI",
+  "updated": "2015-12-14T12:00:00Z",
+  "subtitle": "Substantially faster Haskell build on CircleCI with Stack",
+  "tags": ["haskell", "CI"]
+}

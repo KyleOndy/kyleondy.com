@@ -57,13 +57,17 @@ $(OUTPUT_DIR)/notes/index.html:
 	@mkdir -p $(dir $@)
 	bin/wrap_html <(echo "todo: index of notes") > $@
 
-$(OUTPUT_DIR)/posts/index.html: $(METADATA_FILES)
+$(OUTPUT_DIR)/posts/index.html: $(METADATA_FILES) $(TMP_DIR)/recent_posts.txt
 	@mkdir -p $(dir $@)
 	bin/wrap_html <(echo "todo: archive of posts") > $@
 
-$(TMP_DIR)/%.metadata.json: $(INPUT_DIR)/%.markdown
+$(TMP_DIR)/%.metadata.json: $(INPUT_DIR)/%.metadata.json
 	@mkdir -p $(dir $@)
 	bin/get_metadata $< > $@
+
+$(TMP_DIR)/recent_posts.txt: $(TMP_DIR)/%.metadata.json
+	echo "finding everything" > $@.$<
+
 
 $(OUTPUT_DIR)/tags/index.html:
 	@mkdir -p $(dir $@)
