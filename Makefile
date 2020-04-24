@@ -66,14 +66,6 @@ $(TMP_DIR)/%.metadata.json: $(INPUT_DIR)/%.markdown
 	@mkdir -p $(dir $@)
 	bin/get_metadata $< > $@
 
-#_tmp/notes/docker.metadata.json:
-#	@mkdir -p $(dir $@)
-#	bin/get_metadata $< > $@
-
-#$(TMP_DIR)/%: $(INPUT_DIR)/%
-#	@mkdir -p $(dir $@)
-#	bin/get_metadata $< > $@
-
 $(OUTPUT_DIR)/tags/index.html:
 	@mkdir -p $(dir $@)
 	bin/wrap_html <(echo "todo: index of all tags") > $@
