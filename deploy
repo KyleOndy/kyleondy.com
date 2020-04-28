@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+public_master_ref="https://https://api.github.com/repos/kyleondy/kyleondy.com/git/refs/heads/master"
+
+docker pull "registry.apps.509ely.com/kyleondy-web:$public_master_ref" > /dev/null || echo "ERROR! Is $public_master_ref pushed?"
+
+

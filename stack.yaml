@@ -16,12 +16,6 @@ extra-deps:
 # Override default flag values for local packages and extra-deps
 flags: {}
 
-docker:
-  enable: true
-
-nix:
-  enable: false
-
 # Extra package databases containing global packages
 extra-package-dbs: []
 
