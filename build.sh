@@ -14,10 +14,14 @@ docker tag kyleondy-web:latest "registry.apps.509ely.com/kyleondy-web:$REV"
 
 # if deploy
 _log "pusing $REV"
-docker push "registry.apps.509ely.com/kyleondy-web:$REV" | cat
+docker tag "registry.apps.509ely.com/kyleondy-web:$REV" "kyleondy/website:$REV"
+#docker push "registry.apps.509ely.com/kyleondy-web:$REV" | cat
+docker push "kyleondy/website:$REV" | cat
 docker tag "registry.apps.509ely.com/kyleondy-web:$REV" "registry.apps.509ely.com/kyleondy-web:latest"
 _log "pusing latest"
-docker push "registry.apps.509ely.com/kyleondy-web:latest"
+#docker push "registry.apps.509ely.com/kyleondy-web:latest"
+docker tag "registry.apps.509ely.com/kyleondy-web:$REV" "kyleondy/website:latest"
+docker push "kyleondy/website:latest"
 
 if [[ "$1" == "prod" ]]; then
   # if prod

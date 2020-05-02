@@ -15,3 +15,4 @@ RUN make test
 
 FROM nginx:stable
 COPY --from=builder /code/_site/ /usr/share/nginx/html
+EXPOSE 80
