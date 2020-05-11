@@ -11,7 +11,8 @@ RUN stack --resolver $LTS  build hakyll
 COPY ./stack.yaml ./kyleondy-com.cabal ./
 RUN stack build --dependencies-only
 COPY . .
-RUN make test
+#RUN make test
+RUN make build
 
 FROM nginx:stable
 COPY --from=builder /code/_site/ /usr/share/nginx/html
