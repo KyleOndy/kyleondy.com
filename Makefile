@@ -1,3 +1,8 @@
+# I like process substitution way to much to deal with `sh` as the default make
+# shell. I am in no way worried about portability as any environment this runs
+# within I control.
+SHELL=/usr/bin/env bash
+
 INPUT_DIR:=provider
 OUTPUT_DIR:=_site
 
