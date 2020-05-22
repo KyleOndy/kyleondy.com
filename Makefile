@@ -12,9 +12,9 @@ build: $(NOTES) \
        $(OUTPUT_DIR)/index.html
 
 # todo: need list of posts
-$(OUTPUT_DIR)/index.html:
+$(OUTPUT_DIR)/index.html: $(INPUT_DIR)/index.html
 	@mkdir -p $(dir $@)
-	echo "<h1>Hello!</h1>" > $@
+	bin/wrap_html <(bin/convert_to_html $<) > $@
 
 $(OUTPUT_DIR)/notes/%/index.html: $(INPUT_DIR)/notes/%.markdown
 	@mkdir -p $(dir $@)

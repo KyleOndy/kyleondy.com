@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+
+# read in a file as required first argument, output html on stdout
+pandoc --to=html --base-header-level=3 "$1"

@@ -6,8 +6,7 @@ stdenv.mkDerivation {
   name = "kyleondy.com";
 
   buildInputs = [
-    ruby
-    jre
+    pandoc
   ];
 
   shellHook = ''
