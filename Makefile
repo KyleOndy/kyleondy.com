@@ -3,6 +3,13 @@ OUTPUT_DIR:=_site
 
 .DELETE_ON_ERROR:
 
+NOTES:=$(patsubst $(INPUT_DIR)/notes/%.markdown,$(OUTPUT_DIR)/notes/%/index.html,$(wildcard $(INPUT_DIR)/notes/*.markdown))
+PAGES=$(patsubst $(INPUT_DIR)/pages/%.markdown,$(OUTPUT_DIR)/%/index.html,$(wildcard $(INPUT_DIR)/pages/*.markdown))
+
+.PHONY: build
+build: $(NOTES) \
+       $(PAGES) \
+       $(OUTPUT_DIR)/index.html
 
 # todo: need list of posts
 $(OUTPUT_DIR)/index.html:
@@ -13,6 +20,9 @@ $(OUTPUT_DIR)/notes/%/index.html: $(INPUT_DIR)/notes/%.markdown
 	@mkdir -p $(dir $@)
 	cp "$<" $@
 
+$(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/pages/%.markdown
+	@mkdir -p $(dir $@)
+	cp "$<" $@
 
 # todo: replace this with a pure bash implementation
 serve:
