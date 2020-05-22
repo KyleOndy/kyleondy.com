@@ -1,53 +1,24 @@
-STACK=stack --install-ghc ${STACK_ARGS}
-SITE_NAME=hakyll-kyleondy
-SITE_EXE=$(STACK) exec $(SITE_NAME) -- ${SITE_ARGS}
-PROVIDER_FOLDER=provider
-SITE_FOLDER=_site
-GIT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
+INPUT_DIR:=provider
+OUTPUT_DIR:=_site
 
-all: clean test
+.DELETE_ON_ERROR:
 
-.PHONY: rebuild
-rebuild:
-	$(STACK) install
-	$(SITE_EXE) rebuild
 
-.PHONY: build
-build:
-	$(STACK) install
-	$(SITE_EXE) build
+# todo: need list of posts
+$(OUTPUT_DIR)/index.html:
+	@mkdir -p $(dir $@)
+	echo "<h1>Hello!</h1>" > $@
 
-.PHONY: test
-test: build
-	$(SITE_EXE) check
+$(OUTPUT_DIR)/notes/%/index.html: $(INPUT_DIR)/notes/%.markdown
+	@mkdir -p $(dir $@)
+	cp "$<" $@
 
-.PHONY: clean-full
-clean-full: clean
-	$(STACK) clean
-	rm -f $(shell stack path --local-bin)/$(SITE_NAME)
 
-.PHONY: clean
+# todo: replace this with a pure bash implementation
+serve:
+	docker run --rm -it -p 80:80 -v $(CURDIR)/_site:/usr/share/nginx/html:ro nginx:stable
+
 clean:
-	$(SITE_EXE) clean
-
-.PHONY: server
-server: build
-	$(SITE_EXE) server
-
-.PHONY: watch
-watch: build
-	$(SITE_EXE) watch
-
-.PHONY: watch-external
-watch-external: build
-	$(SITE_EXE) watch --host '0.0.0.0' --port '8822'
-
-.PHONY: secrets
-secrets:
-	rm -rf provider/secrets
-	git clone --depth=1 git@gitlab.com:kyleondy/kyleondy.com.secret provider/secrets
-
-.PHONY: deploy
-deploy: clean secrets build test
-	@echo "$(shell git rev-parse --verify HEAD)" > $(SITE_FOLDER)/head.txt
-	s3_website push --dry-run
+	@mkdir -p $(OUTPUT_DIR)
+	# remove all content in OUTPUT_DIR. but do not remove the folder itslef.
+	find $(OUTPUT_DIR) -mindepth 1 -delete
