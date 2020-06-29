@@ -13,6 +13,7 @@ PAGES=$(patsubst $(INPUT_DIR)/pages/%.markdown,$(OUTPUT_DIR)/%/index.html,$(wild
 
 .PHONY: build
 build: $(NOTES) \
+       $(OUTPUT_DIR)/notes/index.html \
        $(PAGES) \
        $(OUTPUT_DIR)/index.html
 
@@ -21,13 +22,16 @@ $(OUTPUT_DIR)/index.html: $(INPUT_DIR)/index.html
 	@mkdir -p $(dir $@)
 	bin/wrap_html <(bin/convert_to_html $<) > $@
 
+$(OUTPUT_DIR)/notes/index.html: $(NOTES)
+	echo "$^" >> $(OUTPUT_DIR)/notes/index.html
+
 $(OUTPUT_DIR)/notes/%/index.html: $(INPUT_DIR)/notes/%.markdown
 	@mkdir -p $(dir $@)
-	cp "$<" $@
+	bin/wrap_html <(bin/convert_to_html $<) > $@
 
 $(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/pages/%.markdown
 	@mkdir -p $(dir $@)
-	cp "$<" $@
+	bin/wrap_html <(bin/convert_to_html $<) > $@
 
 # todo: replace this with a pure bash implementation
 serve:
