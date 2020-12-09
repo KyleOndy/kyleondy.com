@@ -12,3 +12,5 @@ deploy.sh
 provider/secrets
 
 stack.yaml.lock
+
+_tmp/
