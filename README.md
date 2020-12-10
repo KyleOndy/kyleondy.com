@@ -19,3 +19,6 @@ For more information on the generation of the site itself, the source is a [lite
 The site it deployed as a static site to Amazon S3 and cached with Amazon CloudFront.
 Deployment is handled by the [s3_website](https://github.com/laurilehmijoki/s3_website) gem, see my [s3_website.yml config](https://github.com/KyleOndy/kyleondy.com/blob/master/s3_website.yml).
 
+## Structure
+
+Everything in [`./provider/static`](./provider/static) is copied unaltered to the root of the site, preserving any file hierarchy.

@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-set -e
+set -eo pipefail
 
 # read in a file as required first argument, output html on stdout
-pandoc --to=html --base-header-level=3 "$1"
+pandoc \
+  --fail-if-warning \
+  --to=html \
+  --base-header-level=3 \
+  <(cat /dev/stdin)
