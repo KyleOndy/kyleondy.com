@@ -3,14 +3,15 @@
 with pkgs;
 
 stdenv.mkDerivation {
-  name = "kyleondy.com";
+  name = "kyleondy_com";
 
   buildInputs = [
-    pandoc
+    html-tidy # html -> tidy html
+    pandoc # md -> html
+    sass # scss -> css
+    yuicompressor # css compression
   ];
 
   shellHook = ''
-    export AWS_ACCESS_KEY_ID="AKIAW4WHQVVUXSIPY4YK"
-    export AWS_SECRET_ACCESS_KEY="$(pass show aws.amazon.com/keys/AKIAW4WHQVVUXSIPY4YK)"
   '';
 }

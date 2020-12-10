@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+notes=$(find ./provider/notes -type f -exec basename {} \; |  cut -d'.' -f1)
+
+for note in $notes; do
+  echo "<li>$note</li>"
+done
+

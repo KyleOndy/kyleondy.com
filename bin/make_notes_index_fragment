@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+notes=$(find ./provider/notes -type f -exec basename {} \; |  cut -d'.' -f1 | sort)
+
+echo "<ul>"
+for note in $notes; do
+  echo "<li><a href=$note/>$note</a></li>"
+done
+echo "</ul>"

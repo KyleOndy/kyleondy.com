@@ -20,12 +20,12 @@
 
 SHELL = bash
 .SHELLFLAGS = -o pipefail -c
-.DELETE_ON_ERROR:
+#.DELETE_ON_ERROR:
 
 
 # get all files within each subdirectory
 INPUT_DIR:=provider
-#TMP_DIR:=_tmp
+TMP_DIR:=_tmp
 OUTPUT_DIR:=_site
 
 # can not pass in $(INPUT_DIR) to shell commands due to make taking the
@@ -52,33 +52,33 @@ build: $(OUTPUT_HTML) \
        $(OUTPUT_STATIC) \
        $(OUTPUT_DIR)/notes/index.html \
        $(OUTPUT_DIR)/posts/index.html \
-       $(OUTPUT_DIR)/tags/index.html
-       # sitemap
-       # rss feed
+       $(OUTPUT_DIR)/tags/index.html \
+       $(OUTPUT_DIR)/css/site.css # todo: embed in pages?
 
 $(OUTPUT_DIR)/index.html: $(INPUT_DIR)/index.html ## build root index.html
 	@mkdir -p $(dir $@)
-	cat $< | bin/convert_to_html | bin/wrap_html_fragment | $(TIDY) > $@
+	bin/convert_to_html $< | bin/wrap_html_fragment | $(TIDY) > $@
 
 $(OUTPUT_DIR)/posts/%/index.html: $(INPUT_DIR)/posts/%.md
 	@mkdir -p $(dir $@)
-	cat $< | bin/convert_to_html | bin/wrap_html_fragment | $(TIDY) > $@
+	bin/convert_to_html $< | bin/wrap_html_fragment | $(TIDY) > $@
 
 $(OUTPUT_DIR)/notes/%/index.html: $(INPUT_DIR)/notes/%.md
 	@mkdir -p $(dir $@)
-	cat $< | bin/convert_to_html | bin/wrap_html_fragment | $(TIDY) > $@
+	bin/convert_to_html $< | bin/wrap_html_fragment | $(TIDY) > $@
 
 $(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/pages/%.md
 	@mkdir -p $(dir $@)
-	cat $< | bin/convert_to_html | bin/wrap_html_fragment | $(TIDY) > $@
+	bin/convert_to_html $< | bin/wrap_html_fragment | $(TIDY) > $@
 
 $(OUTPUT_DIR)/notes/index.html: $(NOTES_SOURCE)
 	@mkdir -p $(dir $@)
-	echo "todo" > $@
+	# todo:m this can be made better
+	bin/make_notes_index | bin/wrap_html_fragment | $(TIDY) > $@
 
 $(OUTPUT_DIR)/posts/index.html: $(NOTES_SOURCE)
 	@mkdir -p $(dir $@)
-	echo "todo" > $@
+	bin/make_posts_index > $@
 
 $(OUTPUT_DIR)/tags/index.html: $(NOTES_SOURCE) $(POSTS_SOURCE)
 	@mkdir -p $(dir $@)
@@ -88,9 +88,11 @@ $(OUTPUT_DIR)/%: $(INPUT_DIR)/static/%
 	@mkdir -p $(dir $@)
 	cp $< $@
 
+$(OUTPUT_DIR)/css/site.css: $(INPUT_DIR)/sass/site.scss
+	@mkdir -p $(dir $@)
+	sass $< | yuicompressor --type css > $@
+
 # -----
-
-
 
 
 

@@ -5,5 +5,5 @@ set -eo pipefail
 pandoc \
   --fail-if-warning \
   --to=html \
-  --base-header-level=3 \
-  <(cat /dev/stdin)
+  --shift-heading-level-by=3 \
+  "$1"
