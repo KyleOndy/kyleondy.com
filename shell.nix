@@ -1,17 +1,31 @@
-{ pkgs ? import <nixpkgs> {} }:
+#{ pkgs ? import <nixpkgs> {} }:
+#
+#with pkgs;
+#
+#stdenv.mkDerivation {
+#  name = "kyleondy_com";
+#
+#  buildInputs = [
+#    html-tidy # html -> tidy html
+#    pandoc # md -> html
+#    sass # scss -> css
+#    yuicompressor # css compression
+#  ];
+#
+#  shellHook = ''
+#  '';
+#}
 
-with pkgs;
+let
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs {};
 
-stdenv.mkDerivation {
-  name = "kyleondy_com";
-
-  buildInputs = [
+in
+pkgs.mkShell {
+  buildInputs = with pkgs; [
     html-tidy # html -> tidy html
     pandoc # md -> html
     sass # scss -> css
     yuicompressor # css compression
   ];
-
-  shellHook = ''
-  '';
 }
