@@ -74,7 +74,7 @@ $(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/pages/%.md
 $(OUTPUT_DIR)/notes/index.html: $(NOTES_SOURCE)
 	@mkdir -p $(dir $@)
 	# todo:m this can be made better
-	bin/make_notes_index | bin/wrap_html_fragment | $(TIDY) > $@
+	bin/make_notes_index_fragment | bin/wrap_html_fragment | $(TIDY) > $@
 
 $(OUTPUT_DIR)/posts/index.html: $(NOTES_SOURCE)
 	@mkdir -p $(dir $@)
