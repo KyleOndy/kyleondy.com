@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-set -eo pipefail
-
-# read in a file as required first argument, output html on stdout
-pandoc \
-  --fail-if-warning \
-  --to=html \
-  --shift-heading-level-by=3 \
-  "$1"
