@@ -76,9 +76,9 @@ $(OUTPUT_DIR)/notes/index.html: $(NOTES_SOURCE)
 	# todo:m this can be made better
 	bin/make_notes_index_fragment | bin/wrap_html_fragment | $(TIDY) > $@
 
-$(OUTPUT_DIR)/posts/index.html: $(NOTES_SOURCE)
+$(OUTPUT_DIR)/posts/index.html: $(POSTS_SOURCE)
 	@mkdir -p $(dir $@)
-	bin/make_posts_index > $@
+	bin/make_posts_index_fragment | bin/wrap_html_fragment | $(TIDY) > $@
 
 $(OUTPUT_DIR)/tags/index.html: $(NOTES_SOURCE) $(POSTS_SOURCE)
 	@mkdir -p $(dir $@)
@@ -91,57 +91,6 @@ $(OUTPUT_DIR)/%: $(INPUT_DIR)/static/%
 $(OUTPUT_DIR)/css/site.css: $(INPUT_DIR)/sass/site.scss
 	@mkdir -p $(dir $@)
 	sass $< | yuicompressor --type css > $@
-
-# -----
-
-
-
-
-#
-#$(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/%.md $(TEMPLATES_SOURCE) $(BIN_SOURCE)
-#	@mkdir -p $(dir $@)
-#	bin/wrap_html <(bin/convert_to_html $<) > $@
-#
-## this generates the top level pages. Why couldn't I combine this with the
-## above rule?
-#$(OUTPUT_DIR)/%/index.html: $(INPUT_DIR)/pages/%.md $(TEMPLATES_SOURCE) $(BIN_SOURCE)
-#	@mkdir -p $(dir $@)
-#	bin/wrap_html <(bin/convert_to_html $<) > $@
-#
-#$(OUTPUT_DIR)/%: $(INPUT_DIR)/static/%
-#	@mkdir -p $(dir $@)
-#	cp $< $@
-#
-#$(OUTPUT_DIR)/notes/index.html: $(TEMPLATES_SOURCE) $(BIN_SOURCE)
-#	@mkdir -p $(dir $@)
-#	bin/wrap_html <(echo "todo: index of notes") > $@
-#
-##$(OUTPUT_DIR)/posts/index.html: $(TMP_DIR)/recent_posts.txt
-##	@mkdir -p $(dir $@)
-##	bin/wrap_html <(echo "todo: archive of posts") > $@
-#
-##$(TMP_DIR)/%.metadata.json: $(INPUT_DIR)/%.metadata.json
-##	@mkdir -p $(dir $@)
-##	bin/get_metadata $< > $@
-#
-#$(TMP_DIR)/recent_posts.txt: $(TMP_DIR) $(BIN_SOURCE)
-#$(TMP_DIR)/recent_posts.txt: $(POSTS_SOURCE)
-#	mkdir -p $(TMP_DIR) # todo: abstract this?
-#	@echo $@ is dependent on $?
-#	@echo
-#	@#echo "finding everything" #> $@.$<
-#	bin/parse_post_meta $? > $@
-#
-#$(OUTPUT_DIR)/tags/index.html: $(TEMPLATES_SOURCE) $(BIN_SOURCE)
-#	@mkdir -p $(dir $@)
-#	bin/wrap_html <(echo "todo: index of all tags") > $@
-#
-#INDEX_DEPS := $(INPUT_DIR)/index.html
-#INDEX_DEPS += $(TEMPLATES_SOURCE)
-#INDEX_DEPS += $(TMP_DIR)/recent_posts.txt
-#$(OUTPUT_DIR)/index.html: $(INDEX_DEPS) $(BIN_SOURCE)
-#	@mkdir -p $(dir $@)
-#	bin/wrap_html $< >$@
 
 # todo: replace this with a pure bash implementation
 serve:

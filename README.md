@@ -22,3 +22,11 @@ Deployment is handled by the [s3_website](https://github.com/laurilehmijoki/s3_w
 ## Structure
 
 Everything in [`./provider/static`](./provider/static) is copied unaltered to the root of the site, preserving any file hierarchy.
+
+## Todo
+
+- I really like [brandur's](https://www.brandur.org/articles) article layout.
+  I do not want to rip him off, but like the printed media feel
+- Publish RSS feed
+- Add a page of project ideas
+- Articles / Fragments / Notes

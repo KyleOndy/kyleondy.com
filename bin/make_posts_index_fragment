@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+date_format='%B %d, %Y'
+
+posts=$(find ./provider/posts -type f -exec basename {} \; |  cut -d'.' -f1 | sort)
+
+get_meta_field() {
+  metadata="$("$DIR/parse_metadata" "$DIR/../provider/posts/$1.md")"
+  echo "$metadata" | yq r - "$2"
+}
+
+echo "<h2>All Posts</h2>"
+echo "<ul>"
+for post in $posts; do
+  # todo: yikes! need to fix this
+
+  echo "<li><a href=$post/>$(get_meta_field "$post" 'title')</a>"
+  echo " - $(date --date "$(get_meta_field "$post" 'created')" "+$date_format")"
+  echo "</li>"
+done
+echo "</ul>"
