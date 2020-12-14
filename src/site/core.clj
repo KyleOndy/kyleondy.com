@@ -1,11 +1,6 @@
 (ns site.core)
  (use 'hiccup.core)
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
-
 ;; defining data for the menu
 (def menu-items
   ["Crab Rangoon"

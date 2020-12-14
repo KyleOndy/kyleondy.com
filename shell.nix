@@ -6,6 +6,7 @@ pkgs.mkShell {
   buildInputs = with pkgs; [
     clojure # the lang
     leiningen # build tooling
+    clojure-lsp
 
     html-tidy # html -> tidy html
     pandoc # md -> html

@@ -16,3 +16,5 @@ pom.xml.asc
 
 # project specific
 .sass-cache/
+.clj-kondo/
+.lsp/
