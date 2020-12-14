@@ -30,3 +30,7 @@ Everything in [`./provider/static`](./provider/static) is copied unaltered to th
 - Publish RSS feed
 - Add a page of project ideas
 - Articles / Fragments / Notes
+
+### External to look at
+
+- https://github.com/SneakyPeet/sneakycode.net/blob/1be035a7b6e96d357f4551e99d50db786e93a1c9/src/sneakycode/core.clj
