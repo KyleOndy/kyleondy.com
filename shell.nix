@@ -4,6 +4,9 @@ let
 in
 pkgs.mkShell {
   buildInputs = with pkgs; [
+    clojure # the lang
+    leiningen # build tooling
+
     html-tidy # html -> tidy html
     pandoc # md -> html
     sass # scss -> css
