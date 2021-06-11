@@ -4,8 +4,8 @@ set -e
 # read file name in as first argument, output json metadata on stdout
 
 # bash HAX!
-# The intnetion here is to assume we have proper input with the follow
-# conditoins met:
+# The intention here is to assume we have proper input with the follow
+# conditions met:
 #   1) all files have a yaml strucutre [1] at the top of the file
 #   2) I only use the header as a stirng:stirng  key:value store
 #
@@ -29,6 +29,23 @@ header_end_boundry="$(
 
 header="$(head -n "$header_end_boundry" "$1")"
 
+
+git_url_prefix="https://github.com/kyleondy/kyleondy.com"
+git_brach="$(git rev-parse --abbrev-ref HEAD)"
+
+git_history() {
+  echo "${git_url_prefix}/commits/${git_brach}/${1}"
+}
+
+git_source() {
+  echo "${git_url_prefix}/blob/${git_brach}/${1}"
+}
+
+git_commit() {
+  commit=$(git log -1 HEAD "--pretty=format:%h" -- "$1")
+  echo "${git_url_prefix}/commit/${commit}"
+}
+
 cat << EOF
 {
   "file": "$1",
@@ -36,5 +53,9 @@ cat << EOF
   "updated": "$(get_value "$header" "updated")",
   "subtitle": "$(get_value "$header" "subtitle")",
   "tags": ["$(get_array "$header" "tags")"]
+  "content": "$(cat "$1" | tail -n+$((header_end_boundry + 1)))"
+  "git_source": "$(git_source "$1")",
+  "git_history": "$(git_history "$1")",
+  "git_commit": "$(git_commit "$1")"
 }
 EOF
