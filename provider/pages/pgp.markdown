@@ -7,7 +7,7 @@ updated: 2021-06-11T23:09:23Z
 My PGP key can be found in the following locations.
 
 * [/pgp.txt](/pgp.txt).
-* [SKS Keyserver](https://sks-keyservers.net/pks/lookup?op=get&search=0xDB0E3C33491F91C9)
+* [Ubuntu Keyserver](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xDB0E3C33491F91C9)
 
 You can always check my [Keybase account, KyleOndy](https://keybase.io/kyleondy) to validate my identities.
 
