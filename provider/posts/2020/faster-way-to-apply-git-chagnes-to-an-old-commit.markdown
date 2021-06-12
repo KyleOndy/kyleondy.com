@@ -164,4 +164,4 @@ Here are some posts I discovered that led me to my final solution, in no specifi
 
 - [Stack Overflow: Git alias with positional parameters](https://stackoverflow.com/questions/3321492/git-alias-with-positional-parameters)
 - [A closer look at the zsh line editor and creating custom widgets](https://sgeb.io/posts/2014/04/zsh-zle-custom-widgets/)
-- [how-to: run git interactive rebase non-interactively](http://www.lowlevelmanager.com/2016/02/how-to-run-git-interactive-rebase-non.html)
+- [[web.archive.org]: how-to: run git interactive rebase non-interactively](https://web.archive.org/web/20210122084813/http://lowlevelmanager.com/2016/02/how-to-run-git-interactive-rebase-non.html)
