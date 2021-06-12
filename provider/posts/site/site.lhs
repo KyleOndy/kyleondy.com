@@ -313,9 +313,9 @@ siteContext :: Context String
 siteContext = mconcat
     [ dateFromMetadata "created" "createdDateTime" shortDateFormat
     , dateFromMetadata "updated" "updatedDateTime" shortDateFormat
-    , gitHistoryUrl "gitHistoryUrl"
-    , gitCommitUrl "gitCommitUrl"
-    , gitSourceUrl "gitSourceUrl"
+    -- , gitHistoryUrl "gitHistoryUrl"
+    -- , gitCommitUrl "gitCommitUrl"
+    -- , gitSourceUrl "gitSourceUrl"
     , gitEditUrl "gitEditUrl"
     , defaultContext
     ]
@@ -333,53 +333,53 @@ dateFromMetadata key value format = field value $ \i -> do
 todo: git things
 
 \begin{code}
-gitLog :: String -> String -> IO String
-gitLog filePath format =
-  readProcess "git" [
-    "log"
-  , "-1"
-  , "HEAD"
-  , "--pretty=format:" ++ format
-  , "--"
-  , filePath
-  ] ""
-
-gitBranch :: IO String
-gitBranch = do
-  branch <-readProcess "git" [
-      "rev-parse"
-    , "--abbrev-ref"
-    , "HEAD"
-    ] ""
-  return $trim branch
-
-
-gitHistoryUrl :: String -> Context String
-gitHistoryUrl key = field key $ \item -> do
-  let fp = "provider/" ++ toFilePath (itemIdentifier item)
-  unsafeCompiler $ do
-    sha     <- gitLog fp "%h"
-    branch  <- gitBranch
-    let github  =  "https://github.com/kyleondy/kyleondy.com"
-        history = github ++ "/commits/" ++ branch ++ "/" ++ fp
-    return $ if null sha
-               then "Not Committed"
-               else history
+-- gitLog :: String -> String -> IO String
+-- gitLog filePath format =
+--   readProcess "git" [
+--     "log"
+--   , "-1"
+--   , "HEAD"
+--   , "--pretty=format:" ++ format
+--   , "--"
+--   , filePath
+--   ] ""
+-- 
+-- gitBranch :: IO String
+-- gitBranch = do
+--   branch <-readProcess "git" [
+--       "rev-parse"
+--     , "--abbrev-ref"
+--     , "HEAD"
+--     ] ""
+--   return $trim branch
+-- 
+-- 
+-- gitHistoryUrl :: String -> Context String
+-- gitHistoryUrl key = field key $ \item -> do
+--   let fp = "provider/" ++ toFilePath (itemIdentifier item)
+--   unsafeCompiler $ do
+--     sha     <- gitLog fp "%h"
+--     branch  <- gitBranch
+--     let github  =  "https://github.com/kyleondy/kyleondy.com"
+--         history = github ++ "/commits/" ++ branch ++ "/" ++ fp
+--     return $ if null sha
+--                then "Not Committed"
+--                else history
 \end{code}
 
 The url to an items commit in GitHub
 
 \begin{code}
-gitCommitUrl :: String -> Context String
-gitCommitUrl key = field key $ \item -> do
-  let fp = "provider/" ++ toFilePath (itemIdentifier item)
-  unsafeCompiler $ do
-    sha     <- gitLog fp "%h"
-    let github  =  "https://github.com/kyleondy/kyleondy.com"
-        commit  = github ++ "/commit/" ++ sha
-    return $ if null sha
-               then "Not Committed"
-               else commit
+-- gitCommitUrl :: String -> Context String
+-- gitCommitUrl key = field key $ \item -> do
+--   let fp = "provider/" ++ toFilePath (itemIdentifier item)
+--   unsafeCompiler $ do
+--     sha     <- gitLog fp "%h"
+--     let github  =  "https://github.com/kyleondy/kyleondy.com"
+--         commit  = github ++ "/commit/" ++ sha
+--     return $ if null sha
+--                then "Not Committed"
+--                else commit
 \end{code}
 
 The url to the item at the current time.
@@ -389,18 +389,18 @@ Todo: pull current branch out, so links where when I'm in local dev mode.
 todo: combine functions
 
 \begin{code}
-gitSourceUrl :: String -> Context String
-gitSourceUrl key = field key $ \item -> do
-  let fp     = "provider/" ++ toFilePath (itemIdentifier item)
-  unsafeCompiler $ do
-      branch <- gitBranch
-      return $ "https://github.com/kyleondy/kyleondy.com/blob/" ++ branch ++"/" ++ fp
-
+-- gitSourceUrl :: String -> Context String
+-- gitSourceUrl key = field key $ \item -> do
+--   let fp     = "provider/" ++ toFilePath (itemIdentifier item)
+--   unsafeCompiler $ do
+--       branch <- gitBranch
+--       return $ "https://github.com/kyleondy/kyleondy.com/blob/" ++ branch ++"/" ++ fp
+-- 
 gitEditUrl :: String -> Context String
 gitEditUrl key = field key $ \item -> do
   let fp     = "provider/" ++ toFilePath (itemIdentifier item)
-  unsafeCompiler $ do
-      branch <- gitBranch
+      branch = "master"
+  do
       return $ "https://github.com/kyleondy/kyleondy.com/edit/" ++ branch ++ "/" ++ fp
 \end{code}
 
