@@ -1,25 +1,18 @@
-STACK=stack --install-ghc ${STACK_ARGS}
-SITE_NAME=hakyll-kyleondy
-SITE_EXE=$(STACK) exec $(SITE_NAME) -- ${SITE_ARGS}
-PROVIDER_FOLDER=provider
 SITE_FOLDER=_site
-GIT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 
 all: clean test
 
 .PHONY: rebuild
 rebuild:
-	$(STACK) install
-	$(SITE_EXE) rebuild
+	nix build .#website
 
 .PHONY: build
 build:
-	$(STACK) install
-	$(SITE_EXE) build
+	nix run . -- build
 
 .PHONY: test
 test: build
-	$(SITE_EXE) check
+	nix run . -- check
 
 .PHONY: clean-full
 clean-full: clean
@@ -28,26 +21,25 @@ clean-full: clean
 
 .PHONY: clean
 clean:
-	$(SITE_EXE) clean
+	nix run . -- clean
 
 .PHONY: server
 server: build
-	$(SITE_EXE) server
+	nix run . -- server
 
 .PHONY: watch
 watch: build
-	$(SITE_EXE) watch
+	nix run . -- watch
+
+.PHONY: develop
+develop:
+	make develop
 
 .PHONY: watch-external
 watch-external: build
 	$(SITE_EXE) watch --host '0.0.0.0' --port '8822'
 
-.PHONY: secrets
-secrets:
-	rm -rf provider/secrets
-	git clone --depth=1 git@gitlab.com:kyleondy/kyleondy.com.secret provider/secrets
-
 .PHONY: deploy
 deploy: clean secrets build test
 	@echo "$(shell git rev-parse --verify HEAD)" > $(SITE_FOLDER)/head.txt
-	s3_website push --dry-run
+	@echo "todo"

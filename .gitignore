@@ -1,14 +1,3 @@
-.stack-work
-_site/
+result
 _cache/
-_build/
-_build
-.sass-cache
-
-# for the time being. Working a better solution
-deploy.sh
-
-# for things I don't want in the public repo
-provider/secrets
-
-stack.yaml.lock
+_site/

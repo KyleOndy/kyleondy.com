@@ -1,0 +1,12 @@
+name: kyleondy-com
+
+dependencies:
+    - base
+    - hakyll
+    - filepath
+    - time
+    - hakyll-sass
+    - process
+
+executable:
+    main: ./provider/posts/site/site.lhs
