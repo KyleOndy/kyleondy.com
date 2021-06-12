@@ -4,8 +4,8 @@ DOCKER_IMAGE:=kyleondy/website
 
 all: clean test
 
-.PHONY: rebuild
-rebuild:
+.PHONY: build_nix
+build_nix:
 	nix build .#website
 
 .PHONY: build
@@ -38,7 +38,7 @@ watch-external: build
 	$(SITE_EXE) watch --host '0.0.0.0' --port '8822'
 
 .PHONY: deploy
-deploy: clean build test
+deploy: clean build_nix test
 	@echo $(GIT_REV) > $(SITE_FOLDER)/head.txt
 	@# https://superuser.com/a/842705
 	tar -chz . | docker build -t $(DOCKER_IMAGE):$(GIT_REV) -
