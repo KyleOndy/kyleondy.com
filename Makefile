@@ -16,14 +16,10 @@ build:
 test: build
 	nix run . -- check
 
-.PHONY: clean-full
-clean-full: clean
-	$(STACK) clean
-	rm -f $(shell stack path --local-bin)/$(SITE_NAME)
-
 .PHONY: clean
 clean:
 	nix run . -- clean
+	rm -f result
 
 .PHONY: server
 server: build
