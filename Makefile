@@ -37,9 +37,11 @@ develop:
 watch-external: build
 	$(SITE_EXE) watch --host '0.0.0.0' --port '8822'
 
-.PHONY: deploy
-deploy: clean build test
-	@echo $(GIT_REV) > $(SITE_FOLDER)/head.txt
-	@# https://superuser.com/a/842705
+.PHONY: build_docker
+build_docker:
+	echo $(GIT_REV) > $(SITE_FOLDER)/head.txt
 	docker build -t $(DOCKER_IMAGE):$(GIT_REV) .
+
+.PHONY: deploy
+deploy: clean build
 	docker push $(DOCKER_IMAGE):$(GIT_REV)
