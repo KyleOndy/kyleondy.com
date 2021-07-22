@@ -399,7 +399,7 @@ todo: combine functions
 gitEditUrl :: String -> Context String
 gitEditUrl key = field key $ \item -> do
   let fp     = "provider/" ++ toFilePath (itemIdentifier item)
-      branch = "master"
+      branch = "main"
   do
       return $ "https://github.com/kyleondy/kyleondy.com/edit/" ++ branch ++ "/" ++ fp
 \end{code}
