@@ -43,5 +43,5 @@ build_docker:
 	docker build -t $(DOCKER_IMAGE):$(GIT_REV) .
 
 .PHONY: deploy
-deploy: clean build
+deploy: clean build build_docker
 	docker push $(DOCKER_IMAGE):$(GIT_REV)
