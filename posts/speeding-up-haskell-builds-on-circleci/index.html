@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!-- Basic Page Needs
+      –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+      <meta charset="utf-8">
+      <title>Kyle Ondy - Speeding up Haskell builds on CircleCI</title>
+      <!-- todo: description -->
+      <meta name="description" content>
+      <meta name="author" content="Kyle Ondy">
+
+      <!-- Mobile Specific Metas
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- FONT
+          –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+          <!-- todo: pull locally -->
+          <link href="https://fonts.googleapis.com/css?family=Prata|Raleway:300,400,600" rel="stylesheet">
+
+          <!-- CSS
+            –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+            <link rel="stylesheet" href="../../css/normalize.css">
+            <link rel="stylesheet" href="../../css/syntax.css">
+            <link rel="stylesheet" href="../../css/site.css">
+
+            <!-- Favicon
+              –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+              <link rel="icon" type="/image/x-icon" href="../../images/favicon.ico">
+
+              <!-- todo: mathjx -->
+              <!-- todo: rss/atom -->
+              <!-- todo: keywords/meta -->
+  </head>
+  <body>
+    <header class="site-header">
+      <nav>
+        <h3 id="logo"><a href="../../">Kyle Ondy.</a></h3>
+        <a href="../../about">About</a> //
+        <a href="../../posts">Posts</a> //
+        <a href="../../notes">Notes</a> //
+        <a href="../../contact">Contact</a> //
+        <a href="../../hire">Hire Me</a> //
+        <a href="../../pgp">PGP</a>
+      </nav>
+    </header>
+    <hr />
+    <main role="main">
+    <article class="post">
+  <div class="notice">
+    Spot an error? Know how to make this page better? I appreciate <a href="https://github.com/kyleondy/kyleondy.com/edit/main/provider/posts/2015/speed-up-circeci-haskell-build-with-stack.markdown">pull requests</a>.
+    </div>
+  <header class="post-header">
+    
+    <h1 class="title">Speeding up Haskell builds on CircleCI</h1>
+     
+    <div class="subtitle">Substantially faster Haskell build on CircleCI with Stack</div>
+    
+    <section class="post-meta">
+      
+      <!-- todo: date stuff -->
+      <time class="post-date" datetime="December 14, 2015">Created: December 14, 2015</time>
+      <br />
+      
+      
+      <time class="updated-date" datetime="December 14, 2015">Updated: December 14, 2015</time>
+      
+    </section>
+    <br />
+  </header>
+  <aside>
+This is an outdated article and is here for prosperities sake. The following information is more than likely woefully out of date.
+</aside>
+<p>I’ve gotten so used to how awesome continuous integration is I don’t think I could live without it anymore. Unfortunately building Haskell projects was becoming a pain since everything had to be rebuilt each commit.</p>
+<p>Now using <a href="https://circleci.com/">Circle CI</a> along with <a href="http://docs.haskellstack.org/en/stable/README.html">stack</a> allows projects to be built in the fraction of the time.</p>
+<figure>
+<img src="../../images/circle-ci-speedup.png" alt="CircleCI speedup" /><figcaption aria-hidden="true">CircleCI speedup</figcaption>
+</figure>
+<p>As of commit <a href="https://github.com/KyleOndy/kyleondy.com/blob/60ee51b606a181e584ef905fde8520d9d1c45d59/circle.yml">60ee51b</a> my circle.yml file looks like this:</p>
+<p>This is the configuration file for circleci.com (CI which builds the site)</p>
+<pre><code># Manually install to avoid install conflicts
+# cf. https://github.com/jaspervdj/hakyll/issues/340#issuecomment-96101869
+dependencies:
+  cache_directories:
+    - &quot;~/.stack&quot;
+  pre:
+    - wget https://github.com/commercialhaskell/stack/releases/download/v0.1.10.0/stack-0.1.10.0-linux-x86_64.tar.gz -O /tmp/stack.tar.gz
+    - tar -zxvf /tmp/stack.tar.gz --strip 1 -C /tmp/
+    - ls -laxo /tmp
+    - chmod +x /tmp/stack
+    - sudo mv /tmp/stack /usr/bin/stack
+  override:
+    - stack setup
+    - stack build
+
+general:
+  branches:
+    ignore:
+      - compiled-html # actaul website content
+
+# Compile pages during the test stage
+test:
+  override:
+    - make check</code></pre>
+<h2 id="breaking-it-down">Breaking it down</h2>
+<p>This section tells circleCI to keep this directory around build to build.</p>
+<pre><code>dependencies:
+  cache_directories:
+    - &quot;~/.stack&quot;</code></pre>
+<p>This downloads the latest stack release to /tmp of the build container, extracts the package to /tmp, copies the executable to the bin directory, and sets the executable bit on stack.</p>
+<pre><code>pre:
+  - wget https://github.com/commercialhaskell/stack/releases/download/v0.1.10.0/stack-0.1.10.0-linux-x86_64.tar.gz -O /tmp/stack.tar.gz
+  - tar -zxvf /tmp/stack.tar.gz --strip 1 -C /tmp/
+  - ls -laxo /tmp
+  - chmod +x /tmp/stack
+  - sudo mv /tmp/stack /usr/bin/stack</code></pre>
+<p>Make sure GHC and all packages declared in .cabal are built.</p>
+<pre><code>override:
+  - stack setup
+  - stack build</code></pre>
+  <!-- <footer class="post-footer"> </footer> -->
+</article>
+
+    </main>
+    <hr />
+    <footer class="site-footer">
+      <p>
+      KyleOndy.com is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      <br />
+      All code is released under the <a href="../../about#simplified-bsd-2-clause-license">BSD (2-Clause) License</a>.
+      </p>
+    </footer>
+  </body>
+</html>

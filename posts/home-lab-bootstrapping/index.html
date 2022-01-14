@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!-- Basic Page Needs
+      –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+      <meta charset="utf-8">
+      <title>Kyle Ondy - Home Lab - Bootstrapping</title>
+      <!-- todo: description -->
+      <meta name="description" content>
+      <meta name="author" content="Kyle Ondy">
+
+      <!-- Mobile Specific Metas
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- FONT
+          –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+          <!-- todo: pull locally -->
+          <link href="https://fonts.googleapis.com/css?family=Prata|Raleway:300,400,600" rel="stylesheet">
+
+          <!-- CSS
+            –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+            <link rel="stylesheet" href="../../css/normalize.css">
+            <link rel="stylesheet" href="../../css/syntax.css">
+            <link rel="stylesheet" href="../../css/site.css">
+
+            <!-- Favicon
+              –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+              <link rel="icon" type="/image/x-icon" href="../../images/favicon.ico">
+
+              <!-- todo: mathjx -->
+              <!-- todo: rss/atom -->
+              <!-- todo: keywords/meta -->
+  </head>
+  <body>
+    <header class="site-header">
+      <nav>
+        <h3 id="logo"><a href="../../">Kyle Ondy.</a></h3>
+        <a href="../../about">About</a> //
+        <a href="../../posts">Posts</a> //
+        <a href="../../notes">Notes</a> //
+        <a href="../../contact">Contact</a> //
+        <a href="../../hire">Hire Me</a> //
+        <a href="../../pgp">PGP</a>
+      </nav>
+    </header>
+    <hr />
+    <main role="main">
+    <article class="post">
+  <div class="notice">
+    Spot an error? Know how to make this page better? I appreciate <a href="https://github.com/kyleondy/kyleondy.com/edit/main/provider/posts/2019/home-lab-pt-2.markdown">pull requests</a>.
+    </div>
+  <header class="post-header">
+    
+    <h1 class="title">Home Lab - Bootstrapping</h1>
+     
+    <div class="subtitle">Working out the kinks.</div>
+    
+    <section class="post-meta">
+      
+      <!-- todo: date stuff -->
+      <time class="post-date" datetime="December 11, 2019">Created: December 11, 2019</time>
+      <br />
+      
+      
+    </section>
+    <br />
+  </header>
+  <p>One of the most common and insidious issues with systems is configuration drift. In a home lab without the controls in place that an enterprise or real business demands this drift happens before you realize. One of the best ways to ensure minimal drift is to minimize the effort needed to rebuild the system in question.</p>
+<p>Applying your configuration management to a fresh image verifies that you are able to rebuild your environment as needed. Using a combination of <a href="https://github.com/danderson/netboot/tree/master/pixiecore">pixiecore</a> and <a href="https://github.com/ns1/waitron">waitron</a> I am able to choose if each board should have its OS reinstalled when it boots into the PXE environment.</p>
+<p>The RaspberryPi setup was fairly straightforward following <a href="https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2711_bootloader_config.md">the offical documentation</a>.</p>
+<p>The <a href="https://www.hardkernel.com/shop/odroid-h2/">ODRIOD-H2</a> <em>should</em> be able to follow the same workflow. However, there seems to be a bug in the H2’s BIOS. I’ve made a post for further clarification on the <a href="https://forum.odroid.com/viewtopic.php?f=173&amp;t=37071">official forums</a>.</p>
+  <!-- <footer class="post-footer"> </footer> -->
+</article>
+
+    </main>
+    <hr />
+    <footer class="site-footer">
+      <p>
+      KyleOndy.com is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      <br />
+      All code is released under the <a href="../../about#simplified-bsd-2-clause-license">BSD (2-Clause) License</a>.
+      </p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!-- Basic Page Needs
+      –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+      <meta charset="utf-8">
+      <title>Kyle Ondy - A faster way to amend a git commit</title>
+      <!-- todo: description -->
+      <meta name="description" content>
+      <meta name="author" content="Kyle Ondy">
+
+      <!-- Mobile Specific Metas
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- FONT
+          –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+          <!-- todo: pull locally -->
+          <link href="https://fonts.googleapis.com/css?family=Prata|Raleway:300,400,600" rel="stylesheet">
+
+          <!-- CSS
+            –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+            <link rel="stylesheet" href="../../css/normalize.css">
+            <link rel="stylesheet" href="../../css/syntax.css">
+            <link rel="stylesheet" href="../../css/site.css">
+
+            <!-- Favicon
+              –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+              <link rel="icon" type="/image/x-icon" href="../../images/favicon.ico">
+
+              <!-- todo: mathjx -->
+              <!-- todo: rss/atom -->
+              <!-- todo: keywords/meta -->
+  </head>
+  <body>
+    <header class="site-header">
+      <nav>
+        <h3 id="logo"><a href="../../">Kyle Ondy.</a></h3>
+        <a href="../../about">About</a> //
+        <a href="../../posts">Posts</a> //
+        <a href="../../notes">Notes</a> //
+        <a href="../../contact">Contact</a> //
+        <a href="../../hire">Hire Me</a> //
+        <a href="../../pgp">PGP</a>
+      </nav>
+    </header>
+    <hr />
+    <main role="main">
+    <article class="post">
+  <div class="notice">
+    Spot an error? Know how to make this page better? I appreciate <a href="https://github.com/kyleondy/kyleondy.com/edit/main/provider/posts/2020/faster-way-to-apply-git-chagnes-to-an-old-commit.markdown">pull requests</a>.
+    </div>
+  <header class="post-header">
+    
+    <h1 class="title">A faster way to amend a git commit</h1>
+     
+    <div class="subtitle">Making life in the shell a bit nicer</div>
+    
+    <section class="post-meta">
+      
+      <!-- todo: date stuff -->
+      <time class="post-date" datetime="May  9, 2020">Created: May  9, 2020</time>
+      <br />
+      
+      
+    </section>
+    <br />
+  </header>
+  <p>tldr: <code>git amend-to &lt;REF&gt;</code>.</p>
+<h2 id="the-problem">The problem</h2>
+<p>The way I’ve grown to use git is to iteratively build up a collection, typically 2 to 4, commits as I work. I know the goal I am working towards may be best describes as a few distinct commits. This work flow requires me to amend commits behind <code>HEAD</code> fairly often. In the past I had two ways of achieving this.</p>
+<p>The first method I’ve used since my early days of git is to use <code>git stash</code> and interactive rebase. This way does work, but involves a fair amount of trying and ruins any <em>flow</em> that you may have had going.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">git</span> add <span class="op">&lt;</span>chagens to be amended<span class="op">&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="fu">git</span> stash</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="fu">git</span> rebase -i <span class="op">&lt;</span>some REF before the commit to be amended<span class="op">&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="co"># &lt; mark commit for editing &gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="fu">git</span> stash pop</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="fu">git</span> commit --amend</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="fu">git</span> rebase --contine</span></code></pre></div>
+<p>This is cumbersome. This is slow. It feels like there should be a better way.</p>
+<p>A few months ago I decided there must be a better way. I began to just mark the changes I wanted to amend to a previews commit as a fixup be making a quick <code>git commit -m "f: &lt;some description that lets me know what is being fixed up&gt;"</code>. I could continue to do this, working for a while without ever having my find drift to far. Then after a while I could do another interactive rebase <em>and</em> if I was good with naming everything, could reorder the commits and set the commits starting with <code>f:</code> to be fixedup.</p>
+<p>This worked ok, sometimes, until it didn’t. I would forget which commit each fixup was associated with, causing me to end up with commits that were not atomic.</p>
+<p>This work flow failed me due to my inability to reconcile conflicts. Some commit that was being fixed up would have a conflict, and it would always seem to snowball out of control.</p>
+<h2 id="the-quest-for-a-better-amend">The quest for a better amend</h2>
+<p>I knew there had to be a better way. This past weekend I set some time aside to explicitly look for a solution to the problem.</p>
+<p>As I alluded to above my work flow is now as follows.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="fu">git</span> add <span class="op">&lt;</span>changes to be amended to a commit<span class="op">&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="fu">git</span> amend-to <span class="op">&lt;</span>^y<span class="op">&gt;</span> <span class="co"># hit control + y on the keyboard</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="co"># choose a commit from a list</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="op">&gt;</span> <span class="fu">git</span> amend-to abcde123</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="co"># commit has been amended to</span></span></code></pre></div>
+<p>This magic is a combination of a git alias and a zsh widget.</p>
+<h3 id="the-git-alias">the git alias</h3>
+<p>Here is the alias <code>amend-to</code> that I use.</p>
+<pre><code>amend-to = &quot;!f() { git commit --fixup \&quot;$1\&quot; &amp;&amp; GIT_SEQUENCE_EDITOR=true git rebase --interactive --autosquash \&quot;$1^\&quot;;}; f&quot;</code></pre>
+<p>The magic of this alias is the <code>GIT_SEQUENCE_EDITOR</code>. The excerpts of the man pages are duplicated below. Committing with <code>--fixup</code> words the commit to be compatible with <code>--autosquash</code>. Adding <code>--autosquash</code> will reorder the rebase todo list and place the fixup’s in the proper place.</p>
+<p>This alone would be a significant improvement to the work flow.</p>
+<p>Setting <code>GIT_SEQUENCE_EDITOR=true</code> will suppress the instruction sheet completely by exiting immediately with an exit code of 0. This provides a zero interaction amend to any commit, assuming no conflicts. Now if a conflict does arise only dealing with a single change is easer to shepard though.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="op">&gt;</span> <span class="fu">man</span> git-config</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="ex">-----8</span><span class="op">&lt;</span>------</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="ex">sequence.editor</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>  <span class="ex">Text</span> editor used by git rebase -i for editing the rebase instruction file.</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>  <span class="ex">The</span> value is meant to be interpreted by the shell when it is used. It can be</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>  <span class="ex">overridden</span> by the GIT_SEQUENCE_EDITOR environment variable. When not</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>  <span class="ex">configured</span> the default commit message editor is used instead.</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="ex">-----8</span><span class="op">&lt;</span>------</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="op">&gt;</span> <span class="fu">man</span> git-commit</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="ex">--fixup</span>=<span class="op">&lt;</span>commit<span class="op">&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>  <span class="ex">Construct</span> a commit message for use with rebase --autosquash. The commit</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>  <span class="ex">message</span> will be the subject line from the specified commit with a prefix of</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>  <span class="st">&quot;fixup! &quot;</span><span class="bu">.</span> <span class="ex">See</span> git-rebase(1) <span class="kw">for</span> <span class="ex">details.</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="op">&gt;</span> <span class="fu">man</span> git-rebase</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="ex">--autosquash</span>, --no-autosquash</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>  <span class="ex">When</span> the commit log message begins with <span class="st">&quot;squash! ...&quot;</span> (or <span class="st">&quot;fixup! ...&quot;</span>), <span class="ex">and</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>  <span class="ex">there</span> is already a commit in the todo list that matches the same ...,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>  <span class="ex">automatically</span> modify the todo list of rebase -i so that the commit marked for</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>  <span class="ex">squashing</span> comes right after the commit to be modified, and change the action</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>  <span class="ex">of</span> the moved commit from pick to squash (or fixup)<span class="bu">.</span> <span class="ex">A</span> commit matches the ...</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>  <span class="kw">if</span> <span class="ex">the</span> commit subject matches, or if the ...  refers to the commit’s hash. As</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>  <span class="ex">a</span> fall-back, partial matches of the commit subject work, too. The recommended</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>  <span class="ex">way</span> to create fixup/squash commits is by using the --fixup/--squash options of</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>  <span class="ex">git-commit</span>(1)<span class="ex">.</span></span></code></pre></div>
+<p>This alias is fully functionally. You do need to look up commit hashes manually. You need to be constancy referencing <code>git log</code> and copy and pasting. With the history being rewritten you are unable to rerun the same command from history to edit the same logical commit.</p>
+<h3 id="the-zsh-widget">The zsh widget</h3>
+<p>To avoid all this work, I’ve written a small zsh widget that allows me to interactively select a commit form a list after hitting <code>&lt;ctrl&gt;y</code>. I’ve been a big fan of <a href="https://github.com/junegunn/fzf">fzf</a> using it for finding file within vim since at least <a href="https://github.com/KyleOndy/dotfiles/commit/f849fc3e3287db3a879117f2fad7dc428c49f347#diff-add39464403a266c831c649bca9a5732R35">Feb 2006</a>. By piping in the results of <code>git log</code> into <code>fzf</code> I can easily select a commit to amend to.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode zsh"><code class="sourceCode zsh"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="fu">fzf_pick_git_commit()</span> <span class="kw">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>  <span class="co"># I've already put a lot of time into my `git lg` alias an am very</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>  <span class="co"># familiar with how it looks. I am just reusing most of the logic here.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>  <span class="co"># I force `--color` becuase git will output this without color by</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>  <span class="co"># default.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>  <span class="ot">LOG_LINE=$(</span>git <span class="kw">log</span> --color --pretty=format:<span class="st">'%Cred%h%Creset -%G?-%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset'</span> <span class="kw">|</span> fzf --ansi<span class="ot">)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>  <span class="co"># as the git commit ref is the first item in the line, split at the</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>  <span class="co"># first space and take the first argument.</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>  <span class="kw">echo</span> -n <span class="st">&quot;</span><span class="ot">$LOG_LINE</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="kw">cut</span> -d<span class="st">' '</span> -f1 <span class="kw">|</span> <span class="kw">tr</span> -d <span class="st">$'</span><span class="dt">\n</span><span class="st">'</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a><span class="kw">}</span></span></code></pre></div>
+<p>This zsh function just echo’s out the git REF, which is not quite what I need. I need that value to be inserted into the ZSH input environment. This is done by adding the commit value to the end of the cursor position by appending to <code>LBUFFER</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode zsh"><code class="sourceCode zsh"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="fu">_zle_pick_git_commit()</span> <span class="kw">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>  <span class="ot">COMMIT=$(</span>fzf_pick_git_commit<span class="ot">)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>  <span class="ot">LBUFFER=$LBUFFER$COMMIT</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="kw">}</span></span></code></pre></div>
+<p>To enable the zsh binding I create a zsh widget.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode zsh"><code class="sourceCode zsh"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">zle</span> -N _zle_pick_git_commit</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">bindkey</span> <span class="st">'^y'</span> _zle_pick_git_commit</span></code></pre></div>
+<h2 id="all-together">All together</h2>
+<p>A nicer way to work.</p>
+<h2 id="external-resources">External resources</h2>
+<p>Like almost everything I do, its on the shoulders of giants. Here are some posts I discovered that led me to my final solution, in no specific order.</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/3321492/git-alias-with-positional-parameters">Stack Overflow: Git alias with positional parameters</a></li>
+<li><a href="https://sgeb.io/posts/2014/04/zsh-zle-custom-widgets/">A closer look at the zsh line editor and creating custom widgets</a></li>
+<li><a href="https://web.archive.org/web/20210122084813/http://lowlevelmanager.com/2016/02/how-to-run-git-interactive-rebase-non.html">[web.archive.org]: how-to: run git interactive rebase non-interactively</a></li>
+</ul>
+  <!-- <footer class="post-footer"> </footer> -->
+</article>
+
+    </main>
+    <hr />
+    <footer class="site-footer">
+      <p>
+      KyleOndy.com is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      <br />
+      All code is released under the <a href="../../about#simplified-bsd-2-clause-license">BSD (2-Clause) License</a>.
+      </p>
+    </footer>
+  </body>
+</html>

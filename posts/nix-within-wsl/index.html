@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!-- Basic Page Needs
+      –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+      <meta charset="utf-8">
+      <title>Kyle Ondy - Nix within WSL</title>
+      <!-- todo: description -->
+      <meta name="description" content>
+      <meta name="author" content="Kyle Ondy">
+
+      <!-- Mobile Specific Metas
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- FONT
+          –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+          <!-- todo: pull locally -->
+          <link href="https://fonts.googleapis.com/css?family=Prata|Raleway:300,400,600" rel="stylesheet">
+
+          <!-- CSS
+            –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+            <link rel="stylesheet" href="../../css/normalize.css">
+            <link rel="stylesheet" href="../../css/syntax.css">
+            <link rel="stylesheet" href="../../css/site.css">
+
+            <!-- Favicon
+              –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+              <link rel="icon" type="/image/x-icon" href="../../images/favicon.ico">
+
+              <!-- todo: mathjx -->
+              <!-- todo: rss/atom -->
+              <!-- todo: keywords/meta -->
+  </head>
+  <body>
+    <header class="site-header">
+      <nav>
+        <h3 id="logo"><a href="../../">Kyle Ondy.</a></h3>
+        <a href="../../about">About</a> //
+        <a href="../../posts">Posts</a> //
+        <a href="../../notes">Notes</a> //
+        <a href="../../contact">Contact</a> //
+        <a href="../../hire">Hire Me</a> //
+        <a href="../../pgp">PGP</a>
+      </nav>
+    </header>
+    <hr />
+    <main role="main">
+    <article class="post">
+  <div class="notice">
+    Spot an error? Know how to make this page better? I appreciate <a href="https://github.com/kyleondy/kyleondy.com/edit/main/provider/posts/2019/nix-within-wsl.md">pull requests</a>.
+    </div>
+  <header class="post-header">
+    
+    <h1 class="title">Nix within WSL</h1>
+     
+    <div class="subtitle">The comfort of Nix, even within Windows</div>
+    
+    <section class="post-meta">
+      
+      <!-- todo: date stuff -->
+      <time class="post-date" datetime="August  4, 2019">Created: August  4, 2019</time>
+      <br />
+      
+      
+    </section>
+    <br />
+  </header>
+  <h1 id="installing-nix-in-wsl-ubuntu">Installing Nix in WSL (Ubuntu)</h1>
+<p>Attempting to install nix while in WSL returns some obtuse errors.</p>
+<h2 id="missing-cgroups-support">Missing cgroups support</h2>
+<p>The Nix sandbox relies on container functionality that Windows has yet to implement in the WSL abstraction layer. If you do not disable the sandbox the follow error occurs.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ex">error</span>: cloning builder process: Invalid argument</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="ex">error</span>: unable to start build process</span></code></pre></div>
+<h2 id="incorrect-file-locking">Incorrect file locking</h2>
+<p>The lock handling in Windows NT doesn’t perfectly match Linux’s. While SQLite works fine under the Win32 personality, it produces deadlocks when you try to install Nix, producing this infinite warning loop:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="ex">warning</span>: SQLite database <span class="st">'/nix/var/nix/db/db.sqlite'</span> is busy (SQLITE_PROTOCOL)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="ex">warning</span>: SQLite database <span class="st">'/nix/var/nix/db/db.sqlite'</span> is busy (SQLITE_PROTOCOL)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="ex">warning</span>: SQLite database <span class="st">'/nix/var/nix/db/db.sqlite'</span> is busy (SQLITE_PROTOCOL)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="ex">warning</span>: SQLite database <span class="st">'/nix/var/nix/db/db.sqlite'</span> is busy (SQLITE_PROTOCOL)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="ex">warning</span>: SQLite database <span class="st">'/nix/var/nix/db/db.sqlite'</span> is busy (SQLITE_PROTOCOL)</span></code></pre></div>
+<h2 id="installing-nix">Installing Nix</h2>
+<p>Adding the following to <code>/etc/nix/nix.conf</code> before installing nix allows for workarounds the allow a successful installation.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="fu">mkdir</span> -p /etc/nix/</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="fu">cat</span> <span class="op">&lt;&lt; EOF</span> <span class="op">&gt;</span> <span class="ex">/etc/nix/nix.conf</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a># Work around missing cgroups support</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a># https://github.com/Microsoft/WSL/issues/994</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>sandbox = <span class="op">f</span><span class="ex">alse</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a># Work around incorrect file locking</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a># https://github.com/Microsoft/WSL/issues/2395</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>use-sqlite-wal = false</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>EOF</span></code></pre></div>
+<p>Now Run the Nix Package Manager Install script and you will have a successful install.</p>
+  <!-- <footer class="post-footer"> </footer> -->
+</article>
+
+    </main>
+    <hr />
+    <footer class="site-footer">
+      <p>
+      KyleOndy.com is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      <br />
+      All code is released under the <a href="../../about#simplified-bsd-2-clause-license">BSD (2-Clause) License</a>.
+      </p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!-- Basic Page Needs
+      –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+      <meta charset="utf-8">
+      <title>Kyle Ondy - WinRM</title>
+      <!-- todo: description -->
+      <meta name="description" content>
+      <meta name="author" content="Kyle Ondy">
+
+      <!-- Mobile Specific Metas
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- FONT
+          –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+          <!-- todo: pull locally -->
+          <link href="https://fonts.googleapis.com/css?family=Prata|Raleway:300,400,600" rel="stylesheet">
+
+          <!-- CSS
+            –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+            <link rel="stylesheet" href="../../css/normalize.css">
+            <link rel="stylesheet" href="../../css/syntax.css">
+            <link rel="stylesheet" href="../../css/site.css">
+
+            <!-- Favicon
+              –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+              <link rel="icon" type="/image/x-icon" href="../../images/favicon.ico">
+
+              <!-- todo: mathjx -->
+              <!-- todo: rss/atom -->
+              <!-- todo: keywords/meta -->
+  </head>
+  <body>
+    <header class="site-header">
+      <nav>
+        <h3 id="logo"><a href="../../">Kyle Ondy.</a></h3>
+        <a href="../../about">About</a> //
+        <a href="../../posts">Posts</a> //
+        <a href="../../notes">Notes</a> //
+        <a href="../../contact">Contact</a> //
+        <a href="../../hire">Hire Me</a> //
+        <a href="../../pgp">PGP</a>
+      </nav>
+    </header>
+    <hr />
+    <main role="main">
+    <article class="post">
+  <div class="notice">
+    Spot an error? Know how to make this page better? I appreciate <a href="https://github.com/kyleondy/kyleondy.com/edit/main/provider/notes/winrm.markdown">pull requests</a>.
+    </div>
+  <header class="post-header">
+    
+    <h1 class="title">WinRM</h1>
+     
+    <div class="subtitle">Checking WinRM</div>
+    
+    <section class="post-meta">
+      
+      
+      <time class="updated-date" datetime="November 30, 2018">Updated: November 30, 2018</time>
+      
+    </section>
+    <br />
+  </header>
+  <h1 id="checks-winrm-service-is-listening">Checks WinRM service is listening</h1>
+<p>Port <code>5985</code> is default, <code>5986</code> for <code>https</code></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ex">curl</span> <span class="kw">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>  <span class="ex">http</span>://192.168.0.10:5985/wsman <span class="kw">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>  <span class="ex">--header</span> <span class="st">&quot;Content-Type: application/soap+xml;charset=UTF-8&quot;</span> <span class="kw">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>  <span class="ex">--data</span> <span class="st">'&amp;lt;s:Envelope xmlns:s=&quot;http://www.w3.org/2003/05/soap-envelope&quot; xmlns:wsmid=&quot;http://schemas.dmtf.org/wbem/wsman/identity/1/wsmanidentity.xsd&quot;&amp;gt;&amp;lt;s:Header/&amp;gt;&amp;lt;s:Body&amp;gt;&amp;lt;wsmid:Identify/&amp;gt;&amp;lt;/s:Body&amp;gt;&amp;lt;/s:Envelope&amp;gt;'</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co"># basic auth</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="ex">--basic</span> -u user:password</span></code></pre></div>
+<p>Oneliner for copy and paste</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="ex">curl</span> http://192.168.0.10:5985/wsman --header <span class="st">&quot;Content-Type: application/soap+xml;charset=UTF-8&quot;</span> --data <span class="st">'&amp;lt;s:Envelope xmlns:s=&quot;http://www.w3.org/2003/05/soap-envelope&quot; xmlns:wsmid=&quot;http://schemas.dmtf.org/wbem/wsman/identity/1/wsmanidentity.xsd&quot;&amp;gt;&amp;lt;s:Header/&amp;gt;&amp;lt;s:Body&amp;gt;&amp;lt;wsmid:Identify/&amp;gt;&amp;lt;/s:Body&amp;gt;&amp;lt;/s:Envelope&amp;gt;'</span></span></code></pre></div>
+  <!-- <footer class="post-footer"> </footer> -->
+</article>
+
+    </main>
+    <hr />
+    <footer class="site-footer">
+      <p>
+      KyleOndy.com is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      <br />
+      All code is released under the <a href="../../about#simplified-bsd-2-clause-license">BSD (2-Clause) License</a>.
+      </p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!-- Basic Page Needs
+      –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+      <meta charset="utf-8">
+      <title>Kyle Ondy - nvim</title>
+      <!-- todo: description -->
+      <meta name="description" content>
+      <meta name="author" content="Kyle Ondy">
+
+      <!-- Mobile Specific Metas
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- FONT
+          –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+          <!-- todo: pull locally -->
+          <link href="https://fonts.googleapis.com/css?family=Prata|Raleway:300,400,600" rel="stylesheet">
+
+          <!-- CSS
+            –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+            <link rel="stylesheet" href="../../css/normalize.css">
+            <link rel="stylesheet" href="../../css/syntax.css">
+            <link rel="stylesheet" href="../../css/site.css">
+
+            <!-- Favicon
+              –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+              <link rel="icon" type="/image/x-icon" href="../../images/favicon.ico">
+
+              <!-- todo: mathjx -->
+              <!-- todo: rss/atom -->
+              <!-- todo: keywords/meta -->
+  </head>
+  <body>
+    <header class="site-header">
+      <nav>
+        <h3 id="logo"><a href="../../">Kyle Ondy.</a></h3>
+        <a href="../../about">About</a> //
+        <a href="../../posts">Posts</a> //
+        <a href="../../notes">Notes</a> //
+        <a href="../../contact">Contact</a> //
+        <a href="../../hire">Hire Me</a> //
+        <a href="../../pgp">PGP</a>
+      </nav>
+    </header>
+    <hr />
+    <main role="main">
+    <article class="post">
+  <div class="notice">
+    Spot an error? Know how to make this page better? I appreciate <a href="https://github.com/kyleondy/kyleondy.com/edit/main/provider/notes/neovim.markdown">pull requests</a>.
+    </div>
+  <header class="post-header">
+    
+    <h1 class="title">nvim</h1>
+     
+    <div class="subtitle">Notes for neovim (which should mostly work in vim)</div>
+    
+    <section class="post-meta">
+      
+      
+      <time class="updated-date" datetime="October  6, 2018">Updated: October  6, 2018</time>
+      
+    </section>
+    <br />
+  </header>
+  <h1 id="commonly-used-commands">Commonly Used Commands</h1>
+<p>I use <code>neovim</code> daily, but most of these commands should work in vanilla <code>vim</code> too.</p>
+<h2 id="diff-operations">Diff Operations</h2>
+<ul>
+<li>Get <strong>chunck</strong> from other buffer (diff obtain): <code>do</code></li>
+<li>Move <strong>chunk</strong> to other buffer (diff put): <code>dp</code></li>
+<li>Get <strong>range</strong> from other buffer: <code>diffg[et]</code></li>
+<li>Move <strong>range</strong> to other buffer: <code>diffou[t]</code></li>
+</ul>
+<h2 id="spelling">Spelling</h2>
+<ul>
+<li>turn spell check on: <code>:set spell</code></li>
+<li>Move to next/last word: <kbd>]</kbd><kbd>s</kbd> / <kbd>[</kbd><kbd>s</kbd></li>
+<li>Add word to dictionary: <kbd>z</kbd><kbd>g</kbd></li>
+<li>Show suggestions: <kbd>z</kbd><kbd>=</kbd></li>
+</ul>
+<h2 id="text-insertion">Text Insertion</h2>
+<p>When pasting code use <code>:set paste</code> to preserve indenting of pasted code.</p>
+<h2 id="text-wrapping">Text Wrapping</h2>
+<p>Wrap code to <code>textwidth</code>: <kbd>g</kbd><kbd>q</kbd></p>
+<h2 id="plugins">Plugins</h2>
+<ul>
+<li>Update / Install plugins: <code>:PlugUpdate</code></li>
+</ul>
+  <!-- <footer class="post-footer"> </footer> -->
+</article>
+
+    </main>
+    <hr />
+    <footer class="site-footer">
+      <p>
+      KyleOndy.com is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      <br />
+      All code is released under the <a href="../../about#simplified-bsd-2-clause-license">BSD (2-Clause) License</a>.
+      </p>
+    </footer>
+  </body>
+</html>
