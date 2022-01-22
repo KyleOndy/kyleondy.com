@@ -14,7 +14,7 @@ I am looking for a positive company culture as much, if not more than the need
 for a challenging problem domain. I like to solve difficult and unconventional
   problems working along with a motivated small team.
 
-The following is a rundown on on my ideal role; _if I won the job lottery_. I
+The following is a rundown on my ideal role; _if I won the job lottery_. I
 acknowledge this is a unicorn, but this is an accurate description of the type
 of role I would like to be in long-term.
 
