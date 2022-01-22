@@ -1,7 +1,7 @@
 ---
 title: Kyle is Available for Hire
 subtitle: Kyle wants to work for <b>you</b>!
-updated: 2021-07-21T08:01:39Z
+updated: 2022-01-21T00:00:00Z
 ---
 
 <aside>
@@ -73,7 +73,7 @@ Day in and day out, this is what I want.
    I live life in a terminal emulator, 80 characters wide.
    Plain text is my preferred interface to the outside world.
    I prefer CLIs, TUIs, and APIs over desktop apps and webUIs.
-* **Write meaningful code** --- more mainline code, less glue, minimal (to|ya)ml
+* **Write meaningful code** --- more mainline code, less glue, minimal `(to|ya)ml`
 * **Agile** --- not Agile^(TM)
 * **Iteration** --- Not much is better than an almost instant feedback loop
 
@@ -89,7 +89,7 @@ I value the following in the culture where I work.
 ### Perks
 
 * 4+ weeks of vacation.
-  This is most important to me, everything else is just icing.
+  This is most important to me, everything and anything else is just icing.
 
 
 ### Pros
