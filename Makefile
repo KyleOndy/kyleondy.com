@@ -47,6 +47,7 @@ watch-external: build
 .PHONY: gh-pages
 gh-pages: clean build
 	git fetch
+	git branch -D $(GH_PAGES_BRANCH)
 	git worktree add ./$(GH_PAGES_DIR) $(GH_PAGES_BRANCH)
 	cd $(GH_PAGES_DIR) && git ls-files | xargs -tI@ -- rm -r @
 	cd $(GH_PAGES_DIR) && fd --type=directory | xargs --no-run-if-empty -I@ -- rm -rf @
