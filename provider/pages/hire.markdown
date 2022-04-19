@@ -68,7 +68,7 @@ The team I work with is more important than the company we work for. I enjoy wor
 
 Day in and day out, this is what I want.
 
-* **Functional languages** --- Pure functions and compostability
+* **Functional languages** --- Pure functions and composability.
 * **Ownership** --- Able to use own development environment.
    I live life in a terminal emulator, 80 characters wide.
    Plain text is my preferred interface to the outside world.
