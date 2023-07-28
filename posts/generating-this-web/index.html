@@ -101,8 +101,11 @@ Currently <code>hakyll-sass</code> is a fork I maintain. todo: add link I am wor
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="ot">config ::</span> <span class="dt">Configuration</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>config <span class="ot">=</span> defaultConfiguration</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    {</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>      providerDirectory <span class="ot">=</span> <span class="st">&quot;provider&quot;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    }</span></code></pre></div>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>      providerDirectory <span class="ot">=</span> <span class="st">&quot;src/provider&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    , storeDirectory    <span class="ot">=</span> <span class="st">&quot;src/_cache&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>    , tmpDirectory      <span class="ot">=</span> <span class="st">&quot;src/_cache/tmp&quot;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>    , inMemoryCache     <span class="ot">=</span> <span class="dt">True</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>    }</span></code></pre></div>
 <p>Here we define the patterns we use to find content</p>
 A ‘post’ is an article that is ready to be published and included in the sites feed and listing. Grab anything, no matter how deep in the post directory, regardless of the file extension.
 <div class="sourceCode" id="cb6"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="ot">postsPattern ::</span> <span class="dt">Pattern</span></span>
