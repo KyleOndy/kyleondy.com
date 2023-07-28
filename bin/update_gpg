@@ -13,18 +13,18 @@ else
   # update static file
 fi
 
-cp "$key_file" ./provider/static/pgp.txt
+cp "$key_file" ./src/provider/static/pgp.txt
 
 # update pgp page
-pgp_page=./provider/pages/pgp.markdown
+pgp_page=./src/provider/pages/pgp.markdown
 sed -i '/    -----BEGIN PGP PUBLIC KEY BLOCK-----/,/    -----END PGP PUBLIC KEY BLOCK-----/d' $pgp_page
 sed -i "s/updated: .*/updated: $(date +'%FT%TZ')/" $pgp_page
 
 while read -r f; do
   # don't add unnessacary whitespace
   if [ "$f" == "" ]; then
-    echo "" >> ./provider/pages/pgp.markdown
+    echo "" >> ./src/provider/pages/pgp.markdown
   else
-    echo "    $f" >> ./provider/pages/pgp.markdown
+    echo "    $f" >> ./src/provider/pages/pgp.markdown
   fi
 done <"$key_file"
