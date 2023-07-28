@@ -68,26 +68,26 @@
   <p>Some notes below on docker.</p>
 <h1 id="volume-containers">Volume Containers</h1>
 <p>Copying files from current directory into a volumes container.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co"># if volume container is not yet created</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="ex">docker</span> create -v <span class="va">$DATA_DIR</span> --name <span class="va">$DATA_CONTAINER_NAME</span> <span class="va">$IMAGE</span> /bin/true</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="co"># example for my znc contianer</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="ex">docker</span> create -v /znc-data --name znc-data kyleondy/znc /bin/true</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="co"># copy the files in</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="ex">docker</span> run --rm --volumes-from <span class="va">$VOLUME_CONTAINER</span> -v <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>:/move --entrypoint /bin/sh <span class="dt">{</span><span class="va">$IMAGE</span><span class="dt">}</span> -c <span class="st">&quot;cp -av /move/* </span><span class="va">$DESTINATION</span><span class="st">&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if volume container is not yet created</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> create <span class="at">-v</span> <span class="va">$DATA_DIR</span> <span class="at">--name</span> <span class="va">$DATA_CONTAINER_NAME</span> <span class="va">$IMAGE</span> /bin/true</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># example for my znc contianer</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> create <span class="at">-v</span> /znc-data <span class="at">--name</span> znc-data kyleondy/znc /bin/true</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># copy the files in</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">--volumes-from</span> <span class="va">$VOLUME_CONTAINER</span> <span class="at">-v</span> <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>:/move <span class="at">--entrypoint</span> /bin/sh {<span class="va">$IMAGE</span>} <span class="at">-c</span> <span class="st">&quot;cp -av /move/* </span><span class="va">$DESTINATION</span><span class="st">&quot;</span></span></code></pre></div>
 <h2 id="example-of-moving-files-into-my-znc-container">Example of moving files into my znc container</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="op">&gt;</span> <span class="ex">tree</span> .</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="ex">.</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>├── <span class="ex">configs</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>│   └── <span class="ex">znc.conf</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>└── <span class="ex">modules</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    └── <span class="ex">push.cpp</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="co"># $VOLUME_CONTAINER=znc-data</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="co"># $IMAGE=kyleondy/znc</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co"># $DESTINATON=/znc-data</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="ex">docker</span> run --rm --volumes-from znc-data -v <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>:/move --entrypoint /bin/sh kyleondy/znc -c <span class="st">&quot;cp -av /move/* /znc-data&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> tree <span class="bu">.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> configs</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── znc.conf</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> modules</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> push.cpp</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># $VOLUME_CONTAINER=znc-data</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># $IMAGE=kyleondy/znc</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># $DESTINATON=/znc-data</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">--volumes-from</span> znc-data <span class="at">-v</span> <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>:/move <span class="at">--entrypoint</span> /bin/sh kyleondy/znc <span class="at">-c</span> <span class="st">&quot;cp -av /move/* /znc-data&quot;</span></span></code></pre></div>
   <!-- <footer class="post-footer"> </footer> -->
 </article>
 

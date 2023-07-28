@@ -66,18 +66,18 @@
     <br />
   </header>
   <p>Reading a file in realtime, just like <code>tail -f</code> with linux</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">Get-Content</span> -Path \\Path\To\File -Wait</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-Content</span> <span class="op">-</span>Path \\Path\To\File <span class="op">-</span>Wait</span></code></pre></div>
 <hr />
 <p>Copy groups from one user to another</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="fu">Get-Aduser</span> -Identity UserToCopyGroupsFrom -Properties MemberOf |</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>    <span class="fu">Select</span> -ExpandProperty MemberOf</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    <span class="fu">Add-ADGroupMember</span> -Members UseBeingAddedToGroups -PassThru |</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    <span class="fu">Select</span> SamAccountName</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-Aduser</span> <span class="op">-</span>Identity UserToCopyGroupsFrom <span class="op">-</span>Properties MemberOf <span class="op">|</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Select</span> <span class="op">-</span>ExpandProperty MemberOf</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Add-ADGroupMember</span> <span class="op">-</span>Members UseBeingAddedToGroups <span class="op">-</span>PassThru <span class="op">|</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Select</span> SamAccountName</span></code></pre></div>
 <p>Enable remote desktop (assuming WinRM is enabled)</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="fu">Invoke-Command</span> -ComputerName PC -Credential (<span class="fu">Get-Credential</span> AdminUser) -ScriptBlock {</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    <span class="fu">Set-ItemProperty</span> -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name <span class="st">&quot;fDenyTSConnections&quot;</span> -Value 0</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    <span class="fu">Set-ItemProperty</span> -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name <span class="st">&quot;UserAuthentication&quot;</span> -Value 1</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Invoke-Command</span> <span class="op">-</span>ComputerName PC <span class="op">-</span>Credential <span class="op">(</span><span class="fu">Get-Credential</span> AdminUser<span class="op">)</span> <span class="op">-</span>ScriptBlock <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Set-ItemProperty</span> <span class="op">-</span>Path <span class="st">'HKLM:\System\CurrentControlSet\Control\Terminal Server'</span><span class="op">-</span>name <span class="st">&quot;fDenyTSConnections&quot;</span> <span class="op">-</span>Value 0</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Set-ItemProperty</span> <span class="op">-</span>Path <span class="st">'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp'</span> <span class="op">-</span>name <span class="st">&quot;UserAuthentication&quot;</span> <span class="op">-</span>Value 1</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
   <!-- <footer class="post-footer"> </footer> -->
 </article>
 

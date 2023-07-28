@@ -67,24 +67,24 @@
   </header>
   <h1 id="line-editing">Line editing</h1>
 <p>Should work in bash and zsh, and in some readline environments.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>^<span class="ex">u</span> # delete everything before the cursor</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>^<span class="ex">k</span> # delete everything after the cursor</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>^<span class="ex">h</span> # delete one character before the cursor</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>^<span class="ex">d</span> # delete character after the cursor</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>^<span class="ex">w</span> # delete from cursor to the start of previous word</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">^u</span> <span class="co"># delete everything before the cursor</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">^k</span> <span class="co"># delete everything after the cursor</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">^h</span> <span class="co"># delete one character before the cursor</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">^d</span> <span class="co"># delete character after the cursor</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">^w</span> <span class="co"># delete from cursor to the start of previous word</span></span></code></pre></div>
 <h1 id="flow-control">Flow Control</h1>
 <p>If / else if / else</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">if</span><span class="bu"> [</span> <span class="st">&quot;</span><span class="va">$foo</span><span class="st">&quot;</span> <span class="ot">-eq</span> 0<span class="bu"> ]</span>; <span class="kw">then</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>  <span class="bu">echo</span> <span class="st">&quot;true&quot;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">elif</span><span class="bu"> [</span> <span class="st">&quot;</span><span class="va">$foo</span><span class="st"> -gt 0 ]</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="st">  echo &quot;</span>false<span class="st">&quot;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="st">else</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="st">  echo &quot;</span>maybe<span class="st">&quot;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="st">fi</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$foo</span><span class="st">&quot;</span> <span class="ot">-eq</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;true&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$foo</span><span class="st"> -gt 0 ]</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">  echo &quot;</span>false<span class="st">&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">else</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">  echo &quot;</span>maybe<span class="st">&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">fi</span></span></code></pre></div>
 <p>For loop.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">for</span> <span class="ex">f</span> in <span class="va">${SET}</span><span class="kw">;</span> <span class="kw">do</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>  <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${f}</span><span class="st">&quot;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="va">${SET}</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">${f}</span><span class="st">&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
   <!-- <footer class="post-footer"> </footer> -->
 </article>
 

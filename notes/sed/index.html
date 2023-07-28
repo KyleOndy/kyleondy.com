@@ -66,9 +66,9 @@
     <br />
   </header>
   <p>Find and replace a string, with a backup, because mistakes happen.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">sed</span> -i.sedbak -- <span class="st">'s/foo/bar/g'</span> foobar.txt</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i.sedbak</span> <span class="at">--</span> <span class="st">'s/foo/bar/g'</span> foobar.txt</span></code></pre></div>
 <p>If working with file paths, use a different separator character.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="fu">sed</span> -i.sedbak -- <span class="st">'s|/home/foo/|/home/bar|g'</span> foobar.txt</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i.sedbak</span> <span class="at">--</span> <span class="st">'s|/home/foo/|/home/bar|g'</span> foobar.txt</span></code></pre></div>
   <!-- <footer class="post-footer"> </footer> -->
 </article>
 

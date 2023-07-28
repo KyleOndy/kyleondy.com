@@ -70,256 +70,287 @@
     <br />
   </header>
   <aside>
-The code contained here is all correct, such as <em>this is</em> the source that built this site. However, I am still working on the documentation in this file and refactoring some of those more opaque code.
+The code contained here is all correct, such as <em>this is</em> the source that built this site.
+However, I am still working on the documentation in this file and refactoring some of those more opaque code.
 </aside>
-<p>This site is generated using <a href="https://jaspervdj.be/hakyll/">Hakyll</a>, a <a href="https://www.haskell.org/">Haskell</a> library for generating static websites. The raw version of this file (see the source link at the bottom of this post) is compiled into the executable that generates this entire site, and in turn is presented as this post. This is achieved by writing a <a href="https://en.wikipedia.org/wiki/Literate_programming">literate</a> source file.</p>
+<p>This site is generated using <a href="https://jaspervdj.be/hakyll/">Hakyll</a>, a <a href="https://www.haskell.org/">Haskell</a> library for generating static websites.
+The raw version of this file (see the source link at the bottom of this post) is compiled into the executable that generates this entire site, and in turn is presented as this post.
+This is achieved by writing a <a href="https://en.wikipedia.org/wiki/Literate_programming">literate</a> source file.</p>
 <h2 id="assumptions">Assumptions</h2>
-<p>This is not intended as a beginner tutorial, so some working working knowledge of Haskell is assumed going forward. As with all Haskell files, we have to import some modules.</p>
-<p>First we import the <a href="https://jaspervdj.be/hakyll/"><code>Hakyll</code></a> module, which contains the core functionality needed to generate this site. Next import is <a href="https://github.com/KyleOndy/hakyll-sass"><code>Hakyll.Web.Sass</code></a> which provides a compiler for <a href="http://sass-lang.com/">scss</a>.</p>
+<p>This is not intended as a beginner tutorial, so some working working knowledge of Haskell is assumed going forward.
+As with all Haskell files, we have to import some modules.</p>
+<p>First we import the <a href="https://jaspervdj.be/hakyll/"><code>Hakyll</code></a> module, which contains the core functionality needed to generate this site.
+Next import is <a href="https://github.com/KyleOndy/hakyll-sass"><code>Hakyll.Web.Sass</code></a> which provides a compiler for <a href="http://sass-lang.com/">scss</a>.</p>
 <aside>
-Currently <code>hakyll-sass</code> is a fork I maintain. todo: add link I am working on submitting my PRs upstream and will move upstream once published to hackage.
+Currently <code>hakyll-sass</code> is a fork I maintain.
+todo: add link
+I am working on submitting my PRs upstream and will move upstream once published to hackage.
 </aside>
-<div class="sourceCode" id="cb1"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ot">{-# LANGUAGE OverloadedStrings #-}</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Hakyll</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Hakyll.Web.Sass</span>  (sassCompiler)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">{-# LANGUAGE OverloadedStrings #-}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Hakyll</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Hakyll.Web.Sass</span>  (sassCompiler)</span></code></pre></div>
 <p>Next is the Monad module, which facilitates composition. If not familiar with function programming concepts, it is worth looking into.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Control.Monad</span>    (msum, forM)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.Monoid</span>      ((&lt;&gt;))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Control.Monad</span>    (msum, forM)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.Monoid</span>      ((&lt;&gt;))</span></code></pre></div>
 <p>The <code>Data</code> and <code>System</code> modules provide many of the common functions you would expect in a programming language.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.Char</span>        (toLower)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.List</span>        (sortBy, intercalate, isInfixOf)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.Maybe</span>       (fromMaybe)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.Ord</span>         (comparing)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.Time.Clock</span>  (<span class="dt">UTCTime</span> (..))</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">Data.Time.Format</span> (defaultTimeLocale, formatTime, parseTimeM)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">System.FilePath</span>  (replaceBaseName, splitFileName, takeBaseName, takeDirectory, (&lt;/&gt;))</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">System.Process</span>   (readProcess)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.Char</span>        (toLower)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.List</span>        (sortBy, intercalate, isInfixOf)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.Maybe</span>       (fromMaybe)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.Ord</span>         (comparing)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.Time.Clock</span>  (<span class="dt">UTCTime</span> (..))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">Data.Time.Format</span> (defaultTimeLocale, formatTime, parseTimeM)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">System.FilePath</span>  (replaceBaseName, splitFileName, takeBaseName, takeDirectory, (&lt;/&gt;))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">System.Process</span>   (readProcess)</span></code></pre></div>
 <p>Finally we import some UTF8 encoding to keep things consistent.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">import</span>           <span class="dt">GHC.IO.Encoding</span>  (setLocaleEncoding, setFileSystemEncoding, setForeignEncoding, utf8)</span></code></pre></div>
-<p>Now that we have everything imported we can set some configuration. The providerDirectory is where the built executable will look for source files when building the site. By putting all the files in a sub folder we can keep root folder clean.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="ot">config ::</span> <span class="dt">Configuration</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>config <span class="ot">=</span> defaultConfiguration</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    {</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>      providerDirectory <span class="ot">=</span> <span class="st">&quot;src/provider&quot;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    , storeDirectory    <span class="ot">=</span> <span class="st">&quot;src/_cache&quot;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>    , tmpDirectory      <span class="ot">=</span> <span class="st">&quot;src/_cache/tmp&quot;</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>    , inMemoryCache     <span class="ot">=</span> <span class="dt">True</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>    }</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span>           <span class="dt">GHC.IO.Encoding</span>  (setLocaleEncoding, setFileSystemEncoding, setForeignEncoding, utf8)</span></code></pre></div>
+<p>Now that we have everything imported we can set some configuration.
+The providerDirectory is where the built executable will look for source files when building the site.
+By putting all the files in a sub folder we can keep root folder clean.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ot">config ::</span> <span class="dt">Configuration</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>config <span class="ot">=</span> defaultConfiguration</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      providerDirectory <span class="ot">=</span> <span class="st">&quot;src/provider&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    , storeDirectory    <span class="ot">=</span> <span class="st">&quot;src/_cache&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    , tmpDirectory      <span class="ot">=</span> <span class="st">&quot;src/_cache/tmp&quot;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    , inMemoryCache     <span class="ot">=</span> <span class="dt">True</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div>
 <p>Here we define the patterns we use to find content</p>
-A ‘post’ is an article that is ready to be published and included in the sites feed and listing. Grab anything, no matter how deep in the post directory, regardless of the file extension.
-<div class="sourceCode" id="cb6"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="ot">postsPattern ::</span> <span class="dt">Pattern</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>postsPattern <span class="ot">=</span> <span class="st">&quot;posts/**&quot;</span></span></code></pre></div>
-<p>A ‘draft’ is an article I am working on, and want rendered, but to not include in any listings. It can be accessed by providing the direct URL to the page. This is useful if I want to provide someone the ability to proof the post before going live. Grab anything, no matter how deep in the drafts directory, regardless of the file extension.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="ot">draftsPattern ::</span> <span class="dt">Pattern</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>draftsPattern <span class="ot">=</span> <span class="st">&quot;drafts/**&quot;</span></span></code></pre></div>
-<p>notes whatever, so I can organize as I see fit.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="ot">notesPattern ::</span> <span class="dt">Pattern</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>notesPattern <span class="ot">=</span> <span class="st">&quot;notes/**&quot;</span></span></code></pre></div>
+A ‘post’ is an article that is ready to be published and included in the sites feed and listing.
+Grab anything, no matter how deep in the post directory, regardless of the file extension.
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ot">postsPattern ::</span> <span class="dt">Pattern</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>postsPattern <span class="ot">=</span> <span class="st">&quot;posts/**&quot;</span></span></code></pre></div>
+<p>A ‘draft’ is an article I am working on, and want rendered, but to not include in any listings.
+It can be accessed by providing the direct URL to the page.
+This is useful if I want to provide someone the ability to proof the post before going live.
+Grab anything, no matter how deep in the drafts directory, regardless of the file extension.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ot">draftsPattern ::</span> <span class="dt">Pattern</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>draftsPattern <span class="ot">=</span> <span class="st">&quot;drafts/**&quot;</span></span></code></pre></div>
+<p>notes
+whatever, so I can organize as I see fit.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ot">notesPattern ::</span> <span class="dt">Pattern</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>notesPattern <span class="ot">=</span> <span class="st">&quot;notes/**&quot;</span></span></code></pre></div>
 <p>Instantiate hakyll with UTF-8 encoding the above configuration.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="ot">main ::</span> <span class="dt">IO</span> ()</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>main <span class="ot">=</span> <span class="kw">do</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>  setLocaleEncoding utf8</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>  setFileSystemEncoding utf8</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>  setForeignEncoding utf8</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>  hakyllWith config <span class="op">$</span> <span class="kw">do</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ot">main ::</span> <span class="dt">IO</span> ()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>main <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  setLocaleEncoding utf8</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  setFileSystemEncoding utf8</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  setForeignEncoding utf8</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  hakyllWith config <span class="op">$</span> <span class="kw">do</span></span></code></pre></div>
 <p>First we need to render our templates so we can apply our content onto them.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>    match <span class="st">&quot;templates/*&quot;</span> <span class="op">$</span> compile templateBodyCompiler</span></code></pre></div>
-<p>Each of the following lines generates a portion of our content. More detail will follow when we look at the function definition.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a>    staticCss</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>    scss</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    staticAssets</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>    <span class="fu">index</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>    pages</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>    notesIndex</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a>    postsIndex</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a>    postsAndNotes</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>    secrets</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>    secretsStatic</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>    match <span class="st">&quot;templates/*&quot;</span> <span class="op">$</span> compile templateBodyCompiler</span></code></pre></div>
+<p>Each of the following lines generates a portion of our content.
+More detail will follow when we look at the function definition.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>    staticCss</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    scss</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    staticAssets</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">index</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    pages</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    notesIndex</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    postsIndex</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    postsAndNotes</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    secrets</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    secretsStatic</span></code></pre></div>
 <p>I am using <a href="https://github.com/necolas/normalize.css">normalize.css</a>, along with a syntax.css file, these get copied directly to the output directory.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="ot">staticCss ::</span> <span class="dt">Rules</span> ()</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>staticCss <span class="ot">=</span> match <span class="st">&quot;css/*.css&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>      route idRoute</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>      compile copyFileCompiler</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ot">staticCss ::</span> <span class="dt">Rules</span> ()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>staticCss <span class="ot">=</span> match <span class="st">&quot;css/*.css&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>      route idRoute</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      compile copyFileCompiler</span></code></pre></div>
 <p>todo: hakyll-sass</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="ot">scss ::</span> <span class="dt">Rules</span> ()</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>scss <span class="ot">=</span> match <span class="st">&quot;css/*.scss&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>      route <span class="op">$</span> setExtension <span class="st">&quot;css&quot;</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>      <span class="kw">let</span> compressCssItem <span class="ot">=</span> <span class="fu">fmap</span> compressCss</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>      compile (compressCssItem <span class="op">&lt;$&gt;</span> sassCompiler)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ot">scss ::</span> <span class="dt">Rules</span> ()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>scss <span class="ot">=</span> match <span class="st">&quot;css/*.scss&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>      route <span class="op">$</span> setExtension <span class="st">&quot;css&quot;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> compressCssItem <span class="ot">=</span> <span class="fu">fmap</span> compressCss</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      compile (compressCssItem <span class="op">&lt;$&gt;</span> sassCompiler)</span></code></pre></div>
 <p>The following files are just copied verbatim due to the <code>idRoute</code> and <code>copyFileCompiler</code> combination.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="ot">staticAssets ::</span> <span class="dt">Rules</span> ()</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>staticAssets <span class="ot">=</span> match <span class="st">&quot;static/**&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a>      route <span class="op">$</span> gsubRoute <span class="st">&quot;static/&quot;</span> (<span class="fu">const</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>      compile copyFileCompiler</span></code></pre></div>
-<p>index has some unique things. Lists of most recent posts, and list of most recently updated notes</p>
-<p>todo: context todo: relativizeUrls todo: removeIndexHtml</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="fu">index</span><span class="ot"> ::</span> <span class="dt">Rules</span> ()</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="fu">index</span> <span class="ot">=</span> match <span class="st">&quot;index.html&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>        route idRoute</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a>        compile <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a>            posts <span class="ot">&lt;-</span> <span class="fu">fmap</span> (<span class="fu">take</span> <span class="dv">3</span>) <span class="op">.</span> recentlyCreatedFirst <span class="op">=&lt;&lt;</span> loadAll postsPattern</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a>            notes <span class="ot">&lt;-</span> <span class="fu">fmap</span> (<span class="fu">take</span> <span class="dv">3</span>) <span class="op">.</span> recentlyUpdatedFirst <span class="op">=&lt;&lt;</span> loadAll notesPattern</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a>            <span class="kw">let</span> indexCtx <span class="ot">=</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a>                    listField <span class="st">&quot;posts&quot;</span> siteContext (<span class="fu">return</span> posts) <span class="op">&lt;&gt;</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a>                    listField <span class="st">&quot;notes&quot;</span> siteContext (<span class="fu">return</span> notes) <span class="op">&lt;&gt;</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a>                    constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Home&quot;</span>                <span class="op">&lt;&gt;</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a>                    siteContext</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true"></a>            getResourceBody</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true"></a>                <span class="op">&gt;&gt;=</span> applyAsTemplate indexCtx</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true"></a>                <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/site.html&quot;</span> indexCtx</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true"></a>                <span class="op">&gt;&gt;=</span> relativizeUrls</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true"></a>                <span class="op">&gt;&gt;=</span> withItemBody removeIndexHtml</span></code></pre></div>
-<p>Next we build the static pages. They live in the subfolder <code>pages</code>, strip that from the url. compile the markdown with pandoc. Drop them into the site template</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="ot">pages ::</span> <span class="dt">Rules</span> ()</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>pages <span class="ot">=</span> match <span class="st">&quot;pages/*&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>        route <span class="op">$</span>  subFolderRoute <span class="ot">`composeRoutes`</span> gsubRoute <span class="st">&quot;pages/&quot;</span> (<span class="fu">const</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>        compile <span class="op">$</span> pandocCompiler</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>            <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/content.html&quot;</span> siteContext</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>            <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/site.html&quot;</span> siteContext</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>            <span class="op">&gt;&gt;=</span> relativizeUrls</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>            <span class="op">&gt;&gt;=</span> withItemBody removeIndexHtml</span></code></pre></div>
-<p>Create the notes index page lexicography Ordered needs a title</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="ot">notesIndex ::</span> <span class="dt">Rules</span> ()</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>notesIndex <span class="ot">=</span> create [<span class="st">&quot;notes.html&quot;</span>] <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>      route subFolderRoute</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a>      compile <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a>        orderedNotes <span class="ot">&lt;-</span> lexicographyOrdered <span class="op">=&lt;&lt;</span> loadAll notesPattern</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a>        <span class="kw">let</span> ctx <span class="ot">=</span> constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Notes - Alphabetical&quot;</span> <span class="op">&lt;&gt;</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a>                  listField <span class="st">&quot;notes&quot;</span> siteContext (<span class="fu">return</span> orderedNotes) <span class="op">&lt;&gt;</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a>                  siteContext</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true"></a>        makeItem <span class="st">&quot;&quot;</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true"></a>                <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/notes.html&quot;</span> ctx</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true"></a>                <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/site.html&quot;</span> ctx</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true"></a>                <span class="op">&gt;&gt;=</span> relativizeUrls</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true"></a>                <span class="op">&gt;&gt;=</span> withItemBody removeIndexHtml</span></code></pre></div>
-<p>The typical ‘archive’ page is just /posts, a list of all posts. One day, when I write a lot, I’ll need to figure out pagination</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="ot">postsIndex ::</span> <span class="dt">Rules</span> ()</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a>postsIndex <span class="ot">=</span> create [<span class="st">&quot;posts.html&quot;</span>] <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a>        route subFolderRoute</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a>        compile <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true"></a>            posts <span class="ot">&lt;-</span> recentlyCreatedFirst <span class="op">=&lt;&lt;</span> loadAll postsPattern</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true"></a>            <span class="kw">let</span> ctx <span class="ot">=</span> constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;All Posts&quot;</span> <span class="op">&lt;&gt;</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true"></a>                    listField <span class="st">&quot;posts&quot;</span> siteContext (<span class="fu">return</span> posts) <span class="op">&lt;&gt;</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true"></a>                    siteContext</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true"></a>            makeItem <span class="st">&quot;&quot;</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true"></a>                <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/posts.html&quot;</span> ctx</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true"></a>                <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/site.html&quot;</span> ctx</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true"></a>                <span class="op">&gt;&gt;=</span> relativizeUrls</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true"></a>                <span class="op">&gt;&gt;=</span> withItemBody removeIndexHtml</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ot">staticAssets ::</span> <span class="dt">Rules</span> ()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>staticAssets <span class="ot">=</span> match <span class="st">&quot;static/**&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>      route <span class="op">$</span> gsubRoute <span class="st">&quot;static/&quot;</span> (<span class="fu">const</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      compile copyFileCompiler</span></code></pre></div>
+<p>index has some unique things.
+Lists of most recent posts, and list of most recently updated notes</p>
+<p>todo: context
+todo: relativizeUrls
+todo: removeIndexHtml</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">index</span><span class="ot"> ::</span> <span class="dt">Rules</span> ()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">index</span> <span class="ot">=</span> match <span class="st">&quot;index.html&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        route idRoute</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        compile <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>            posts <span class="ot">&lt;-</span> <span class="fu">fmap</span> (<span class="fu">take</span> <span class="dv">3</span>) <span class="op">.</span> recentlyCreatedFirst <span class="op">=&lt;&lt;</span> loadAll postsPattern</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>            notes <span class="ot">&lt;-</span> <span class="fu">fmap</span> (<span class="fu">take</span> <span class="dv">3</span>) <span class="op">.</span> recentlyUpdatedFirst <span class="op">=&lt;&lt;</span> loadAll notesPattern</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> indexCtx <span class="ot">=</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                    listField <span class="st">&quot;posts&quot;</span> siteContext (<span class="fu">return</span> posts) <span class="op">&lt;&gt;</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>                    listField <span class="st">&quot;notes&quot;</span> siteContext (<span class="fu">return</span> notes) <span class="op">&lt;&gt;</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>                    constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Home&quot;</span>                <span class="op">&lt;&gt;</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>                    siteContext</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>            getResourceBody</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>                <span class="op">&gt;&gt;=</span> applyAsTemplate indexCtx</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>                <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/site.html&quot;</span> indexCtx</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>                <span class="op">&gt;&gt;=</span> relativizeUrls</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>                <span class="op">&gt;&gt;=</span> withItemBody removeIndexHtml</span></code></pre></div>
+<p>Next we build the static pages.
+They live in the subfolder <code>pages</code>, strip that from the url.
+compile the markdown with pandoc.
+Drop them into the site template</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ot">pages ::</span> <span class="dt">Rules</span> ()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>pages <span class="ot">=</span> match <span class="st">&quot;pages/*&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        route <span class="op">$</span>  subFolderRoute <span class="ot">`composeRoutes`</span> gsubRoute <span class="st">&quot;pages/&quot;</span> (<span class="fu">const</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        compile <span class="op">$</span> pandocCompiler</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>            <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/content.html&quot;</span> siteContext</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>            <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/site.html&quot;</span> siteContext</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>            <span class="op">&gt;&gt;=</span> relativizeUrls</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>            <span class="op">&gt;&gt;=</span> withItemBody removeIndexHtml</span></code></pre></div>
+<p>Create the notes index page
+lexicography Ordered
+needs a title</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ot">notesIndex ::</span> <span class="dt">Rules</span> ()</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>notesIndex <span class="ot">=</span> create [<span class="st">&quot;notes.html&quot;</span>] <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>      route subFolderRoute</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>      compile <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        orderedNotes <span class="ot">&lt;-</span> lexicographyOrdered <span class="op">=&lt;&lt;</span> loadAll notesPattern</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> ctx <span class="ot">=</span> constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Notes - Alphabetical&quot;</span> <span class="op">&lt;&gt;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                  listField <span class="st">&quot;notes&quot;</span> siteContext (<span class="fu">return</span> orderedNotes) <span class="op">&lt;&gt;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>                  siteContext</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        makeItem <span class="st">&quot;&quot;</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>                <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/notes.html&quot;</span> ctx</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>                <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/site.html&quot;</span> ctx</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>                <span class="op">&gt;&gt;=</span> relativizeUrls</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>                <span class="op">&gt;&gt;=</span> withItemBody removeIndexHtml</span></code></pre></div>
+<p>The typical ‘archive’ page is just /posts, a list of all posts.
+One day, when I write a lot, I’ll need to figure out pagination</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ot">postsIndex ::</span> <span class="dt">Rules</span> ()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>postsIndex <span class="ot">=</span> create [<span class="st">&quot;posts.html&quot;</span>] <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        route subFolderRoute</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        compile <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>            posts <span class="ot">&lt;-</span> recentlyCreatedFirst <span class="op">=&lt;&lt;</span> loadAll postsPattern</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> ctx <span class="ot">=</span> constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;All Posts&quot;</span> <span class="op">&lt;&gt;</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                    listField <span class="st">&quot;posts&quot;</span> siteContext (<span class="fu">return</span> posts) <span class="op">&lt;&gt;</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>                    siteContext</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>            makeItem <span class="st">&quot;&quot;</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>                <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/posts.html&quot;</span> ctx</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>                <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/site.html&quot;</span> ctx</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>                <span class="op">&gt;&gt;=</span> relativizeUrls</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>                <span class="op">&gt;&gt;=</span> withItemBody removeIndexHtml</span></code></pre></div>
 <aside>
-At this point my documentation is just a stream of conciousness to help myself and needs to be revisited. Proceed at your own risk.
+At this point my documentation is just a stream of conciousness to help myself and needs to be revisited.
+Proceed at your own risk.
 </aside>
-<p>todo: posts and notes are treated the same. Just a logical separation <code>.||.</code> is logical OR for the match</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="ot">postsAndNotes ::</span> <span class="dt">Rules</span> ()</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>postsAndNotes <span class="ot">=</span> match (postsPattern <span class="op">.||.</span> notesPattern <span class="op">.||.</span> draftsPattern) <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>        route <span class="op">$</span> metadataRoute titleFromMetadata <span class="ot">`composeRoutes`</span> myPostsRoute <span class="ot">`composeRoutes`</span>  subFolderRoute</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a>        compile <span class="op">$</span> pandocCompiler</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a>            <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/content.html&quot;</span> siteContext</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true"></a>            <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/site.html&quot;</span> siteContext</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a>            <span class="op">&gt;&gt;=</span> relativizeUrls</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true"></a>            <span class="op">&gt;&gt;=</span> withItemBody removeIndexHtml</span></code></pre></div>
-<p>While I strive to keep everything open and transparent, some things are secret. These I store in a private git repo and clone it into a folder named <code>secret</code> under provider.</p>
+<p>todo:
+posts and notes are treated the same.
+Just a logical separation
+<code>.||.</code> is logical OR for the match</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ot">postsAndNotes ::</span> <span class="dt">Rules</span> ()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>postsAndNotes <span class="ot">=</span> match (postsPattern <span class="op">.||.</span> notesPattern <span class="op">.||.</span> draftsPattern) <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        route <span class="op">$</span> metadataRoute titleFromMetadata <span class="ot">`composeRoutes`</span> myPostsRoute <span class="ot">`composeRoutes`</span>  subFolderRoute</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        compile <span class="op">$</span> pandocCompiler</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>            <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/content.html&quot;</span> siteContext</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>            <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/site.html&quot;</span> siteContext</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>            <span class="op">&gt;&gt;=</span> relativizeUrls</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>            <span class="op">&gt;&gt;=</span> withItemBody removeIndexHtml</span></code></pre></div>
+<p>While I strive to keep everything open and transparent, some things are secret.
+These I store in a private git repo and clone it into a folder named <code>secret</code> under provider.</p>
 <p>First we create the secret pages.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="ot">secrets ::</span> <span class="dt">Rules</span> ()</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a>secrets <span class="ot">=</span> match <span class="st">&quot;secrets/*&quot;</span>  <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a>  route <span class="op">$</span> subFolderRoute <span class="ot">`composeRoutes`</span> gsubRoute <span class="st">&quot;secrets/&quot;</span> (<span class="fu">const</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a>  compile <span class="op">$</span> pandocCompiler</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a>    <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/page.html&quot;</span> siteContext</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a>    <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/site.html&quot;</span> siteContext</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a>    <span class="op">&gt;&gt;=</span> relativizeUrls</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a>    <span class="op">&gt;&gt;=</span> withItemBody removeIndexHtml</span></code></pre></div>
-<p>As with the static above, just blindly copy everything in the secret folder to the site root. Allows me to host any files arbitrarily. todo: explain gsubRoute</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="ot">secretsStatic ::</span> <span class="dt">Rules</span> ()</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a>secretsStatic <span class="ot">=</span> match <span class="st">&quot;secrets/**&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a>  route <span class="op">$</span> gsubRoute <span class="st">&quot;secrets/&quot;</span> (<span class="fu">const</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true"></a>  compile copyFileCompiler</span></code></pre></div>
-<div class="sourceCode" id="cb22"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="ot">removeIndexHtml ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Compiler</span> <span class="dt">String</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>removeIndexHtml body <span class="ot">=</span> <span class="fu">return</span> <span class="op">$</span> withUrls removeIndexStr body</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>  <span class="kw">where</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a>    removeIndexStr url <span class="ot">=</span> <span class="kw">case</span> splitFileName url <span class="kw">of</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true"></a>      (dir, <span class="st">&quot;index.html&quot;</span>) <span class="op">|</span> isLocal dir   <span class="ot">-&gt;</span> <span class="fu">init</span> dir</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true"></a>      _                                   <span class="ot">-&gt;</span> url</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a>    isLocal uri <span class="ot">=</span> <span class="fu">not</span> <span class="op">$</span> <span class="st">&quot;://&quot;</span> <span class="ot">`isInfixOf`</span> uri</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ot">secrets ::</span> <span class="dt">Rules</span> ()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>secrets <span class="ot">=</span> match <span class="st">&quot;secrets/*&quot;</span>  <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  route <span class="op">$</span> subFolderRoute <span class="ot">`composeRoutes`</span> gsubRoute <span class="st">&quot;secrets/&quot;</span> (<span class="fu">const</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  compile <span class="op">$</span> pandocCompiler</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/page.html&quot;</span> siteContext</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/site.html&quot;</span> siteContext</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;&gt;=</span> relativizeUrls</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;&gt;=</span> withItemBody removeIndexHtml</span></code></pre></div>
+<p>As with the static above, just blindly copy everything in the secret folder to the site root.
+Allows me to host any files arbitrarily.
+todo: explain gsubRoute</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ot">secretsStatic ::</span> <span class="dt">Rules</span> ()</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>secretsStatic <span class="ot">=</span> match <span class="st">&quot;secrets/**&quot;</span> <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  route <span class="op">$</span> gsubRoute <span class="st">&quot;secrets/&quot;</span> (<span class="fu">const</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  compile copyFileCompiler</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ot">removeIndexHtml ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Compiler</span> <span class="dt">String</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>removeIndexHtml body <span class="ot">=</span> <span class="fu">return</span> <span class="op">$</span> withUrls removeIndexStr body</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    removeIndexStr url <span class="ot">=</span> <span class="kw">case</span> splitFileName url <span class="kw">of</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>      (dir, <span class="st">&quot;index.html&quot;</span>) <span class="op">|</span> isLocal dir   <span class="ot">-&gt;</span> <span class="fu">init</span> dir</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>      _                                   <span class="ot">-&gt;</span> url</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    isLocal uri <span class="ot">=</span> <span class="fu">not</span> <span class="op">$</span> <span class="st">&quot;://&quot;</span> <span class="ot">`isInfixOf`</span> uri</span></code></pre></div>
 <p>todo: contexts, what is it?</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="ot">shortDateFormat ::</span> <span class="dt">String</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>shortDateFormat <span class="ot">=</span> <span class="st">&quot;%B %e, %Y&quot;</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true"></a><span class="ot">siteContext ::</span> <span class="dt">Context</span> <span class="dt">String</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true"></a>siteContext <span class="ot">=</span> <span class="fu">mconcat</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true"></a>    [ dateFromMetadata <span class="st">&quot;created&quot;</span> <span class="st">&quot;createdDateTime&quot;</span> shortDateFormat</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true"></a>    , dateFromMetadata <span class="st">&quot;updated&quot;</span> <span class="st">&quot;updatedDateTime&quot;</span> shortDateFormat</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true"></a>    <span class="co">-- , gitHistoryUrl &quot;gitHistoryUrl&quot;</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true"></a>    <span class="co">-- , gitCommitUrl &quot;gitCommitUrl&quot;</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true"></a>    <span class="co">-- , gitSourceUrl &quot;gitSourceUrl&quot;</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true"></a>    , gitEditUrl <span class="st">&quot;gitEditUrl&quot;</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true"></a>    , defaultContext</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true"></a>    ]</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ot">shortDateFormat ::</span> <span class="dt">String</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>shortDateFormat <span class="ot">=</span> <span class="st">&quot;%B %e, %Y&quot;</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="ot">siteContext ::</span> <span class="dt">Context</span> <span class="dt">String</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>siteContext <span class="ot">=</span> <span class="fu">mconcat</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    [ dateFromMetadata <span class="st">&quot;created&quot;</span> <span class="st">&quot;createdDateTime&quot;</span> shortDateFormat</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    , dateFromMetadata <span class="st">&quot;updated&quot;</span> <span class="st">&quot;updatedDateTime&quot;</span> shortDateFormat</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- , gitHistoryUrl &quot;gitHistoryUrl&quot;</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- , gitCommitUrl &quot;gitCommitUrl&quot;</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- , gitSourceUrl &quot;gitSourceUrl&quot;</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    , gitEditUrl <span class="st">&quot;gitEditUrl&quot;</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    , defaultContext</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    ]</span></code></pre></div>
 <p>todo: make the below two functions into one</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="ot">dateFromMetadata ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Context</span> a</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true"></a>dateFromMetadata key value format <span class="ot">=</span> field value <span class="op">$</span> \i <span class="ot">-&gt;</span> <span class="kw">do</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true"></a>  t <span class="ot">&lt;-</span> getMetadataField' (itemIdentifier i) key</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true"></a>  <span class="fu">return</span> <span class="op">$</span> formatTime defaultTimeLocale format (readTime t)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ot">dateFromMetadata ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Context</span> a</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>dateFromMetadata key value format <span class="ot">=</span> field value <span class="op">$</span> \i <span class="ot">-&gt;</span> <span class="kw">do</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  t <span class="ot">&lt;-</span> getMetadataField' (itemIdentifier i) key</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span> <span class="op">$</span> formatTime defaultTimeLocale format (readTime t)</span></code></pre></div>
 <p>todo: git things</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a><span class="co">-- gitLog :: String -&gt; String -&gt; IO String</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a><span class="co">-- gitLog filePath format =</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true"></a><span class="co">--   readProcess &quot;git&quot; [</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true"></a><span class="co">--     &quot;log&quot;</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true"></a><span class="co">--   , &quot;-1&quot;</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true"></a><span class="co">--   , &quot;HEAD&quot;</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true"></a><span class="co">--   , &quot;--pretty=format:&quot; ++ format</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true"></a><span class="co">--   , &quot;--&quot;</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true"></a><span class="co">--   , filePath</span></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true"></a><span class="co">--   ] &quot;&quot;</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true"></a><span class="co">-- </span></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true"></a><span class="co">-- gitBranch :: IO String</span></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true"></a><span class="co">-- gitBranch = do</span></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true"></a><span class="co">--   branch &lt;-readProcess &quot;git&quot; [</span></span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true"></a><span class="co">--       &quot;rev-parse&quot;</span></span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true"></a><span class="co">--     , &quot;--abbrev-ref&quot;</span></span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true"></a><span class="co">--     , &quot;HEAD&quot;</span></span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true"></a><span class="co">--     ] &quot;&quot;</span></span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true"></a><span class="co">--   return $trim branch</span></span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true"></a><span class="co">-- </span></span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true"></a><span class="co">-- </span></span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true"></a><span class="co">-- gitHistoryUrl :: String -&gt; Context String</span></span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true"></a><span class="co">-- gitHistoryUrl key = field key $ \item -&gt; do</span></span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true"></a><span class="co">--   let fp = &quot;provider/&quot; ++ toFilePath (itemIdentifier item)</span></span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true"></a><span class="co">--   unsafeCompiler $ do</span></span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true"></a><span class="co">--     sha     &lt;- gitLog fp &quot;%h&quot;</span></span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true"></a><span class="co">--     branch  &lt;- gitBranch</span></span>
-<span id="cb25-28"><a href="#cb25-28" aria-hidden="true"></a><span class="co">--     let github  =  &quot;https://github.com/kyleondy/kyleondy.com&quot;</span></span>
-<span id="cb25-29"><a href="#cb25-29" aria-hidden="true"></a><span class="co">--         history = github ++ &quot;/commits/&quot; ++ branch ++ &quot;/&quot; ++ fp</span></span>
-<span id="cb25-30"><a href="#cb25-30" aria-hidden="true"></a><span class="co">--     return $ if null sha</span></span>
-<span id="cb25-31"><a href="#cb25-31" aria-hidden="true"></a><span class="co">--                then &quot;Not Committed&quot;</span></span>
-<span id="cb25-32"><a href="#cb25-32" aria-hidden="true"></a><span class="co">--                else history</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- gitLog :: String -&gt; String -&gt; IO String</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- gitLog filePath format =</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co">--   readProcess &quot;git&quot; [</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">--     &quot;log&quot;</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co">--   , &quot;-1&quot;</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">--   , &quot;HEAD&quot;</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co">--   , &quot;--pretty=format:&quot; ++ format</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co">--   , &quot;--&quot;</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co">--   , filePath</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">--   ] &quot;&quot;</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- </span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co">-- gitBranch :: IO String</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co">-- gitBranch = do</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="co">--   branch &lt;-readProcess &quot;git&quot; [</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co">--       &quot;rev-parse&quot;</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co">--     , &quot;--abbrev-ref&quot;</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="co">--     , &quot;HEAD&quot;</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co">--     ] &quot;&quot;</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co">--   return $trim branch</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="co">-- </span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="co">-- </span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="co">-- gitHistoryUrl :: String -&gt; Context String</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="co">-- gitHistoryUrl key = field key $ \item -&gt; do</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a><span class="co">--   let fp = &quot;provider/&quot; ++ toFilePath (itemIdentifier item)</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a><span class="co">--   unsafeCompiler $ do</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a><span class="co">--     sha     &lt;- gitLog fp &quot;%h&quot;</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a><span class="co">--     branch  &lt;- gitBranch</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a><span class="co">--     let github  =  &quot;https://github.com/kyleondy/kyleondy.com&quot;</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a><span class="co">--         history = github ++ &quot;/commits/&quot; ++ branch ++ &quot;/&quot; ++ fp</span></span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a><span class="co">--     return $ if null sha</span></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a><span class="co">--                then &quot;Not Committed&quot;</span></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a><span class="co">--                else history</span></span></code></pre></div>
 <p>The url to an items commit in GitHub</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="co">-- gitCommitUrl :: String -&gt; Context String</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true"></a><span class="co">-- gitCommitUrl key = field key $ \item -&gt; do</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true"></a><span class="co">--   let fp = &quot;provider/&quot; ++ toFilePath (itemIdentifier item)</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true"></a><span class="co">--   unsafeCompiler $ do</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true"></a><span class="co">--     sha     &lt;- gitLog fp &quot;%h&quot;</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true"></a><span class="co">--     let github  =  &quot;https://github.com/kyleondy/kyleondy.com&quot;</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true"></a><span class="co">--         commit  = github ++ &quot;/commit/&quot; ++ sha</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true"></a><span class="co">--     return $ if null sha</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true"></a><span class="co">--                then &quot;Not Committed&quot;</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true"></a><span class="co">--                else commit</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- gitCommitUrl :: String -&gt; Context String</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- gitCommitUrl key = field key $ \item -&gt; do</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co">--   let fp = &quot;provider/&quot; ++ toFilePath (itemIdentifier item)</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">--   unsafeCompiler $ do</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">--     sha     &lt;- gitLog fp &quot;%h&quot;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">--     let github  =  &quot;https://github.com/kyleondy/kyleondy.com&quot;</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">--         commit  = github ++ &quot;/commit/&quot; ++ sha</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co">--     return $ if null sha</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co">--                then &quot;Not Committed&quot;</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co">--                else commit</span></span></code></pre></div>
 <p>The url to the item at the current time.</p>
 <p>Todo: pull current branch out, so links where when I’m in local dev mode.</p>
 <p>todo: combine functions</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true"></a><span class="co">-- gitSourceUrl :: String -&gt; Context String</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true"></a><span class="co">-- gitSourceUrl key = field key $ \item -&gt; do</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true"></a><span class="co">--   let fp     = &quot;provider/&quot; ++ toFilePath (itemIdentifier item)</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true"></a><span class="co">--   unsafeCompiler $ do</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true"></a><span class="co">--       branch &lt;- gitBranch</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true"></a><span class="co">--       return $ &quot;https://github.com/kyleondy/kyleondy.com/blob/&quot; ++ branch ++&quot;/&quot; ++ fp</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true"></a><span class="co">-- </span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true"></a><span class="ot">gitEditUrl ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Context</span> <span class="dt">String</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true"></a>gitEditUrl key <span class="ot">=</span> field key <span class="op">$</span> \item <span class="ot">-&gt;</span> <span class="kw">do</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true"></a>  <span class="kw">let</span> fp     <span class="ot">=</span> <span class="st">&quot;provider/&quot;</span> <span class="op">++</span> toFilePath (itemIdentifier item)</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true"></a>      branch <span class="ot">=</span> <span class="st">&quot;main&quot;</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true"></a>  <span class="kw">do</span></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true"></a>      <span class="fu">return</span> <span class="op">$</span> <span class="st">&quot;https://github.com/kyleondy/kyleondy.com/edit/&quot;</span> <span class="op">++</span> branch <span class="op">++</span> <span class="st">&quot;/&quot;</span> <span class="op">++</span> fp</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- gitSourceUrl :: String -&gt; Context String</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- gitSourceUrl key = field key $ \item -&gt; do</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">--   let fp     = &quot;provider/&quot; ++ toFilePath (itemIdentifier item)</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">--   unsafeCompiler $ do</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">--       branch &lt;- gitBranch</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">--       return $ &quot;https://github.com/kyleondy/kyleondy.com/blob/&quot; ++ branch ++&quot;/&quot; ++ fp</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- </span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="ot">gitEditUrl ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Context</span> <span class="dt">String</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>gitEditUrl key <span class="ot">=</span> field key <span class="op">$</span> \item <span class="ot">-&gt;</span> <span class="kw">do</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> fp     <span class="ot">=</span> <span class="st">&quot;provider/&quot;</span> <span class="op">++</span> toFilePath (itemIdentifier item)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>      branch <span class="ot">=</span> <span class="st">&quot;main&quot;</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">do</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span> <span class="op">$</span> <span class="st">&quot;https://github.com/kyleondy/kyleondy.com/edit/&quot;</span> <span class="op">++</span> branch <span class="op">++</span> <span class="st">&quot;/&quot;</span> <span class="op">++</span> fp</span></code></pre></div>
 <table>
 <tbody>
 <tr class="odd">
@@ -327,64 +358,75 @@ At this point my documentation is just a stream of conciousness to help myself a
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb28"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true"></a><span class="ot">subFolderRoute ::</span> <span class="dt">Routes</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true"></a>subFolderRoute <span class="ot">=</span> customRoute createIndexRoute</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true"></a>  <span class="kw">where</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true"></a>    createIndexRoute ident <span class="ot">=</span> takeDirectory p <span class="op">&lt;/&gt;</span> takeBaseName p <span class="op">&lt;/&gt;</span> <span class="st">&quot;index.html&quot;</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true"></a>                           <span class="kw">where</span> p <span class="ot">=</span> toFilePath ident</span></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true"></a><span class="ot">dropDateRoute ::</span> <span class="dt">Routes</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true"></a>dropDateRoute <span class="ot">=</span> gsubRoute <span class="st">&quot;/20[0-9]{2}&quot;</span> <span class="op">$</span> <span class="fu">const</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true"></a><span class="ot">dropSiteRoute ::</span> <span class="dt">Routes</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true"></a>dropSiteRoute <span class="ot">=</span> gsubRoute <span class="st">&quot;site&quot;</span> <span class="op">$</span> <span class="fu">const</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true"></a></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true"></a><span class="ot">myPostsRoute ::</span> <span class="dt">Routes</span></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true"></a>myPostsRoute <span class="ot">=</span> dropDateRoute <span class="ot">`composeRoutes`</span> dropSiteRoute</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ot">subFolderRoute ::</span> <span class="dt">Routes</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>subFolderRoute <span class="ot">=</span> customRoute createIndexRoute</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    createIndexRoute ident <span class="ot">=</span> takeDirectory p <span class="op">&lt;/&gt;</span> takeBaseName p <span class="op">&lt;/&gt;</span> <span class="st">&quot;index.html&quot;</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                           <span class="kw">where</span> p <span class="ot">=</span> toFilePath ident</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ot">dropDateRoute ::</span> <span class="dt">Routes</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>dropDateRoute <span class="ot">=</span> gsubRoute <span class="st">&quot;/20[0-9]{2}&quot;</span> <span class="op">$</span> <span class="fu">const</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="ot">dropSiteRoute ::</span> <span class="dt">Routes</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>dropSiteRoute <span class="ot">=</span> gsubRoute <span class="st">&quot;site&quot;</span> <span class="op">$</span> <span class="fu">const</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="ot">myPostsRoute ::</span> <span class="dt">Routes</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>myPostsRoute <span class="ot">=</span> dropDateRoute <span class="ot">`composeRoutes`</span> dropSiteRoute</span></code></pre></div>
 <p>todo: consolidate the below functions</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true"></a><span class="ot">lexicographyOrdered ::</span> [<span class="dt">Item</span> a] <span class="ot">-&gt;</span> <span class="dt">Compiler</span> [<span class="dt">Item</span> a]</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true"></a>lexicographyOrdered items <span class="ot">=</span> <span class="fu">return</span> <span class="op">$</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true"></a>              sortBy (comparing (takeBaseName <span class="op">.</span> toFilePath <span class="op">.</span> itemIdentifier)) items</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true"></a></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true"></a><span class="ot">recentlyUpdatedFirst ::</span> [<span class="dt">Item</span> a] <span class="ot">-&gt;</span> <span class="dt">Compiler</span> [<span class="dt">Item</span> a]</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true"></a>recentlyUpdatedFirst items <span class="ot">=</span> <span class="kw">do</span></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true"></a>    itemsWithTime <span class="ot">&lt;-</span> forM items <span class="op">$</span> \item <span class="ot">-&gt;</span> <span class="kw">do</span></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true"></a>        updateTime <span class="ot">&lt;-</span> getMetadataField (itemIdentifier item) <span class="st">&quot;updated&quot;</span></span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true"></a>        <span class="fu">return</span> (updateTime,item)</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true"></a>    <span class="fu">return</span> <span class="op">$</span> <span class="fu">reverse</span> (<span class="fu">map</span> <span class="fu">snd</span> (sortBy (comparing <span class="fu">fst</span>) itemsWithTime))</span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true"></a></span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true"></a><span class="ot">recentlyCreatedFirst ::</span> [<span class="dt">Item</span> a] <span class="ot">-&gt;</span> <span class="dt">Compiler</span> [<span class="dt">Item</span> a]</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true"></a>recentlyCreatedFirst items <span class="ot">=</span> <span class="kw">do</span></span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true"></a>    itemsWithTime <span class="ot">&lt;-</span> forM items <span class="op">$</span> \item <span class="ot">-&gt;</span> <span class="kw">do</span></span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true"></a>        updateTime <span class="ot">&lt;-</span> getMetadataField (itemIdentifier item) <span class="st">&quot;created&quot;</span></span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true"></a>        <span class="fu">return</span> (updateTime,item)</span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true"></a>    <span class="fu">return</span> <span class="op">$</span> <span class="fu">reverse</span> (<span class="fu">map</span> <span class="fu">snd</span> (sortBy (comparing <span class="fu">fst</span>) itemsWithTime))</span></code></pre></div>
-<p>OK, after that little detour, let’s get back to it! The <code>dateAndTitle</code> function above made use of two helper functions which haven’t actually been defined. The first is <code>readTime</code>, which we use to normalise the date format. It takes a date string and converts it to a <code>UTCTime</code> which we can manipulate.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true"></a><span class="ot">readTime ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">UTCTime</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true"></a>readTime t <span class="ot">=</span> fromMaybe empty' <span class="op">.</span> msum <span class="op">$</span> attempts <span class="kw">where</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true"></a>  attempts   <span class="ot">=</span> [parseTimeM <span class="dt">True</span> defaultTimeLocale fmt t <span class="op">|</span> fmt <span class="ot">&lt;-</span> formats]</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true"></a>  empty'     <span class="ot">=</span> <span class="fu">error</span> <span class="op">$</span> <span class="st">&quot;Could not parse date field: &quot;</span> <span class="op">++</span> t</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true"></a>  formats    <span class="ot">=</span> [ <span class="st">&quot;%a, %d %b %Y %H:%M:%S %Z&quot;</span></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true"></a>               , <span class="st">&quot;%Y-%m-%dT%H:%M:%S%Z&quot;</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true"></a>               , <span class="st">&quot;%Y-%m-%d %H:%M:%S%Z&quot;</span></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true"></a>               , <span class="st">&quot;%Y-%m-%d %H:%M&quot;</span></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true"></a>               , <span class="st">&quot;%Y-%m-%d&quot;</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true"></a>               , <span class="st">&quot;%B %e, %Y %l:%M %p&quot;</span></span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true"></a>               , <span class="st">&quot;%B %e, %Y&quot;</span></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true"></a>               , <span class="st">&quot;%b %d, %Y&quot;</span></span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true"></a>               ]</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ot">lexicographyOrdered ::</span> [<span class="dt">Item</span> a] <span class="ot">-&gt;</span> <span class="dt">Compiler</span> [<span class="dt">Item</span> a]</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>lexicographyOrdered items <span class="ot">=</span> <span class="fu">return</span> <span class="op">$</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>              sortBy (comparing (takeBaseName <span class="op">.</span> toFilePath <span class="op">.</span> itemIdentifier)) items</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="ot">recentlyUpdatedFirst ::</span> [<span class="dt">Item</span> a] <span class="ot">-&gt;</span> <span class="dt">Compiler</span> [<span class="dt">Item</span> a]</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>recentlyUpdatedFirst items <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    itemsWithTime <span class="ot">&lt;-</span> forM items <span class="op">$</span> \item <span class="ot">-&gt;</span> <span class="kw">do</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>        updateTime <span class="ot">&lt;-</span> getMetadataField (itemIdentifier item) <span class="st">&quot;updated&quot;</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span> (updateTime,item)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span> <span class="op">$</span> <span class="fu">reverse</span> (<span class="fu">map</span> <span class="fu">snd</span> (sortBy (comparing <span class="fu">fst</span>) itemsWithTime))</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="ot">recentlyCreatedFirst ::</span> [<span class="dt">Item</span> a] <span class="ot">-&gt;</span> <span class="dt">Compiler</span> [<span class="dt">Item</span> a]</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>recentlyCreatedFirst items <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    itemsWithTime <span class="ot">&lt;-</span> forM items <span class="op">$</span> \item <span class="ot">-&gt;</span> <span class="kw">do</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>        updateTime <span class="ot">&lt;-</span> getMetadataField (itemIdentifier item) <span class="st">&quot;created&quot;</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span> (updateTime,item)</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span> <span class="op">$</span> <span class="fu">reverse</span> (<span class="fu">map</span> <span class="fu">snd</span> (sortBy (comparing <span class="fu">fst</span>) itemsWithTime))</span></code></pre></div>
+<p>OK, after that little detour, let’s get back to it! The <code>dateAndTitle</code> function
+above made use of two helper functions which haven’t actually been defined. The
+first is <code>readTime</code>, which we use to normalise the date format. It takes a date
+string and converts it to a <code>UTCTime</code> which we can manipulate.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ot">readTime ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">UTCTime</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>readTime t <span class="ot">=</span> fromMaybe empty' <span class="op">.</span> msum <span class="op">$</span> attempts <span class="kw">where</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  attempts   <span class="ot">=</span> [parseTimeM <span class="dt">True</span> defaultTimeLocale fmt t <span class="op">|</span> fmt <span class="ot">&lt;-</span> formats]</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  empty'     <span class="ot">=</span> <span class="fu">error</span> <span class="op">$</span> <span class="st">&quot;Could not parse date field: &quot;</span> <span class="op">++</span> t</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  formats    <span class="ot">=</span> [ <span class="st">&quot;%a, %d %b %Y %H:%M:%S %Z&quot;</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>               , <span class="st">&quot;%Y-%m-%dT%H:%M:%S%Z&quot;</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>               , <span class="st">&quot;%Y-%m-%d %H:%M:%S%Z&quot;</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>               , <span class="st">&quot;%Y-%m-%d %H:%M&quot;</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>               , <span class="st">&quot;%Y-%m-%d&quot;</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>               , <span class="st">&quot;%B %e, %Y %l:%M %p&quot;</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>               , <span class="st">&quot;%B %e, %Y&quot;</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>               , <span class="st">&quot;%b %d, %Y&quot;</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>               ]</span></code></pre></div>
 <p>todo:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true"></a><span class="ot">titleFromMetadata ::</span> <span class="dt">Metadata</span> <span class="ot">-&gt;</span> <span class="dt">Routes</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true"></a>titleFromMetadata meta <span class="ot">=</span> <span class="fu">maybe</span> idRoute mkName (getField <span class="st">&quot;title&quot;</span>)</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true"></a>  <span class="kw">where</span> mkName t    <span class="ot">=</span> setBaseName <span class="op">$</span> slugify t</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true"></a>        getField    <span class="ot">=</span> (<span class="ot">`lookupString`</span> meta)</span></code></pre></div>
-<p>The basic idea for the implementation is taken from Hakyll itself, from its <code>getItemUTC</code> which is defined in [<code>Hakyll.Web.Template.Context</code>][hwtc]. Unfortunately, the type signature for that function is quite a lot more complicated than we need, so I’ve extracted the parts we need into a simple <code>String -&gt; UTCTime</code> function here. If the date doesn’t match any of the supported formats <code>readTime</code> will simply crash with an error – not the best error handling but since we’re always going to be running this interactively it doesn’t really matter.</p>
-<p><code>setBaseName</code> turns a string into a <code>FilePath</code>, which it can then manipulate using Haskell’s native <code>replaceBaseName</code> functionality.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true"></a><span class="ot">setBaseName ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Routes</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true"></a>setBaseName basename <span class="ot">=</span> customRoute <span class="op">$</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true"></a>  (<span class="ot">`replaceBaseName`</span> basename) <span class="op">.</span> toFilePath</span></code></pre></div>
-<div class="sourceCode" id="cb34"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true"></a><span class="ot">slugify ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true"></a>slugify <span class="ot">=</span> intercalate <span class="st">&quot;-&quot;</span> <span class="op">.</span> <span class="fu">words</span> <span class="op">.</span> <span class="fu">map</span> (\x <span class="ot">-&gt;</span> <span class="kw">if</span> x <span class="ot">`elem`</span>  allowedChars <span class="kw">then</span> <span class="fu">toLower</span> x <span class="kw">else</span> <span class="ch">' '</span>)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true"></a>  <span class="kw">where</span> allowedChars <span class="ot">=</span> [<span class="ch">'a'</span><span class="op">..</span><span class="ch">'z'</span>] <span class="op">++</span> [<span class="ch">'A'</span><span class="op">..</span><span class="ch">'Z'</span>] <span class="op">++</span> [<span class="ch">'0'</span><span class="op">..</span><span class="ch">'9'</span>] <span class="op">++</span> <span class="st">&quot; &quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ot">titleFromMetadata ::</span> <span class="dt">Metadata</span> <span class="ot">-&gt;</span> <span class="dt">Routes</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>titleFromMetadata meta <span class="ot">=</span> <span class="fu">maybe</span> idRoute mkName (getField <span class="st">&quot;title&quot;</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span> mkName t    <span class="ot">=</span> setBaseName <span class="op">$</span> slugify t</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>        getField    <span class="ot">=</span> (<span class="ot">`lookupString`</span> meta)</span></code></pre></div>
+<p>The basic idea for the implementation is taken from Hakyll itself, from its
+<code>getItemUTC</code> which is defined in [<code>Hakyll.Web.Template.Context</code>][hwtc].
+Unfortunately, the type signature for that function is quite a lot more
+complicated than we need, so I’ve extracted the parts we need into a simple
+<code>String -&gt; UTCTime</code> function here. If the date doesn’t match any of the
+supported formats <code>readTime</code> will simply crash with an error – not the best
+error handling but since we’re always going to be running this interactively it
+doesn’t really matter.</p>
+<p><code>setBaseName</code> turns a string into a <code>FilePath</code>, which it can then manipulate
+using Haskell’s native <code>replaceBaseName</code> functionality.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ot">setBaseName ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Routes</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>setBaseName basename <span class="ot">=</span> customRoute <span class="op">$</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  (<span class="ot">`replaceBaseName`</span> basename) <span class="op">.</span> toFilePath</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ot">slugify ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>slugify <span class="ot">=</span> intercalate <span class="st">&quot;-&quot;</span> <span class="op">.</span> <span class="fu">words</span> <span class="op">.</span> <span class="fu">map</span> (\x <span class="ot">-&gt;</span> <span class="kw">if</span> x <span class="ot">`elem`</span>  allowedChars <span class="kw">then</span> <span class="fu">toLower</span> x <span class="kw">else</span> <span class="ch">' '</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span> allowedChars <span class="ot">=</span> [<span class="ch">'a'</span><span class="op">..</span><span class="ch">'z'</span>] <span class="op">++</span> [<span class="ch">'A'</span><span class="op">..</span><span class="ch">'Z'</span>] <span class="op">++</span> [<span class="ch">'0'</span><span class="op">..</span><span class="ch">'9'</span>] <span class="op">++</span> <span class="st">&quot; &quot;</span></span></code></pre></div>
   <!-- <footer class="post-footer"> </footer> -->
 </article>
 

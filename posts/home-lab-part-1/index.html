@@ -67,11 +67,24 @@
     </section>
     <br />
   </header>
-  <p>My job affords me the opportunity to run complex workloads on some industry standard platforms. These are production workloads that require the while enterprise architecture with all the high availability and performance replica bells and whistles. This is all done on their dime and I have pretty deep knowledge on this <em>specific</em> stack.</p>
-<p>I want to expand my working knowledge of workload clustering and orchestration beyond what I do at my day job. It has never been easier to get hand on experience with clustered computing then it is now with a quick search for <code>learn fizzbuzz the {easy,hard} way</code>. A few clicks in the web console or cli commands and you have a cluster up and running in your choice of cloud provider.</p>
-<p>This is great as long as you only want these resources around long enough to learn. If you wanted to run these resources around the clock, it will get <em>expensive</em>. To save some costs you can run these same systems on a local machine via a hypervisor. You miss out on some provider niceties such as the SDN and security primitives, but they are ancillary to the core technology.</p>
-<p>These are all sane and prudent choices. I choose another option. I built a physical lab to learn clustering. Many people do this, throwing together a few Raspberry Pi’s and getting a low powered cluster up they can limp along and learn with. The advent of the <a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/">RaspberryPi 4</a> 4GB model allows for building a cluster than can handle a more realistic workload.</p>
-<p>I built myself a cluster of three new RaspberryPi 4GN boards providing me 12 core and 12GB of RAM of ARM power. This is some decent power, but I did not stop here. This three node cluster is reserved for running masters and controllers for services.</p>
+  <p>My job affords me the opportunity to run complex workloads on some industry standard platforms.
+These are production workloads that require the while enterprise architecture with all the high availability and performance replica bells and whistles.
+This is all done on their dime and I have pretty deep knowledge on this <em>specific</em> stack.</p>
+<p>I want to expand my working knowledge of workload clustering and orchestration beyond what I do at my day job.
+It has never been easier to get hand on experience with clustered computing then it is now with a quick search for <code>learn fizzbuzz the {easy,hard} way</code>.
+A few clicks in the web console or cli commands and you have a cluster up and running in your choice of cloud provider.</p>
+<p>This is great as long as you only want these resources around long enough to learn.
+If you wanted to run these resources around the clock, it will get <em>expensive</em>.
+To save some costs you can run these same systems on a local machine via a hypervisor.
+You miss out on some provider niceties such as the SDN and security primitives, but they are ancillary to the core technology.</p>
+<p>These are all sane and prudent choices.
+I choose another option.
+I built a physical lab to learn clustering.
+Many people do this, throwing together a few Raspberry Pi’s and getting a low powered cluster up they can limp along and learn with.
+The advent of the <a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/">RaspberryPi 4</a> 4GB model allows for building a cluster than can handle a more realistic workload.</p>
+<p>I built myself a cluster of three new RaspberryPi 4GN boards providing me 12 core and 12GB of RAM of ARM power.
+This is some decent power, but I did not stop here.
+This three node cluster is reserved for running masters and controllers for services.</p>
 <p>I also added in three <a href="https://www.hardkernel.com/shop/odroid-h2/">ODRIOD H2s</a> for 12 more x86 cores and another 96GB of memory. This six node cluster should allow me to expand beyond proof of concepts and “hello worlds” and host some real services.</p>
 <p>The long term plan is to self host and expose these services via a DMZ next to my home network.</p>
 <p>This post will contain an up to date list of posts that go into more detail</p>

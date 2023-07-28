@@ -70,7 +70,8 @@
     <br />
   </header>
   <aside>
-This is an outdated article and is here for prosperities sake. The following information is more than likely woefully out of date.
+This is an outdated article and is here for prosperities sake.
+The following information is more than likely woefully out of date.
 </aside>
 <h2 id="the-problem">The Problem</h2>
 <p>Using <a href="http://docs.haskellstack.org/en/stable/README/">stack’s</a> awesome <a href="http://docs.haskellstack.org/en/stable/docker_integration">docker integration</a> I got an unexpected error.</p>
@@ -80,7 +81,8 @@ This is an outdated article and is here for prosperities sake. The following inf
 <p>Running the build with the <code>--verbose</code> command to gain some further insight</p>
 <pre><code>&gt; stack build --verbose
 2016-04-12 15:25:34.077559: [debug] Run process: /usr/bin/docker start -a -i a401a0b1a6c48774f175acf8c2ff83279f0641f5fdb6df62be586b6c7348de0c @(stack_5xoCB8Vl1plFNNNfk8BYdK:System.Process.Run src/System/Process/Run.hs:105:5)</code></pre>
-<p>We see the error is proceeded by a <code>docker start</code> command. The <em>long</em> command above this in the verbose build output it the <code>docker create</code> command, which contains the following volume mount..</p>
+<p>We see the error is proceeded by a <code>docker start</code> command.
+The <em>long</em> command above this in the verbose build output it the <code>docker create</code> command, which contains the following volume mount..</p>
 <pre><code>-v /home/kondy/.stack:/home/kondy/.stack</code></pre>
 <p>This maps my stack dotfiles to a same folder in stack’s docker build container. I have <a href="https://github.com/KyleOndy/dotfiles/blob/master/apps/stack/.stack/config.yaml">stack.yaml</a> symlinked to ~/.stack.</p>
 <pre><code>lrwxrwxrwx  1 kondy   56 Apr 12 15:22 config.yaml -&gt; /home/kondy/src/dotfiles/apps/stack/config.yaml</code></pre>

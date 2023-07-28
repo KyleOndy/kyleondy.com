@@ -66,11 +66,11 @@
     <br />
   </header>
   <p>Upgrading Debian from one release to another.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">sed</span> -i <span class="st">'s/stretch/buster/g'</span> /etc/apt/sources.list</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i</span> <span class="st">'s/stretch/buster/g'</span> /etc/apt/sources.list</span></code></pre></div>
 <p>Once <code>/etc/apt/sources.list/etc/apt/sources.list</code> is updated, update the running system.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="ex">apt</span> update</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="ex">apt</span> upgrade</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="ex">apt</span> dist-upgrade</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> update</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> upgrade</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> dist-upgrade</span></code></pre></div>
   <!-- <footer class="post-footer"> </footer> -->
 </article>
 

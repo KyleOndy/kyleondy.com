@@ -70,14 +70,15 @@
     <br />
   </header>
   <aside>
-This is an outdated article and is here for prosperities sake. The following information is more than likely woefully out of date.
+This is an outdated article and is here for prosperities sake.
+The following information is more than likely woefully out of date.
 </aside>
 <p>Add the following to the very top of your neovim config</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">if</span> <span class="ex">empty</span>(glob(<span class="st">'~/.config/nvim/autoload/plug.vim'</span>))</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="ex">v</span> silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>    <span class="ex">\ https</span>://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>  <span class="ex">autocmd</span> VimEnter * PlugInstall <span class="kw">|</span> <span class="bu">source</span> <span class="va">$MYVIMRC</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="ex">endif</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ex">empty</span><span class="er">(</span><span class="ex">glob</span><span class="er">(</span><span class="st">'~/.config/nvim/autoload/plug.vim'</span><span class="kw">))</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">v</span> silent !curl <span class="at">-fLo</span> ~/.config/nvim/autoload/plug.vim <span class="at">--create-dirs</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">autocmd</span> VimEnter <span class="pp">*</span> PlugInstall <span class="kw">|</span> <span class="bu">source</span> <span class="va">$MYVIMRC</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">endif</span></span></code></pre></div>
   <!-- <footer class="post-footer"> </footer> -->
 </article>
 
