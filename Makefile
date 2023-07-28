@@ -53,3 +53,7 @@ gh-pages: clean build
 	cd $(GH_PAGES_DIR) && fd --type=directory | xargs --no-run-if-empty -I@ -- rm -rf @
 	cp -ar $(SITE_FOLDER)/. $(GH_PAGES_DIR)
 	cd $(GH_PAGES_DIR) && git add --all && git commit -m "Built from $(GIT_REV)" && git show
+
+.PHONY: deploy
+deploy: gh-pages
+	cd $(GH_PAGES_DIR) && git push
