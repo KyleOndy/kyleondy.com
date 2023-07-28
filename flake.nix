@@ -10,7 +10,7 @@
       hakyll-flakes.lib.mkAllOutputs {
         inherit system;
         name = "kyleondy-com";
-        src = ./.;
+        src = ./src;
         websiteBuildInputs = with nixpkgs.legacyPackages.${system}; [
         ];
       }

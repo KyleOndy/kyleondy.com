@@ -73,7 +73,10 @@ By putting all the files in a sub folder we can keep root folder clean.
 config :: Configuration
 config = defaultConfiguration
     {
-      providerDirectory = "provider"
+      providerDirectory = "src/provider"
+    , storeDirectory    = "src/_cache"
+    , tmpDirectory      = "src/_cache/tmp"
+    , inMemoryCache     = True
     }
 \end{code}
 
