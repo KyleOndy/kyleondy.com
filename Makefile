@@ -47,9 +47,9 @@ watch-external: build
 .PHONY: gh-pages
 gh-pages: clean build
 	git fetch
-	git branch -D $(GH_PAGES_BRANCH)
+	git branch --delete --force $(GH_PAGES_BRANCH) || true # if branch doesn't exist locally
 	git worktree add ./$(GH_PAGES_DIR) $(GH_PAGES_BRANCH)
 	cd $(GH_PAGES_DIR) && git ls-files | xargs -tI@ -- rm -r @
 	cd $(GH_PAGES_DIR) && fd --type=directory | xargs --no-run-if-empty -I@ -- rm -rf @
 	cp -ar $(SITE_FOLDER)/. $(GH_PAGES_DIR)
-	cd $(GH_PAGES_DIR) && git add --all && git commit -m "Built from $(GIT_REV)"
+	cd $(GH_PAGES_DIR) && git add --all && git commit -m "Built from $(GIT_REV)" && git show
