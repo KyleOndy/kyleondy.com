@@ -1,7 +1,7 @@
 ---
 title: Contact information for Kyle
 subtitle: Drop me a line
-updated: 2022-02-28T00:00:00Z
+updated: 2023-07-28T19:40:00Z
 ---
 
 ## Email
@@ -10,7 +10,8 @@ updated: 2022-02-28T00:00:00Z
 
 ## PGP Key (`0xDB0E3C33491F91C9`)
 * [Public RSA Key (4096 bits)](/pgp).
-* [MIT Keyserver](http://keys.gnupg.net/pks/lookup?op=get&search=0xDB0E3C33491F91C9)
+* [Ubuntu Keyserver](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xDB0E3C33491F91C9)
+* [keys.openpgp.org](https://keys.openpgp.org/search?q=kyle%40ondy.org)
 
 ## Social
 

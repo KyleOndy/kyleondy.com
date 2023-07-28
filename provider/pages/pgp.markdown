@@ -1,13 +1,14 @@
 ---
 title: My Public PGP Key
 subtitle: 0xDB0E3C33491F91C9
-updated: 2022-03-03T09:20:06Z
+updated: 2023-07-28T19:40:00Z
 ---
 
 My PGP key can be found in the following locations.
 
 * [/pgp.txt](/pgp.txt).
 * [Ubuntu Keyserver](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xDB0E3C33491F91C9)
+* [keys.openpgp.org](https://keys.openpgp.org/search?q=kyle%40ondy.org)
 
 You can always check my [Keybase account, KyleOndy](https://keybase.io/kyleondy) to validate my identities.
 
