@@ -1,6 +1,6 @@
 ---
 title: Git
-updated: 2018-06-03T22:24:25Z
+updated: 2024-12-03T17:22:00Z
 subtitle: Commands I always seem to forget
 tags: notes, git
 ---
@@ -54,4 +54,12 @@ Checkout file from specific commit
 
 ~~~{.bash}
 git checkout <COMMIT> -- <path to file>
+~~~
+
+---
+
+Update author on multiple commits
+
+~~~{.bash}
+git rebase -i origin/main -x "git commit --amend --author 'Kyle Ondy <kyle@ondy.org>' -CHEAD"
 ~~~
