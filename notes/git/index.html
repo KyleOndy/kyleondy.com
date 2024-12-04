@@ -60,7 +60,7 @@
     <section class="post-meta">
       
       
-      <time class="updated-date" datetime="June  3, 2018">Updated: June  3, 2018</time>
+      <time class="updated-date" datetime="December  3, 2024">Updated: December  3, 2024</time>
       
     </section>
     <br />
@@ -88,6 +88,9 @@
 <hr />
 <p>Checkout file from specific commit</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="op">&lt;</span>COMMIT<span class="op">&gt;</span> -- <span class="op">&lt;</span>path to file<span class="op">&gt;</span></span></code></pre></div>
+<hr />
+<p>Update author on multiple commits</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> rebase <span class="at">-i</span> origin/main <span class="at">-x</span> <span class="st">&quot;git commit --amend --author 'Kyle Ondy &lt;kyle@ondy.org&gt;' -CHEAD&quot;</span></span></code></pre></div>
   <!-- <footer class="post-footer"> </footer> -->
 </article>
 
