@@ -1,7 +1,4 @@
 SITE_FOLDER=_site
-GIT_REV:=$(shell git rev-parse --verify HEAD)
-GH_PAGES_BRANCH=gh-pages
-GH_PAGES_DIR=gh-pages
 
 all: clean test
 
@@ -43,17 +40,6 @@ develop:
 watch-external: build
 	$(SITE_EXE) watch --host '0.0.0.0' --port '8822'
 
-# hacks be below
-.PHONY: gh-pages
-gh-pages: clean build
-	git fetch
-	git branch --delete --force $(GH_PAGES_BRANCH) || true # if branch doesn't exist locally
-	git worktree add ./$(GH_PAGES_DIR) $(GH_PAGES_BRANCH)
-	cd $(GH_PAGES_DIR) && git ls-files | xargs -tI@ -- rm -r @
-	cd $(GH_PAGES_DIR) && fd --type=directory | xargs --no-run-if-empty -I@ -- rm -rf @
-	cp -ar $(SITE_FOLDER)/. $(GH_PAGES_DIR)
-	cd $(GH_PAGES_DIR) && git add --all && git commit -m "Built from $(GIT_REV)" && git show
-
 .PHONY: deploy
-deploy: gh-pages
-	cd $(GH_PAGES_DIR) && git push
+deploy: clean build
+	rsync -avz --delete _site/ svc.deploy@tiger:/var/www/kyleondy.com/
