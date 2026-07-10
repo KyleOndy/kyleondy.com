@@ -201,7 +201,7 @@ Drop them  into the site template
 
 \begin{code}
 pages :: Rules ()
-pages = match "pages/**" $ do
+pages = match "pages/*" $ do
         route $  subFolderRoute `composeRoutes` gsubRoute "pages/" (const "")
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/content.html" siteContext
